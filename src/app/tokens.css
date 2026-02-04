@@ -1,0 +1,116 @@
+:root {
+  --background: #0A2540;
+  --foreground: #FFFFFF;
+
+  /* Deep Ocean Tech Palette */
+  /* Primary Navy */
+  --navy-profundo: #0A2540;
+  --navy-oscuro: #051629;
+  --navy-medio: #1A3A5C;
+
+  /* Secondary Cyan */
+  --cyan-brillante: #00D4FF;
+  --cyan-oscuro: #00B8E6;
+  --cyan-claro: #33DDFF;
+
+  /* Accent Coral */
+  --coral-energetico: #FF6B35;
+  --coral-oscuro: #E6552D;
+  --coral-claro: #FF8A5C;
+
+  /* Neutrals */
+  --neutral-dark: #1A1A1A;
+  --neutral-light: #F7F9FC;
+
+  /* Hero Colors - Deep Ocean Tech */
+  --hero-bg: #0A2540;
+  --hero-text-primary: #FFFFFF;
+  --hero-text-secondary: rgba(255, 255, 255, 0.92);  /* Increased from 0.88 for better contrast */
+  --hero-text-muted: rgba(255, 255, 255, 0.70);      /* Increased from 0.64 for better contrast */
+  --hero-accent: #FF6B35;
+  --hero-accent-hover: #E6552D;
+  --hero-accent-light: #FF8A5C;
+  --hero-glass: rgba(0, 212, 255, 0.1);
+  --hero-glass-hover: rgba(0, 212, 255, 0.15);
+  --hero-cream: #F7F9FC;
+}
+
+@theme inline {
+  /* Colors - Deep Ocean Tech Palette */
+  /* Primary - Navy Profundo */
+  --color-azul-principal: #0A2540;
+  --color-azul-oscuro: #051629;
+  --color-azul-claro: #1A3A5C;
+  --color-azul-bg: #0F1C2E;
+
+  /* Secondary - Cyan Brillante */
+  --color-cyan: #00D4FF;
+  --color-cyan-oscuro: #00B8E6;
+  --color-cyan-claro: #33DDFF;
+
+  /* Accent - Coral Energético */
+  --color-amarillo: #FF6B35;
+  --color-amarillo-oscuro: #E6552D;
+  --color-amarillo-claro: #FF8A5C;
+
+  /* Colors - Semantic */
+  --color-verde-exito: #00D4AA;
+  --color-rojo-error: #FF4757;
+  --color-naranja-warning: #FFA502;
+
+  /* Colors - Neutrals (WCAG 2.2 AA compliant) */
+  --color-gris-900: #1A1A1A;
+  --color-gris-800: #2D2D2D;
+  --color-gris-600: #595959;     /* Darker from #6B6B6B for better contrast */
+  --color-gris-400: #999999;     /* Darker from #A8A8A8 for 4.5:1 ratio */
+  --color-gris-200: #E5E5E5;
+  --color-gris-100: #F7F9FC;
+
+  /* Colors - Base */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  /* Typography */
+  --font-heading: var(--font-plus-jakarta-sans, ui-sans-serif), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-inter, ui-sans-serif), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono, ui-monospace), ui-monospace, monospace;
+
+  /* Fluid Typography System (clamp for responsive scaling) */
+  --font-size-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);       /* 12px → 14px */
+  --font-size-sm: clamp(0.875rem, 0.825rem + 0.25vw, 1rem);        /* 14px → 16px */
+  --font-size-base: clamp(1rem, 0.9rem + 0.5vw, 1.125rem);         /* 16px → 18px */
+  --font-size-lg: clamp(1.125rem, 1rem + 0.625vw, 1.25rem);        /* 18px → 20px */
+  --font-size-xl: clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem);         /* 20px → 24px */
+  --font-size-2xl: clamp(1.5rem, 1.3rem + 1vw, 2rem);              /* 24px → 32px */
+  --font-size-3xl: clamp(1.875rem, 1.6rem + 1.375vw, 2.5rem);      /* 30px → 40px */
+  --font-size-4xl: clamp(2.25rem, 1.9rem + 1.75vw, 3rem);          /* 36px → 48px */
+  --font-size-5xl: clamp(3rem, 2.4rem + 3vw, 4rem);                /* 48px → 64px */
+  --font-size-6xl: clamp(3.75rem, 3rem + 3.75vw, 5rem);            /* 60px → 80px */
+
+  /* Line Heights */
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.6;
+  --line-height-loose: 1.75;
+
+  /* Border Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 24px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
+
+  /* Animations */
+  --animate-fade-in: fade-in 0.5s ease-out forwards;
+  --animate-slide-up: slide-up 0.6s ease-out forwards;
+  --animate-pulse: pulse 2s ease-in-out infinite;
+
+  /* Color Aliases - Map new colors to Tailwind classes */
+  /* These ensure components using old color names work with new palette */
+}
