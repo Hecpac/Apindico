@@ -87,26 +87,30 @@ export default function ProyectosPage() {
   return (
     <main className="min-h-screen theme-editorial bg-[color:var(--color-bg)] text-[color:var(--color-text)]">
       {/* Hero Section */}
-      <section className="relative overflow-hidden pt-32 pb-16 md:pt-40 md:pb-24">
-        <div className="absolute inset-0" aria-hidden="true">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.18),_transparent_55%)]" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_40%,_rgba(249,115,22,0.2),_transparent_45%)]" />
+      <section className="relative overflow-hidden bg-[color:var(--color-bg)] text-[color:var(--color-text)]">
+        <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+          <div className="absolute -top-32 left-1/2 h-[520px] w-[820px] -translate-x-1/2 rounded-full bg-[color:var(--color-accent)] opacity-10 blur-3xl" />
+          <div className="absolute inset-0 opacity-[0.1] [background-image:radial-gradient(currentColor_1px,transparent_1px)] [background-size:18px_18px] text-[color:var(--color-border)]" />
           <div className="absolute inset-0 bg-[linear-gradient(140deg,_rgba(15,23,42,0.9),_rgba(11,15,23,0.95))]" />
-          <div className="absolute -top-32 right-0 h-72 w-72 rounded-full bg-[color:var(--color-accent)] opacity-20 blur-3xl" />
         </div>
-        <Container>
-          <div className="relative z-10 grid gap-10 lg:grid-cols-[1.1fr,0.9fr] items-center">
-            <div className="space-y-6">
-              <span className="inline-flex items-center gap-2 rounded-full border border-[color:var(--color-border)] bg-white/5 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-[color:var(--color-muted)]">
+        <div className="relative mx-auto max-w-[1440px] px-6 md:px-10 xl:px-[100px] py-16 md:py-24">
+          <div className="grid grid-cols-12 gap-6">
+            <div className="col-span-12 lg:col-span-1">
+              <div className="text-xs uppercase tracking-[0.1em] text-[color:var(--color-muted)]">
+                01
+              </div>
+            </div>
+
+            <div className="col-span-12 lg:col-start-2 lg:col-span-6">
+              <div className="text-xs uppercase tracking-[0.1em] text-[color:var(--color-muted)]">
                 Portafolio
-              </span>
-              <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl font-semibold leading-[1.05]">
+              </div>
+
+              <h1 className="mt-3 font-heading font-extrabold tracking-[-0.04em] leading-[1.05] text-[clamp(44px,7.2vw,120px)] text-balance">
                 {copy.projects.index.title}
               </h1>
-              <p className="text-base sm:text-lg text-[color:var(--color-muted)] max-w-2xl">
-                {copy.projects.index.subtitle}
-              </p>
-              <div className="flex flex-wrap gap-4">
+
+              <div className="mt-8 flex flex-col sm:flex-row gap-3">
                 <Button variant="editorial" size="lg" asChild>
                   <Link href="/contacto">
                     {copy.projects.index.leadCta}
@@ -119,27 +123,35 @@ export default function ProyectosPage() {
               </div>
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-1">
-              {[
-                { value: "500+", label: "Proyectos ejecutados" },
-                { value: "<24h", label: "Respuesta técnica" },
-                { value: "Nacional", label: "Presencia en Colombia" },
-              ].map((stat) => (
-                <div
-                  key={stat.label}
-                  className="rounded-[var(--radius-3)] border border-[color:var(--color-border)] bg-white/5 px-6 py-4 shadow-[var(--shadow-1)]"
-                >
-                  <p className="text-2xl font-semibold text-[color:var(--color-text)]">
-                    {stat.value}
-                  </p>
-                  <p className="text-sm text-[color:var(--color-muted)]">
-                    {stat.label}
-                  </p>
-                </div>
-              ))}
+            <div className="col-span-12 lg:col-start-8 lg:col-span-3 lg:mt-16">
+              <p className="text-base md:text-lg leading-relaxed text-[color:var(--color-muted)] max-w-[44ch]">
+                {copy.projects.index.subtitle}
+              </p>
+            </div>
+
+            <div className="col-span-12 lg:col-start-2 lg:col-span-11 mt-10 md:mt-14">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                {[
+                  { value: "500+", label: "Proyectos ejecutados" },
+                  { value: "<24h", label: "Respuesta técnica" },
+                  { value: "Nacional", label: "Presencia en Colombia" },
+                ].map((stat) => (
+                  <div
+                    key={stat.label}
+                    className="rounded-[var(--radius-3)] border border-[color:var(--color-border)] bg-white/5 px-6 py-4 shadow-[var(--shadow-1)]"
+                  >
+                    <p className="text-2xl font-semibold text-[color:var(--color-text)]">
+                      {stat.value}
+                    </p>
+                    <p className="text-sm text-[color:var(--color-muted)]">
+                      {stat.label}
+                    </p>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-        </Container>
+        </div>
       </section>
 
       {/* Projects Grid */}
