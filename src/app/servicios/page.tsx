@@ -4,6 +4,7 @@ import { Container } from "@/components/ui/Container"
 import { ServiceCard } from "@/components/ui/ServiceCard"
 import { Button } from "@/components/ui/Button"
 import { SERVICIOS, SERVICIOS_ADICIONALES } from "@/lib/constants"
+import copy from "@/lib/copy"
 
 export const metadata: Metadata = {
   title: "Servicios",
@@ -26,11 +27,10 @@ export default function ServiciosPage() {
         <Container>
           <div className="text-center text-white">
             <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4">
-              Nuestros servicios
+              {copy.services.index.title}
             </h1>
             <p className="text-lg md:text-xl text-white max-w-2xl mx-auto">
-              Soluciones integrales en ingeniería de acueducto y alcantarillado
-              con tecnología de punta y personal certificado
+              {copy.services.index.subtitle}
             </p>
           </div>
         </Container>
@@ -59,7 +59,7 @@ export default function ServiciosPage() {
         <Container>
           <div className="text-center mb-12">
             <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-gris-900 mb-4">
-              Servicios adicionales
+              {copy.services.index.extraTitle}
             </h2>
             <p className="text-gris-800 text-lg max-w-2xl mx-auto">
               Complementamos nuestra oferta con servicios especializados para
@@ -100,18 +100,17 @@ export default function ServiciosPage() {
         <Container>
           <div className="text-center">
             <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4">
-              ¿Necesita una cotización?
+              {copy.services.index.quoteBlockTitle}
             </h2>
             <p className="text-white max-w-xl mx-auto mb-8">
-              Utilice nuestro cotizador en línea para obtener un presupuesto
-              personalizado para su proyecto
+              {copy.services.index.quoteBlockSubtitle}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button variant="cta" size="lg" asChild>
-                <Link href="/cotizador">Cotizar ahora</Link>
+                <Link href="/cotizador">{copy.services.index.quoteCta}</Link>
               </Button>
               <Button variant="secondary" size="lg" asChild>
-                <Link href="/contacto">Contáctenos</Link>
+                <Link href="/contacto">{copy.services.index.contactCta}</Link>
               </Button>
             </div>
           </div>

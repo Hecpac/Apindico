@@ -4,6 +4,7 @@ import * as React from "react"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { Badge } from "./Badge"
+import { SERVICE_ICON_MAP } from "@/lib/serviceIcons"
 
 export interface ServiceCardProps {
   icon: string
@@ -16,6 +17,8 @@ export interface ServiceCardProps {
 
 const ServiceCard = React.forwardRef<HTMLAnchorElement, ServiceCardProps>(
   ({ icon, nombre, descripcion, slug, normativa, className }, ref) => {
+    const IconComponent = SERVICE_ICON_MAP[icon]
+
     return (
       <Link
         ref={ref}
@@ -34,13 +37,14 @@ const ServiceCard = React.forwardRef<HTMLAnchorElement, ServiceCardProps>(
         {/* Icon */}
         <div className="relative inline-flex h-14 w-14 items-center justify-center rounded-2xl border border-orange-500/20 bg-orange-500/10 text-orange-500 shadow-[0_0_20px_rgba(234,88,12,0.1)] mb-5 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:text-orange-400">
           <div className="pointer-events-none absolute inset-0 rounded-2xl bg-[radial-gradient(circle_at_center,rgba(234,88,12,0.22),transparent_70%)] opacity-80" />
-          <span
-            className="relative text-2xl transition-transform duration-300 group-hover:scale-105"
-            role="img"
-            aria-hidden="true"
-          >
-            {icon}
-          </span>
+          {IconComponent ? (
+            <IconComponent
+              className="relative h-7 w-7 transition-transform duration-300 group-hover:scale-105"
+              strokeWidth={1.75}
+              aria-hidden="true"
+              focusable="false"
+            />
+          ) : null}
         </div>
 
         {/* Title - sin truncamiento */}

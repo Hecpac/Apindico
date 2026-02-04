@@ -139,6 +139,33 @@ export const PROYECTOS: Proyecto[] = [
     descripcion: "Verificación de estanqueidad en 3 km de red de acueducto nueva.",
     fecha: "2023",
   },
+  {
+    id: "4",
+    titulo: "Catastro de Redes Municipio",
+    cliente: "EAAV",
+    ubicacion: "Villavicencio, Meta",
+    servicioId: "catastro-redes",
+    descripcion: "Georreferenciación y levantamiento de 50 km de redes de acueducto y alcantarillado.",
+    fecha: "2023",
+  },
+  {
+    id: "5",
+    titulo: "Reparación CIPP Tubería Dañada",
+    cliente: "WSP",
+    ubicacion: "Medellín, Antioquia",
+    servicioId: "reparacion-cipp",
+    descripcion: "Rehabilitación sin excavación de 200m de tubería de alcantarillado.",
+    fecha: "2023",
+  },
+  {
+    id: "6",
+    titulo: "Levantamiento Topográfico Red",
+    cliente: "Consorcio Biopolis",
+    ubicacion: "Bogotá, Cundinamarca",
+    servicioId: "topografia",
+    descripcion: "Levantamiento topográfico según NS-030 para proyecto de renovación de redes.",
+    fecha: "2022",
+  },
 ]
 
 export const COMPANY_INFO = {
@@ -203,7 +230,7 @@ export const CLIENTES = CLIENTES_DATA.map(c => c.name)
 
 export const CERTIFICACIONES = {
   nasco: {
-    nombre: "NASCO - PACP",
+    nombre: "NASSCO / PACP",
     codigo: "U-0221-06S212",
     descripcion: "Certificación en inspección de redes",
   },

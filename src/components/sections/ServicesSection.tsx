@@ -51,6 +51,7 @@ interface ServicesSectionProps {
   subtitle?: string
   showAllLink?: boolean
   limit?: number
+  ctaLabel?: string
   className?: string
 }
 
@@ -74,16 +75,19 @@ function StickyServiceCard({ servicio, index }: StickyServiceCardProps) {
     <Link
       href={`/servicios/${servicio.slug}`}
       className={cn(
-        "service-tile group relative overflow-hidden rounded-[2.5rem]",
-        "border border-white/10 bg-zinc-900/60 backdrop-blur-2xl p-8 md:p-10 shadow-[0_4px_24px_rgba(0,0,0,0.5)]",
+        "service-tile group relative overflow-hidden rounded-[2.5rem] will-change-transform",
+        "border border-white/10 bg-zinc-900/40 backdrop-blur-2xl p-8 md:p-10 shadow-[0_4px_24px_rgba(0,0,0,0.5)]",
         "transition-all duration-500 ease-out",
         "hover:-translate-y-1 hover:border-orange-500/50",
         "hover:shadow-[0_20px_40px_-20px_rgba(0,0,0,0.45)]",
-        "min-h-[320px]"
+        "min-h-[400px] md:min-h-[320px]",
+        "sticky top-24 md:relative md:top-0",
+        "mb-8 md:mb-0"
       )}
+      style={{ zIndex: 10 + index }}
     >
       {/* Background watermark number - textura imperceptible al 3% */}
-      <div className="absolute -top-6 -right-2 z-0 text-8xl font-mono font-bold text-white/[0.05] pointer-events-none select-none transition-colors group-hover:text-orange-500/10">
+      <div className="absolute -top-6 -right-2 z-0 text-8xl font-mono font-bold text-white/[0.03] pointer-events-none select-none transition-colors group-hover:text-orange-500/10">
         {String(index + 1).padStart(2, "0")}
       </div>
 
@@ -103,7 +107,7 @@ function StickyServiceCard({ servicio, index }: StickyServiceCardProps) {
         </div>
 
         {/* Title - flujo natural sin restricciones */}
-        <h3 className="font-heading font-bold text-xl tracking-tight text-white mb-4 transition-colors group-hover:text-orange-500" lang="es">
+        <h3 className="font-heading font-bold text-xl tracking-tighter text-white mb-4 transition-colors group-hover:text-orange-500" lang="es">
           {servicio.nombre}
         </h3>
 
@@ -122,7 +126,7 @@ function StickyServiceCard({ servicio, index }: StickyServiceCardProps) {
         )}
 
         {/* CTA - aparece deslizándose hacia arriba */}
-        <div className="mt-auto pt-4 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-orange-500 opacity-0 -translate-x-2 transition-all duration-300 ease-out group-hover:opacity-100 group-hover:translate-x-0">
+        <div className="mt-auto pt-4 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-orange-500 opacity-100 translate-x-0 md:opacity-0 md:-translate-x-2 transition-all duration-300 ease-out group-hover:opacity-100 group-hover:translate-x-0">
           <span>Saber más</span>
           <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
         </div>
@@ -136,6 +140,7 @@ export function ServicesSection({
   subtitle = "Soluciones integrales en ingeniería de acueducto y alcantarillado con tecnología de punta y personal certificado",
   showAllLink = true,
   limit,
+  ctaLabel = "Ver todos los servicios",
   className,
 }: ServicesSectionProps) {
   const sectionRef = useRef<HTMLElement>(null)
@@ -192,6 +197,26 @@ export function ServicesSection({
         },
         "-=0.2"
       )
+
+      ScrollTrigger.matchMedia({
+        "(max-width: 767px)": () => {
+          gsap.set(cards, { transformOrigin: "center top" })
+          cards.forEach((card, idx) => {
+            if (idx === 0) return
+            const previous = cards[idx - 1]
+            gsap.to(previous, {
+              scale: 0.95,
+              opacity: 0.5,
+              scrollTrigger: {
+                trigger: card,
+                start: "top 55%",
+                end: "bottom 45%",
+                scrub: true,
+              },
+            })
+          })
+        },
+      })
     },
     { scope: sectionRef, dependencies: [prefersReducedMotion] }
   )
@@ -225,7 +250,7 @@ export function ServicesSection({
         </div>
 
         {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="flex flex-col gap-10 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-6">
           {displayedServices.map((servicio, index) => (
             <StickyServiceCard
               key={servicio.id}
@@ -240,7 +265,7 @@ export function ServicesSection({
           <div className="services-cta text-center mt-20">
             <Button variant="primary" size="lg" asChild>
               <Link href="/servicios">
-                Ver todos los servicios
+                {ctaLabel}
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Link>
             </Button>

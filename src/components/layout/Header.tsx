@@ -9,18 +9,22 @@ import gsap from "gsap"
 import { useGSAP } from "@gsap/react"
 import { cn } from "@/lib/utils"
 import { SERVICIOS } from "@/lib/constants"
+import { SERVICE_ICON_MAP } from "@/lib/serviceIcons"
+import copy from "@/lib/copy"
 import { Button } from "@/components/ui/Button"
 import { useQuoteStep } from "@/components/providers/QuoteStepProvider"
 
 const NAV_LINKS = [
-  { href: "/proyectos", label: "Proyectos" },
-  { href: "/nosotros", label: "Nosotros" },
-  { href: "/contacto", label: "Contacto" },
+  { href: "/proyectos", label: copy.nav.projects },
+  { href: "/nosotros", label: copy.nav.about },
+  { href: "/contacto", label: copy.nav.contact },
 ]
 
 export function Header() {
   const pathname = usePathname()
   const { currentStep } = useQuoteStep()
+  const quoteCta = copy.nav.quoteCta
+  const quoteCtaCompact = quoteCta.split(" ")[0] ?? quoteCta
   const [isScrolled, setIsScrolled] = React.useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false)
   const [isServicesOpen, setIsServicesOpen] = React.useState(false)
@@ -161,20 +165,20 @@ export function Header() {
       <header
         ref={headerRef}
         className={cn(
-          "site-header fixed top-8 w-full z-50 transition-all duration-500",
+          "site-header fixed top-6 w-full z-50 transition-all duration-500",
           isScrolled ? "bg-zinc-950/80 backdrop-blur-xl" : "bg-transparent",
           isScrolled ? "pt-6" : "pt-8"
         )}
       >
-        <div className="max-w-7xl mx-auto px-6 md:px-12">
+        <div className="container mx-auto max-w-7xl px-6 md:px-12">
           <nav
             role="navigation"
             aria-label="Navegación principal"
             className={cn(
-              "flex items-center justify-between transition-all duration-300",
+              "flex items-center justify-between transition-all duration-300 rounded-full bg-zinc-950/20 backdrop-blur-2xl border-b border-white/5",
               isScrolled
-                ? "h-14 px-6 bg-white/80 backdrop-blur-xl border border-azul-principal/10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-full"
-                : "h-16 md:h-20 bg-transparent"
+                ? "h-14 shadow-[0_8px_30px_rgb(0,0,0,0.18)]"
+                : "h-16 md:h-20"
             )}
           >
             {/* Logo + Mini Label */}
@@ -230,11 +234,11 @@ export function Header() {
                     "flex items-center gap-1 font-body font-medium transition-all duration-300",
                     isScrolled
                       ? "text-azul-principal hover:text-cyan text-sm"
-                      : "text-white hover:text-cyan",
+                      : "text-white/90 hover:text-cyan",
                     isServicesOpen && "text-cyan"
                   )}
                 >
-                  Servicios
+                  {copy.nav.services}
                   <ChevronDown
                     className={cn(
                       "h-4 w-4 transition-transform duration-200",
@@ -262,7 +266,17 @@ export function Header() {
                             onClick={() => setIsServicesOpen(false)}
                           >
                             <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-azul-principal/10 flex items-center justify-center group-hover:bg-coral-energetico transition-colors">
-                              <span className="text-lg">{servicio.icon}</span>
+                              {(() => {
+                                const IconComponent = SERVICE_ICON_MAP[servicio.icon]
+                                return IconComponent ? (
+                                  <IconComponent
+                                    className="h-5 w-5 text-azul-principal group-hover:text-white transition-colors"
+                                    strokeWidth={1.75}
+                                    aria-hidden="true"
+                                    focusable="false"
+                                  />
+                                ) : null
+                              })()}
                             </div>
                             <div>
                               <span className="font-heading font-semibold text-sm text-azul-principal group-hover:text-coral-energetico transition-colors">
@@ -278,7 +292,7 @@ export function Header() {
                           className="text-sm font-medium text-coral-energetico hover:text-coral-oscuro transition-colors"
                           onClick={() => setIsServicesOpen(false)}
                         >
-                          Ver todos los servicios →
+                          {copy.home.services.cta} →
                         </Link>
                       </div>
                     </motion.div>
@@ -297,7 +311,7 @@ export function Header() {
                       ? "text-coral-energetico"
                       : isScrolled
                         ? "text-azul-principal hover:text-cyan text-sm"
-                        : "text-white hover:text-cyan"
+                        : "text-white/90 hover:text-cyan"
                   )}
                 >
                   {link.label}
@@ -315,7 +329,7 @@ export function Header() {
               >
                 <Link href="/cotizador">
                   <span className="relative z-10">
-                    {isScrolled ? "Cotizar" : "Cotizar Ahora"}
+                    {isScrolled ? quoteCtaCompact : quoteCta}
                   </span>
                 </Link>
               </Button>
@@ -394,7 +408,7 @@ export function Header() {
                       aria-label="Menú de servicios"
                       className="flex items-center justify-between w-full py-3 font-body font-medium text-gris-800 hover:text-azul-principal transition-colors"
                     >
-                      Servicios
+                      {copy.nav.services}
                       <ChevronDown
                         className={cn(
                           "h-4 w-4 transition-transform duration-200",
@@ -421,7 +435,17 @@ export function Header() {
                                 className="flex items-center gap-3 py-2 text-sm text-gris-600 hover:text-coral-energetico transition-colors"
                                 onClick={() => setIsMobileMenuOpen(false)}
                               >
-                                <span>{servicio.icon}</span>
+                                {(() => {
+                                  const IconComponent = SERVICE_ICON_MAP[servicio.icon]
+                                  return IconComponent ? (
+                                    <IconComponent
+                                      className="h-4 w-4 text-azul-principal"
+                                      strokeWidth={1.75}
+                                      aria-hidden="true"
+                                      focusable="false"
+                                    />
+                                  ) : null
+                                })()}
                                 {servicio.nombre}
                               </Link>
                             ))}
@@ -459,7 +483,7 @@ export function Header() {
                       ctaBaseClasses
                     )}
                   >
-                    <span className="relative z-10">Cotizar Ahora</span>
+                    <span className="relative z-10">{quoteCta}</span>
                   </Link>
                 </div>
               </div>

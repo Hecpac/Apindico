@@ -2,14 +2,15 @@
 
 import * as React from "react"
 import Link from "next/link"
-import Image from "next/image"
 import { useRef } from "react"
+import Image from "next/image"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { useGSAP } from "@gsap/react"
 import { ArrowRight, Video } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { PROYECTOS } from "@/lib/constants"
+import { Badge } from "@/components/ui/Badge"
 
 // Register GSAP plugins
 if (typeof window !== "undefined") {
@@ -18,11 +19,18 @@ if (typeof window !== "undefined") {
 
 interface HeroSectionProps {
   className?: string
+  title?: string
+  subtitle?: string
+  primaryCta?: {
+    label: string
+    href?: string
+  }
+  secondaryCta?: {
+    label: string
+    href?: string
+  }
+  badges?: string[]
 }
-
-const HERO_BLUR_DATA_URL =
-  "data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+PHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPScjMGEyNTQwJy8+PC9zdmc+"
-
 
 // Case Study Card Component with Glassmorphism
 function CaseStudyCard() {
@@ -62,34 +70,51 @@ function CaseStudyCard() {
 }
 
 // Primary CTA Button
-function PrimaryCTA() {
+function PrimaryCTA({
+  label,
+  href = "/cotizador",
+}: {
+  label: string
+  href?: string
+}) {
   return (
     <Link
-      href="/cotizador"
+      href={href}
       className="group relative overflow-hidden inline-flex items-center justify-center px-8 py-4 bg-orange-600 hover:bg-orange-500 text-white rounded-full font-bold shadow-[0_0_20px_rgba(234,88,12,0.3)] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_0_28px_rgba(234,88,12,0.4)]"
     >
       <span className="pointer-events-none absolute inset-0 bg-black/25" aria-hidden="true" />
-      <span className="relative z-10">Cotizar proyecto</span>
+      <span className="relative z-10">{label}</span>
     </Link>
   )
 }
 
 // Secondary CTA Button
-function SecondaryCTA() {
+function SecondaryCTA({
+  label,
+  href = "/contacto",
+}: {
+  label: string
+  href?: string
+}) {
   return (
     <Link
-      href="/contacto"
+      href={href}
       className="group inline-flex items-center justify-center px-8 py-4 bg-white/5 backdrop-blur-md text-white border border-white/20 rounded-full font-bold text-lg hover:bg-white/10 transition-all duration-300"
     >
-      <span>Agendar una llamada</span>
+      <span>{label}</span>
     </Link>
   )
 }
 
-export function HeroSection({ className }: HeroSectionProps) {
+export function HeroSection({
+  className,
+  title = "Ingeniería que Transforma",
+  subtitle,
+  primaryCta = { label: "Cotizar proyecto", href: "/cotizador" },
+  secondaryCta = { label: "Agendar una llamada", href: "/contacto" },
+  badges,
+}: HeroSectionProps) {
   const sectionRef = useRef<HTMLElement>(null)
-  const videoRef = useRef<HTMLVideoElement>(null)
-  const [isVideoReady, setIsVideoReady] = React.useState(false)
   const [prefersReducedMotion, setPrefersReducedMotion] = React.useState(false)
 
   // Check for reduced motion preference
@@ -104,40 +129,6 @@ export function HeroSection({ className }: HeroSectionProps) {
     mediaQuery.addEventListener("change", handleChange)
     return () => mediaQuery.removeEventListener("change", handleChange)
   }, [])
-
-  React.useEffect(() => {
-    const video = videoRef.current
-    if (!video) return
-
-    const markReady = () => setIsVideoReady(true)
-    video.addEventListener("loadeddata", markReady)
-    video.addEventListener("canplay", markReady)
-    video.addEventListener("canplaythrough", markReady)
-
-    const readyCheck = window.setInterval(() => {
-      if (video.readyState >= 2) {
-        setIsVideoReady(true)
-        window.clearInterval(readyCheck)
-      }
-    }, 400)
-
-    return () => {
-      video.removeEventListener("loadeddata", markReady)
-      video.removeEventListener("canplay", markReady)
-      video.removeEventListener("canplaythrough", markReady)
-      window.clearInterval(readyCheck)
-    }
-  }, [])
-
-  React.useEffect(() => {
-    if (!isVideoReady) return
-    const video = videoRef.current
-    if (!video) return
-    const playPromise = video.play()
-    if (playPromise && typeof playPromise.catch === "function") {
-      playPromise.catch(() => {})
-    }
-  }, [isVideoReady])
 
   // GSAP Animations
   useGSAP(
@@ -226,35 +217,13 @@ export function HeroSection({ className }: HeroSectionProps) {
       {/* Poster + Video Layer */}
       <div className="hero-video-container absolute inset-0 z-0 will-change-transform">
         <Image
-          src="/images/hero-poster.jpg"
-          alt="Inspección robótica de alcantarillado APINDICO"
+          src="/images/hero-clean.webp"
+          alt="Infraestructura de acueducto y alcantarillado APINDICO"
           fill
           priority
-          placeholder="blur"
-          blurDataURL={HERO_BLUR_DATA_URL}
-          className={cn(
-            "object-cover transition-opacity duration-700",
-            isVideoReady ? "opacity-0" : "opacity-80"
-          )}
+          className="object-cover opacity-90"
           sizes="100vw"
         />
-
-        <video
-          ref={videoRef}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          className={cn(
-            "absolute inset-0 z-10 h-full w-full object-cover transition-opacity duration-700",
-            isVideoReady ? "opacity-60" : "opacity-0"
-          )}
-          poster="/images/hero-poster.jpg"
-        >
-          <source src="/videos/Hero.webm" type="video/webm" />
-          <source src="/videos/Hero.mp4" type="video/mp4" />
-        </video>
       </div>
 
       {/* Overlay for legibility */}
@@ -262,21 +231,41 @@ export function HeroSection({ className }: HeroSectionProps) {
 
       {/* Main Container */}
       <div
-        className="hero-content max-w-7xl mx-auto relative z-30 flex h-full w-full flex-col items-center justify-start text-center text-white will-change-transform px-6 md:px-12 pt-32 md:pt-40 lg:pt-44 pb-24 md:pb-32 md:items-start md:text-left"
+        className="hero-content container mx-auto max-w-7xl px-6 md:px-12 relative z-30 flex h-full w-full flex-col items-center justify-start text-center text-white will-change-transform pt-32 md:pt-40 lg:pt-44 pb-24 md:pb-32 md:items-start md:text-left"
       >
         {/* Headline */}
-        <div className="headline-section flex flex-col items-center md:items-start max-w-3xl" style={{ gap: "32px" }}>
-          <h1
-            data-hero-title
-            className="tracking-tighter font-black text-5xl md:text-8xl leading-[0.9]"
-          >
-            Ingeniería que Transforma
-          </h1>
+        <div className="headline-section flex flex-col items-center md:items-start max-w-3xl gap-8">
+          <div className="space-y-6 text-center md:text-left">
+            <h1
+              data-hero-title
+              className="tracking-tighter font-black text-6xl md:text-8xl leading-[0.9]"
+            >
+              {title}
+            </h1>
+            {subtitle && (
+              <p className="text-white/90 text-lg md:text-xl leading-relaxed max-w-2xl font-medium">
+                {subtitle}
+              </p>
+            )}
+            {badges && badges.length > 0 && (
+              <div className="flex flex-wrap gap-2 justify-center md:justify-start">
+                {badges.map((badge) => (
+                  <Badge
+                    key={badge}
+                    size="sm"
+                    className="bg-white/10 text-white border border-white/15"
+                  >
+                    {badge}
+                  </Badge>
+                ))}
+              </div>
+            )}
+          </div>
 
           {/* CTA Wrapper */}
           <div className="hero-cta-wrapper flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto">
-            <PrimaryCTA />
-            <SecondaryCTA />
+            <PrimaryCTA label={primaryCta.label} href={primaryCta.href} />
+            <SecondaryCTA label={secondaryCta.label} href={secondaryCta.href} />
           </div>
         </div>
 
