@@ -38,7 +38,7 @@ export function Header() {
   // Handle scroll effect
   React.useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
+      setIsScrolled(window.scrollY > 8)
     }
 
     window.addEventListener("scroll", handleScroll, { passive: true })
@@ -166,7 +166,7 @@ export function Header() {
         ref={headerRef}
         className={cn(
           "site-header fixed top-6 w-full z-50 transition-all duration-500",
-          isScrolled ? "bg-zinc-950/80 backdrop-blur-xl" : "bg-transparent",
+          "bg-transparent",
           isScrolled ? "pt-6" : "pt-8"
         )}
       >
@@ -175,10 +175,10 @@ export function Header() {
             role="navigation"
             aria-label="Navegación principal"
             className={cn(
-              "flex items-center justify-between transition-all duration-300 rounded-full bg-zinc-950/20 backdrop-blur-2xl border-b border-white/5",
+              "flex items-center justify-between transition-all duration-300 rounded-full",
               isScrolled
-                ? "h-14 shadow-[0_8px_30px_rgb(0,0,0,0.18)]"
-                : "h-16 md:h-20"
+                ? "h-14 bg-[color:var(--color-bg)]/70 backdrop-blur-md border border-[color:var(--color-border)]/60 shadow-[0_10px_30px_rgba(0,0,0,0.22)]"
+                : "h-16 md:h-20 bg-white/10 backdrop-blur-xl border border-white/10"
             )}
           >
             {/* Logo + Mini Label */}
@@ -229,7 +229,7 @@ export function Header() {
                   className={cn(
                     "flex items-center gap-1 font-body font-medium transition-all duration-300",
                     isScrolled
-                      ? "text-azul-principal hover:text-cyan text-sm"
+                      ? "text-[color:var(--color-text)] hover:text-[color:var(--color-accent)] text-sm"
                       : "text-white/90 hover:text-cyan",
                     isServicesOpen && "text-cyan"
                   )}
@@ -318,9 +318,9 @@ export function Header() {
                   className={cn(
                     "font-body font-medium transition-all duration-300",
                     pathname === link.href
-                      ? "text-coral-energetico"
+                      ? "text-[color:var(--color-accent)]"
                       : isScrolled
-                        ? "text-azul-principal hover:text-cyan text-sm"
+                        ? "text-[color:var(--color-text)] hover:text-[color:var(--color-accent)] text-sm"
                         : "text-white/90 hover:text-cyan"
                   )}
                 >

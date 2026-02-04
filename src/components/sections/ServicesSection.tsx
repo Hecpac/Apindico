@@ -6,44 +6,40 @@ import Link from "next/link"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { useGSAP } from "@gsap/react"
-import {
-  ArrowRight,
-  Ruler,
-  Droplet,
-  PenTool,
-  ClipboardList,
-  Map,
-  Search,
-  Lock,
-  Trash2,
-  Video,
-  Wrench,
-  Truck,
-  LucideIcon
-} from "lucide-react"
+import { ArrowRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { SERVICIOS } from "@/lib/constants"
 import { Container } from "@/components/ui/Container"
 import { Button } from "@/components/ui/Button"
-import { Badge } from "@/components/ui/Badge"
+import { ChipFilter } from "@/components/ui/ChipFilter"
+import { ServiceCard } from "@/components/ui/ServiceCard"
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger)
 }
 
-// Icon mapping for services
-const ICON_MAP: Record<string, LucideIcon> = {
-  "Ruler": Ruler,
-  "Droplet": Droplet,
-  "PenTool": PenTool,
-  "ClipboardList": ClipboardList,
-  "Map": Map,
-  "Search": Search,
-  "Lock": Lock,
-  "Trash2": Trash2,
-  "Video": Video,
-  "Wrench": Wrench,
-  "Truck": Truck,
+const FILTERS = [
+  { id: "all", label: "Todos" },
+  { id: "diagnostico", label: "Diagnóstico" },
+  { id: "mantenimiento", label: "Mantenimiento" },
+  { id: "rehabilitacion", label: "Rehabilitación" },
+  { id: "catastro", label: "Catastro" },
+] as const
+
+type FilterId = (typeof FILTERS)[number]["id"]
+
+const CATEGORY_MAP: Record<string, FilterId> = {
+  "inspeccion-cctv": "diagnostico",
+  "medicion-caudal": "diagnostico",
+  "prueba-hidrostatica": "diagnostico",
+  "hermeticidad": "diagnostico",
+  "servicios-vactor": "mantenimiento",
+  "limpieza-redes": "mantenimiento",
+  "reparacion-cipp": "rehabilitacion",
+  "diseno-redes": "rehabilitacion",
+  "catastro-redes": "catastro",
+  "catastro-usuarios": "catastro",
+  "topografia": "diagnostico",
 }
 
 interface ServicesSectionProps {
@@ -53,86 +49,6 @@ interface ServicesSectionProps {
   limit?: number
   ctaLabel?: string
   className?: string
-}
-
-// Sticky Service Card Component
-interface StickyServiceCardProps {
-  servicio: {
-    id: string
-    nombre: string
-    descripcion: string
-    icon: string
-    slug: string
-    normativa?: string | null
-  }
-  index: number
-}
-
-function StickyServiceCard({ servicio, index }: StickyServiceCardProps) {
-  const IconComponent = ICON_MAP[servicio.icon]
-
-  return (
-    <Link
-      href={`/servicios/${servicio.slug}`}
-      className={cn(
-        "service-tile group relative overflow-hidden rounded-[2.5rem] will-change-transform",
-        "border border-white/10 bg-zinc-900/40 backdrop-blur-2xl p-8 md:p-10 shadow-[0_4px_24px_rgba(0,0,0,0.5)]",
-        "transition-all duration-500 ease-out",
-        "hover:-translate-y-1 hover:border-orange-500/50",
-        "hover:shadow-[0_20px_40px_-20px_rgba(0,0,0,0.45)]",
-        "min-h-[400px] md:min-h-[320px]",
-        "sticky top-24 md:relative md:top-0",
-        "mb-8 md:mb-0"
-      )}
-      style={{ zIndex: 10 + index }}
-    >
-      {/* Background watermark number - textura imperceptible al 3% */}
-      <div className="absolute -top-6 -right-2 z-0 text-8xl font-mono font-bold text-white/[0.03] pointer-events-none select-none transition-colors group-hover:text-orange-500/10">
-        {String(index + 1).padStart(2, "0")}
-      </div>
-
-      <div className="relative z-10 flex flex-col">
-        {/* Icon */}
-        <div className="mb-6">
-          <div className="relative inline-flex h-14 w-14 items-center justify-center rounded-2xl border border-orange-500/20 bg-orange-500/10 text-orange-500 shadow-[0_0_20px_rgba(234,88,12,0.1)] transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:text-orange-400">
-            <div className="pointer-events-none absolute inset-0 rounded-2xl bg-[radial-gradient(circle_at_center,rgba(234,88,12,0.22),transparent_70%)] opacity-80" />
-            {IconComponent && (
-              <IconComponent
-                className="relative h-7 w-7 transition-transform duration-300 group-hover:scale-105"
-                strokeWidth={1.75}
-                aria-hidden="true"
-              />
-            )}
-          </div>
-        </div>
-
-        {/* Title - flujo natural sin restricciones */}
-        <h3 className="font-heading font-bold text-xl tracking-tighter text-white mb-4 transition-colors group-hover:text-orange-500" lang="es">
-          {servicio.nombre}
-        </h3>
-
-        {/* Description */}
-        <p className="text-sm leading-relaxed text-zinc-400 mb-6">
-          {servicio.descripcion}
-        </p>
-
-        {/* Normativa badge (si existe) */}
-        {servicio.normativa && (
-          <div className="mb-4">
-            <Badge variant="info" size="sm">
-              {servicio.normativa}
-            </Badge>
-          </div>
-        )}
-
-        {/* CTA - aparece deslizándose hacia arriba */}
-        <div className="mt-auto pt-4 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-orange-500 opacity-100 translate-x-0 md:opacity-0 md:-translate-x-2 transition-all duration-300 ease-out group-hover:opacity-100 group-hover:translate-x-0">
-          <span>Saber más</span>
-          <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
-        </div>
-      </div>
-    </Link>
-  )
 }
 
 export function ServicesSection({
@@ -149,6 +65,7 @@ export function ServicesSection({
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches
   )
+  const [activeFilter, setActiveFilter] = useState<FilterId>("all")
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
@@ -222,25 +139,43 @@ export function ServicesSection({
   )
 
   const displayedServices = limit ? SERVICIOS.slice(0, limit) : SERVICIOS
+  const filteredServices =
+    activeFilter === "all"
+      ? displayedServices
+      : displayedServices.filter(
+          (servicio) => CATEGORY_MAP[servicio.id] === activeFilter
+        )
+
+  const counts = FILTERS.reduce<Record<FilterId, number>>((acc, filter) => {
+    if (filter.id === "all") {
+      acc[filter.id] = displayedServices.length
+      return acc
+    }
+    acc[filter.id] = displayedServices.filter(
+      (servicio) => CATEGORY_MAP[servicio.id] === filter.id
+    ).length
+    return acc
+  }, {} as Record<FilterId, number>)
 
   return (
       <section
       ref={sectionRef}
       id="servicios"
-      className={cn("servicios-section py-24 md:py-32 relative", className)}
-      style={{
-        background: "linear-gradient(135deg, #0A2540 0%, #051629 100%)"
-      }}
+      className={cn(
+        "servicios-section py-20 md:py-24 relative bg-[color:var(--color-bg)] text-[color:var(--color-text)]",
+        className
+      )}
     >
       {/* Background decoration */}
       <div className="absolute inset-0 pointer-events-none opacity-30">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-coral-energetico/20 rounded-full blur-3xl" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-coral-energetico/20 rounded-full blur-3xl" />
+        <div className="absolute inset-0 bg-[color:var(--color-bg)]" />
+        <div className="absolute top-20 left-10 w-72 h-72 bg-[color:var(--color-accent)]/20 rounded-full blur-3xl" />
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-[color:var(--color-accent)]/20 rounded-full blur-3xl" />
       </div>
 
       <Container size="xl" className="relative z-10 px-6">
         {/* Section Header */}
-        <div className="services-header text-center max-w-3xl mx-auto mb-16 md:mb-24">
+        <div className="services-header text-center max-w-3xl mx-auto mb-10 md:mb-12">
           <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
             {title}
           </h2>
@@ -249,13 +184,30 @@ export function ServicesSection({
           </p>
         </div>
 
+        <div className="flex flex-wrap justify-center gap-2 mb-10">
+          {FILTERS.map((filter) => (
+            <ChipFilter
+              key={filter.id}
+              label={filter.label}
+              count={counts[filter.id]}
+              active={activeFilter === filter.id}
+              onClick={() => setActiveFilter(filter.id)}
+            />
+          ))}
+        </div>
+
         {/* Services Grid */}
-        <div className="flex flex-col gap-10 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-6">
-          {displayedServices.map((servicio, index) => (
-            <StickyServiceCard
+        <div className="flex flex-col gap-8 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-6">
+          {filteredServices.map((servicio) => (
+            <ServiceCard
               key={servicio.id}
-              servicio={servicio}
-              index={index}
+              icon={servicio.icon}
+              nombre={servicio.nombre}
+              descripcion={servicio.descripcion}
+              slug={servicio.slug}
+              normativa={servicio.normativa}
+              showQuoteCta
+              className="service-tile"
             />
           ))}
         </div>
