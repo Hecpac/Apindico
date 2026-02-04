@@ -75,7 +75,7 @@ function StickyServiceCard({ servicio, index }: StickyServiceCardProps) {
       href={`/servicios/${servicio.slug}`}
       className={cn(
         "service-tile group relative overflow-hidden rounded-[2.5rem]",
-        "border border-white/5 bg-zinc-950/40 backdrop-blur-2xl p-8 md:p-10",
+        "border border-white/10 bg-zinc-900/60 backdrop-blur-2xl p-8 md:p-10 shadow-[0_4px_24px_rgba(0,0,0,0.5)]",
         "transition-all duration-500 ease-out",
         "hover:-translate-y-1 hover:border-orange-500/50",
         "hover:shadow-[0_20px_40px_-20px_rgba(0,0,0,0.45)]",
@@ -213,7 +213,7 @@ export function ServicesSection({
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-coral-energetico/20 rounded-full blur-3xl" />
       </div>
 
-      <Container className="relative z-10 px-6">
+      <Container size="xl" className="relative z-10 px-6">
         {/* Section Header */}
         <div className="services-header text-center max-w-3xl mx-auto mb-16 md:mb-24">
           <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">

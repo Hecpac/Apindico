@@ -262,14 +262,13 @@ export function HeroSection({ className }: HeroSectionProps) {
 
       {/* Main Container */}
       <div
-        className="hero-content container mx-auto relative z-30 flex h-full w-full flex-col items-center justify-center text-center text-white will-change-transform px-6 md:px-12 pb-16 md:pb-20 md:items-start md:text-left"
-        style={{ paddingTop: "clamp(2rem, 10vh, 5rem)" }}
+        className="hero-content max-w-7xl mx-auto relative z-30 flex h-full w-full flex-col items-center justify-start text-center text-white will-change-transform px-6 md:px-12 pt-32 md:pt-40 lg:pt-44 pb-24 md:pb-32 md:items-start md:text-left"
       >
         {/* Headline */}
         <div className="headline-section flex flex-col items-center md:items-start max-w-3xl" style={{ gap: "32px" }}>
           <h1
             data-hero-title
-            className="tracking-tighter font-black text-5xl md:text-8xl leading-[1.1]"
+            className="tracking-tighter font-black text-5xl md:text-8xl leading-[0.9]"
           >
             Ingeniería que Transforma
           </h1>

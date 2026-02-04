@@ -161,19 +161,19 @@ export function Header() {
       <header
         ref={headerRef}
         className={cn(
-          "site-header fixed top-0 w-full z-50 transition-all duration-500",
-          isScrolled ? "bg-zinc-950/80 backdrop-blur-md" : "bg-transparent",
+          "site-header fixed top-8 w-full z-50 transition-all duration-500",
+          isScrolled ? "bg-zinc-950/80 backdrop-blur-xl" : "bg-transparent",
           isScrolled ? "pt-6" : "pt-8"
         )}
       >
-        <div className="container mx-auto px-6 md:px-12">
+        <div className="max-w-7xl mx-auto px-6 md:px-12">
           <nav
             role="navigation"
             aria-label="Navegación principal"
             className={cn(
               "flex items-center justify-between transition-all duration-300",
               isScrolled
-                ? "h-14 px-6 mx-auto max-w-7xl bg-white/80 backdrop-blur-md border border-azul-principal/10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-full"
+                ? "h-14 px-6 bg-white/80 backdrop-blur-xl border border-azul-principal/10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-full"
                 : "h-16 md:h-20 bg-transparent"
             )}
           >
