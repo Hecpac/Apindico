@@ -9,17 +9,17 @@ import { Badge } from "@/components/ui/Badge"
 import { Button } from "@/components/ui/Button"
 import copy from "@/lib/copy"
 
+interface Props {
+  params: Promise<{ slug: string }>
+}
 
 export function generateStaticParams() {
   return PROYECTOS.map((proyecto) => ({ slug: proyecto.id }))
 }
 
-export function generateMetadata({
-  params,
-}: {
-  params: { slug: string }
-}): Metadata {
-  const proyecto = PROYECTOS.find((item) => item.id === params.slug)
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params
+  const proyecto = PROYECTOS.find((item) => item.id === slug)
 
   if (!proyecto) {
     return {
@@ -33,12 +33,9 @@ export function generateMetadata({
   }
 }
 
-export default function ProyectoDetallePage({
-  params,
-}: {
-  params: { slug: string }
-}) {
-  const proyecto = PROYECTOS.find((item) => item.id === params.slug)
+export default async function ProyectoDetallePage({ params }: Props) {
+  const { slug } = await params
+  const proyecto = PROYECTOS.find((item) => item.id === slug)
 
   if (!proyecto) {
     notFound()
