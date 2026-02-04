@@ -3,10 +3,12 @@ import Link from "next/link"
 import { notFound } from "next/navigation"
 import { ChevronRight, Check, FileText, ArrowRight } from "lucide-react"
 import { SERVICIOS } from "@/lib/constants"
+import { SERVICE_ICON_MAP } from "@/lib/serviceIcons"
 import { Container } from "@/components/ui/Container"
 import { Button } from "@/components/ui/Button"
 import { Badge } from "@/components/ui/Badge"
 import { ServiceCard } from "@/components/ui/ServiceCard"
+import copy from "@/lib/copy"
 
 // Contenido extendido de cada servicio
 const SERVICIOS_DETALLE: Record<
@@ -246,6 +248,7 @@ export default async function ServicioPage({ params }: Props) {
   }
 
   const detalle = SERVICIOS_DETALLE[slug]
+  const IconComponent = SERVICE_ICON_MAP[servicio.icon]
 
   // Obtener 3 servicios relacionados (excluyendo el actual)
   const serviciosRelacionados = SERVICIOS.filter((s) => s.slug !== slug).slice(
@@ -274,7 +277,7 @@ export default async function ServicioPage({ params }: Props) {
               href="/servicios"
               className="hover:text-white transition-colors"
             >
-              Servicios
+              {copy.nav.services}
             </Link>
             <ChevronRight className="w-4 h-4" />
             <span className="text-white">{servicio.nombre}</span>
@@ -282,13 +285,21 @@ export default async function ServicioPage({ params }: Props) {
 
           {/* Título e icono */}
           <div className="flex items-center gap-4">
-            <span
-              className="text-5xl"
-              role="img"
-              aria-hidden="true"
-            >
-              {servicio.icon}
-            </span>
+            {IconComponent ? (
+              <IconComponent
+                className="h-12 w-12 text-orange-400"
+                strokeWidth={1.6}
+                aria-hidden="true"
+                focusable="false"
+              />
+            ) : (
+              <FileText
+                className="h-12 w-12 text-orange-400"
+                strokeWidth={1.6}
+                aria-hidden="true"
+                focusable="false"
+              />
+            )}
             <div>
               <h1 className="font-heading text-3xl lg:text-4xl font-bold">
                 {servicio.nombre}
@@ -396,27 +407,26 @@ export default async function ServicioPage({ params }: Props) {
             <aside className="lg:col-span-1">
               <div className="sticky top-24 bg-white rounded-xl shadow-lg p-6 border border-gris-200">
                 <h3 className="font-heading text-xl font-semibold text-azul-principal mb-4">
-                  ¿Necesita este servicio?
+                  {copy.services.detail.needsThisServiceTitle}
                 </h3>
                 <p className="text-gris-800 mb-6 leading-relaxed">
-                  Solicite una cotización personalizada para su proyecto. Nuestro
-                  equipo técnico le atenderá en menos de 24 horas.
+                  {copy.services.detail.needsThisServiceSubtitle}
                 </p>
                 <div className="space-y-3">
                   <Button asChild className="w-full">
                     <Link href={`/cotizador?servicio=${servicio.id}`}>
-                      Solicitar cotización
+                      {copy.services.detail.quoteCta}
                     </Link>
                   </Button>
                   <Button asChild variant="secondary" className="w-full">
-                    <Link href="/contacto">Hablar con un asesor</Link>
+                    <Link href="/contacto">{copy.services.detail.talkCta}</Link>
                   </Button>
                 </div>
 
                 {/* Info de contacto rápido */}
                 <div className="mt-6 pt-6 border-t border-gris-200">
                   <p className="text-sm text-gris-800 mb-2">
-                    O llámenos directamente:
+                    {copy.services.detail.callPrefix}
                   </p>
                   <a
                     href="tel:+5713134068858"
@@ -444,7 +454,7 @@ export default async function ServicioPage({ params }: Props) {
             </p>
             <Button asChild variant="cta" size="lg">
               <Link href={`/cotizador?servicio=${servicio.id}`}>
-                Cotizar ahora
+                {copy.services.detail.quoteCta}
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Link>
             </Button>
@@ -472,7 +482,7 @@ export default async function ServicioPage({ params }: Props) {
           </div>
           <div className="text-center mt-10">
             <Button asChild variant="secondary">
-              <Link href="/servicios">Ver todos los servicios</Link>
+              <Link href="/servicios">{copy.home.services.cta}</Link>
             </Button>
           </div>
         </Container>

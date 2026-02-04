@@ -41,6 +41,7 @@ export async function POST(request: Request) {
       metrosLineales: data.metrosLineales,
       diametroTuberia: data.diametroTuberia,
       material: data.material,
+      detallesServicio: data.detallesServicio,
       mensaje: data.mensaje,
     })
 

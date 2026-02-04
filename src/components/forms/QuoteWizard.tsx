@@ -24,12 +24,12 @@ import {
   Truck,
   LucideIcon,
 } from "lucide-react"
-import { cn } from "@/lib/utils"
-import { formatCurrency } from "@/lib/utils"
+import { cn, formatCurrency } from "@/lib/utils"
 import { SERVICIOS } from "@/lib/constants"
 import { Button } from "@/components/ui/Button"
 import { Input } from "@/components/ui/Input"
 import { Select } from "@/components/ui/Select"
+import { Textarea } from "@/components/ui/Textarea"
 import { useQuoteStep } from "@/components/providers/QuoteStepProvider"
 
 // Schemas de validación por paso
@@ -43,6 +43,11 @@ const step2Schema = z.object({
   material: z.string().optional(),
   ciudad: z.string().min(2, "Ingrese la ciudad o municipio"),
   urgencia: z.string().min(1, "Seleccione la urgencia"),
+  detallesServicio: z.record(
+    z.string(),
+    z.string().min(10, "Agregue un detalle mínimo")
+  )
+    .optional(),
 })
 
 const step4Schema = z.object({
@@ -57,11 +62,52 @@ const step4Schema = z.object({
 })
 
 // Schema completo combinado
-const fullSchema = z.object({
-  ...step1Schema.shape,
-  ...step2Schema.shape,
-  ...step4Schema.shape,
-})
+const fullSchema = z
+  .object({
+    ...step1Schema.shape,
+    ...step2Schema.shape,
+    ...step4Schema.shape,
+  })
+  .superRefine((data, ctx) => {
+    const requiresTechnicalFields = data.services.some((serviceId) =>
+      SERVICIOS_TECNICOS.includes(serviceId)
+    )
+
+    if (requiresTechnicalFields) {
+      if (!data.metrosLineales || data.metrosLineales < 1) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["metrosLineales"],
+          message: "Ingrese los metros lineales",
+        })
+      }
+      if (!data.diametroTuberia) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["diametroTuberia"],
+          message: "Seleccione el diámetro de tubería",
+        })
+      }
+      if (!data.material) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["material"],
+          message: "Seleccione el material",
+        })
+      }
+    }
+
+    data.services.forEach((serviceId) => {
+      const detalle = data.detallesServicio?.[serviceId]?.trim()
+      if (!detalle || detalle.length < 10) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["detallesServicio", serviceId],
+          message: "Ingrese un detalle mínimo para este servicio",
+        })
+      }
+    })
+  })
 
 type FormData = z.infer<typeof fullSchema>
 
@@ -161,13 +207,18 @@ export function QuoteWizard({ initialService }: QuoteWizardProps) {
       services: initialService ? [initialService] : [],
       urgencia: "normal",
       aceptaTerminos: undefined,
+      detallesServicio: {},
     },
     mode: "onChange",
   })
 
   const selectedServices = watch("services") || []
   const metrosLineales = watch("metrosLineales")
+  const diametroTuberia = watch("diametroTuberia")
+  const material = watch("material")
+  const ciudad = watch("ciudad")
   const urgencia = watch("urgencia")
+  const detallesServicio = watch("detallesServicio") || {}
   const hasSelectedServices = selectedServices.length > 0
 
   // Verificar si se requieren campos técnicos
@@ -239,7 +290,10 @@ export function QuoteWizard({ initialService }: QuoteWizardProps) {
         if (requiresTechnicalFields) {
           fields.push("metrosLineales", "diametroTuberia", "material")
         }
-        return trigger(fields)
+        const detalleFields = selectedServices.map(
+          (serviceId) => `detallesServicio.${serviceId}` as const
+        )
+        return trigger([...fields, ...detalleFields])
       case 3:
         return true // Paso de estimado no requiere validación
       case 4:
@@ -328,6 +382,8 @@ export function QuoteWizard({ initialService }: QuoteWizardProps) {
   }
 
   const estimate = calculateEstimate()
+  const urgenciaLabel =
+    URGENCIAS.find((option) => option.value === urgencia)?.label ?? "No especificada"
 
   return (
     <div className="quote-wizard bg-white rounded-2xl shadow-lg overflow-hidden">
@@ -516,6 +572,40 @@ export function QuoteWizard({ initialService }: QuoteWizardProps) {
               </div>
             )}
 
+            {/* Campos mínimos por servicio */}
+            {hasSelectedServices && (
+              <div className="bg-white rounded-xl border border-gris-200 p-4 space-y-4">
+                <div>
+                  <h3 className="font-heading font-semibold text-gris-900 text-sm">
+                    Detalles mínimos por servicio
+                  </h3>
+                  <p className="text-gris-600 text-xs">
+                    Un breve detalle ayuda a preparar una cotización precisa.
+                  </p>
+                </div>
+                <div className="grid gap-4">
+                  {selectedServices.map((serviceId) => {
+                    const servicio = SERVICIOS.find((s) => s.id === serviceId)
+                    const detalleError = (
+                      errors.detallesServicio as Record<string, { message?: string }> | undefined
+                    )?.[serviceId]
+
+                    return (
+                      <Textarea
+                        key={serviceId}
+                        label={`Detalle para ${servicio?.nombre ?? "este servicio"} *`}
+                        placeholder="Ej: longitud aproximada, condición de la red, ubicación o requerimientos clave."
+                        rows={3}
+                        error={!!detalleError}
+                        errorMessage={detalleError?.message}
+                        {...register(`detallesServicio.${serviceId}` as const)}
+                      />
+                    )
+                  })}
+                </div>
+              </div>
+            )}
+
             {/* Campos comunes */}
             <div className="grid sm:grid-cols-2 gap-4">
               <Input
@@ -582,6 +672,75 @@ export function QuoteWizard({ initialService }: QuoteWizardProps) {
                     ) : null
                   })}
                 </ul>
+              </div>
+            </div>
+
+            {/* Resumen de solicitud */}
+            <div className="bg-white border border-gris-200 rounded-2xl p-6">
+              <div className="flex items-center justify-between gap-2 mb-4">
+                <h3 className="font-heading text-lg font-semibold text-gris-900">
+                  Resumen de la solicitud
+                </h3>
+                <span className="text-xs text-gris-500">Revise antes de enviar</span>
+              </div>
+              <div className="grid sm:grid-cols-2 gap-4 text-sm text-gris-700">
+                <div>
+                  <p className="text-xs uppercase tracking-wide text-gris-500 mb-1">
+                    Ciudad / Municipio
+                  </p>
+                  <p className="font-semibold text-gris-900">
+                    {ciudad?.trim() || "Pendiente"}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs uppercase tracking-wide text-gris-500 mb-1">
+                    Urgencia
+                  </p>
+                  <p className="font-semibold text-gris-900">{urgenciaLabel}</p>
+                </div>
+                {requiresTechnicalFields && (
+                  <>
+                    <div>
+                      <p className="text-xs uppercase tracking-wide text-gris-500 mb-1">
+                        Metros lineales
+                      </p>
+                      <p className="font-semibold text-gris-900">
+                        {metrosLineales ? `${metrosLineales} m` : "Pendiente"}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-xs uppercase tracking-wide text-gris-500 mb-1">
+                        Diámetro / Material
+                      </p>
+                      <p className="font-semibold text-gris-900">
+                        {[diametroTuberia, material].filter(Boolean).join(" · ") ||
+                          "Pendiente"}
+                      </p>
+                    </div>
+                  </>
+                )}
+              </div>
+
+              <div className="mt-6 border-t border-gris-200 pt-4">
+                <p className="text-xs uppercase tracking-wide text-gris-500 mb-3">
+                  Detalles por servicio
+                </p>
+                <div className="space-y-3">
+                  {selectedServices.map((serviceId) => {
+                    const servicio = SERVICIOS.find((s) => s.id === serviceId)
+                    const detalle = (detallesServicio as Record<string, string>)[serviceId]
+                    return (
+                      <div key={serviceId} className="rounded-lg bg-gris-100 px-4 py-3">
+                        <p className="font-semibold text-gris-900 text-sm">
+                          {servicio?.nombre ?? "Servicio"}
+                        </p>
+                        <p className="text-sm text-gris-700 mt-1">
+                          {detalle?.trim() || "Pendiente"}
+                        </p>
+                      </div>
+                    )
+                  })}
+                </div>
               </div>
             </div>
 

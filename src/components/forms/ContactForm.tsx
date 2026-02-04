@@ -7,6 +7,7 @@ import { z } from "zod"
 import { Input } from "@/components/ui/Input"
 import { Textarea } from "@/components/ui/Textarea"
 import { Button } from "@/components/ui/Button"
+import copy from "@/lib/copy"
 
 const contactSchema = z.object({
   nombre: z
@@ -74,7 +75,7 @@ export function ContactForm() {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <Input
-        label="Nombre completo *"
+        label={`${copy.contact.form.name} *`}
         placeholder="Ej: Juan Pérez"
         error={!!errors.nombre}
         errorMessage={errors.nombre?.message}
@@ -82,7 +83,7 @@ export function ContactForm() {
       />
 
       <Input
-        label="Correo electrónico *"
+        label={`${copy.contact.form.email} *`}
         type="email"
         placeholder="Ej: juan@empresa.com"
         error={!!errors.email}
@@ -91,17 +92,17 @@ export function ContactForm() {
       />
 
       <Input
-        label="Teléfono celular"
+        label={copy.contact.form.phone}
         type="tel"
         placeholder="Ej: 313 406 8858"
-        helperText="Opcional - Solo números colombianos"
+        helperText={copy.contact.form.phoneHelp}
         error={!!errors.telefono}
         errorMessage={errors.telefono?.message}
         {...register("telefono")}
       />
 
       <Textarea
-        label="Mensaje *"
+        label={`${copy.contact.form.message} *`}
         placeholder="Cuéntenos sobre su proyecto o consulta..."
         rows={5}
         error={!!errors.mensaje}
@@ -116,7 +117,7 @@ export function ContactForm() {
           aria-live="polite"
         >
           <p className="text-verde-exito font-medium">
-            ¡Mensaje enviado! Nos pondremos en contacto pronto.
+            {copy.contact.form.success}
           </p>
         </div>
       )}
@@ -128,7 +129,7 @@ export function ContactForm() {
           aria-live="polite"
         >
           <p className="text-rojo-error font-medium">
-            Hubo un error al enviar el mensaje. Por favor, intente de nuevo.
+            {copy.contact.form.error}
           </p>
         </div>
       )}
@@ -138,9 +139,10 @@ export function ContactForm() {
         variant="primary"
         size="lg"
         isLoading={isSubmitting}
+        loadingLabel={copy.contact.form.submitting}
         className="w-full"
       >
-        Enviar mensaje
+        {copy.contact.form.submit}
       </Button>
     </form>
   )

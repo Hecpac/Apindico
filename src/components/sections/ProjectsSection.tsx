@@ -14,6 +14,7 @@ interface ProjectsSectionProps {
   subtitle?: string
   limit?: number
   showAllLink?: boolean
+  ctaLabel?: string
   className?: string
 }
 
@@ -22,6 +23,7 @@ export function ProjectsSection({
   subtitle = "Conozca algunos de nuestros trabajos más representativos",
   limit = 5,
   showAllLink = true,
+  ctaLabel = "Ver todos",
   className,
 }: ProjectsSectionProps) {
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -184,7 +186,7 @@ export function ProjectsSection({
         <div className="absolute top-24 right-6 sm:top-20 md:top-16 md:right-8 z-20">
           <Button variant="secondary" size="md" asChild>
             <Link href="/proyectos">
-              Ver todos
+              {ctaLabel}
               <ArrowRight className="w-4 h-4 ml-2" />
             </Link>
           </Button>

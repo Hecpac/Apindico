@@ -1,0 +1,37 @@
+<svg width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0A2540" />
+      <stop offset="50%" stop-color="#0B2F57" />
+      <stop offset="100%" stop-color="#061726" />
+    </linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(420 240) rotate(45) scale(520 520)">
+      <stop offset="0%" stop-color="#FF6B35" stop-opacity="0.35" />
+      <stop offset="100%" stop-color="#FF6B35" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="glow2" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1480 740) rotate(20) scale(620 620)">
+      <stop offset="0%" stop-color="#00D4FF" stop-opacity="0.18" />
+      <stop offset="100%" stop-color="#00D4FF" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="line" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0" />
+      <stop offset="50%" stop-color="#FFFFFF" stop-opacity="0.18" />
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0" />
+    </linearGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#bg)" />
+  <rect width="1920" height="1080" fill="url(#glow)" />
+  <rect width="1920" height="1080" fill="url(#glow2)" />
+  <g opacity="0.35">
+    <path d="M120 240H900" stroke="url(#line)" stroke-width="2" />
+    <path d="M240 360H1100" stroke="url(#line)" stroke-width="1.5" />
+    <path d="M420 520H1400" stroke="url(#line)" stroke-width="1" />
+    <path d="M260 760H980" stroke="url(#line)" stroke-width="1.5" />
+    <path d="M1000 300H1720" stroke="url(#line)" stroke-width="1" />
+  </g>
+  <g opacity="0.22">
+    <circle cx="1520" cy="220" r="160" stroke="#FFFFFF" stroke-opacity="0.12" stroke-width="2" />
+    <circle cx="1520" cy="220" r="240" stroke="#FFFFFF" stroke-opacity="0.08" stroke-width="1" />
+    <circle cx="420" cy="820" r="220" stroke="#FFFFFF" stroke-opacity="0.08" stroke-width="1" />
+  </g>
+</svg>

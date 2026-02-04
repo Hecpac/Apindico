@@ -62,7 +62,7 @@ export function StatsSection({ variant = "light", className }: StatsSectionProps
     <section
       ref={sectionRef}
       className={cn(
-        "relative z-40 -mt-20 md:-mt-24 pt-8 md:pt-0 pb-12",
+        "relative z-40 -mt-16 md:-mt-20 pt-8 md:pt-0 pb-12",
         variant === "dark" ? "bg-transparent text-white" : "bg-white text-gris-900",
         className
       )}

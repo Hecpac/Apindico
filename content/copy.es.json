@@ -1,0 +1,86 @@
+{
+  "global": {
+    "brand": "APINDICO S.A.S.",
+    "tagline": "Soluciones integrales en acueducto y alcantarillado con profesionalismo e innovación."
+  },
+  "nav": {
+    "services": "Servicios",
+    "projects": "Proyectos",
+    "about": "Nosotros",
+    "contact": "Contacto",
+    "quoteCta": "Cotizar ahora"
+  },
+  "home": {
+    "hero": {
+      "h1": "Ingeniería que Transforma",
+      "sub": "Inspección, diagnóstico y rehabilitación de redes de acueducto y alcantarillado. Inspección CCTV (PACP), Vactor, pruebas de hermeticidad e hidrostáticas, catastro y topografía. Respuesta en menos de 24 horas hábiles.",
+      "primaryCta": "Cotizar proyecto",
+      "secondaryCta": "Hablar con un ingeniero",
+      "badges": [
+        "Equipo certificado (PACP)",
+        "Informes técnicos con evidencia",
+        "Cobertura nacional"
+      ]
+    },
+    "services": {
+      "title": "Servicios especializados",
+      "subtitle": "Soluciones para diagnóstico, mantenimiento y rehabilitación, con metodología clara y entregables verificables.",
+      "cta": "Ver todos los servicios"
+    },
+    "projects": {
+      "title": "Proyectos destacados",
+      "subtitle": "Casos reales con alcance, metodología y entregables.",
+      "cta": "Ver proyectos"
+    },
+    "finalCta": {
+      "title": "¿Listo para iniciar?",
+      "subtitle": "Cuéntenos su necesidad y le enviaremos una propuesta en menos de 24 horas hábiles.",
+      "primaryCta": "Cotizar proyecto",
+      "secondaryCta": "Contactar"
+    }
+  },
+  "services": {
+    "index": {
+      "title": "Nuestros servicios",
+      "subtitle": "Soluciones integrales en ingeniería de acueducto y alcantarillado con tecnología y personal especializado.",
+      "extraTitle": "Servicios adicionales",
+      "quoteBlockTitle": "¿Necesita una cotización?",
+      "quoteBlockSubtitle": "Use el cotizador en línea para obtener un presupuesto personalizado.",
+      "quoteCta": "Cotizar ahora",
+      "contactCta": "Contáctenos"
+    },
+    "detail": {
+      "needsThisServiceTitle": "¿Necesita este servicio?",
+      "needsThisServiceSubtitle": "Solicite una cotización personalizada. Nuestro equipo técnico le atenderá en menos de 24 horas hábiles.",
+      "quoteCta": "Solicitar cotización",
+      "talkCta": "Hablar con un asesor",
+      "callPrefix": "O llámenos directamente:"
+    }
+  },
+  "projects": {
+    "index": {
+      "title": "Proyectos y experiencia en campo",
+      "subtitle": "Casos reales en inspección, limpieza y rehabilitación de redes.",
+      "filters": ["Todos", "CCTV", "Vactor", "Acueducto"],
+      "leadCta": "Solicitar información",
+      "finalCtaTitle": "¿Tiene un proyecto en mente?",
+      "finalCtaSubtitle": "Solicite una cotización personalizada sin compromiso.",
+      "finalCtaButton": "Cotizar proyecto"
+    }
+  },
+  "contact": {
+    "title": "Contáctenos",
+    "subtitle": "Cuéntenos su necesidad. Respondemos en menos de 24 horas hábiles.",
+    "form": {
+      "name": "Nombre completo",
+      "email": "Correo electrónico",
+      "phone": "Teléfono celular",
+      "phoneHelp": "Opcional - Solo números colombianos",
+      "message": "Mensaje",
+      "submit": "Enviar mensaje",
+      "submitting": "Enviando…",
+      "success": "¡Recibido! Un ingeniero revisará su solicitud y le contactaremos en menos de 24 horas hábiles.",
+      "error": "No pudimos enviar el mensaje. Intente de nuevo o escríbanos a info@apindico.com."
+    }
+  }
+}

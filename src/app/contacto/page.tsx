@@ -1,15 +1,21 @@
 import type { Metadata } from "next"
-import { MapPin, Phone, Mail, Clock } from "lucide-react"
+import { MapPin, Phone, Mail, Clock, MessageCircle } from "lucide-react"
 import { Container } from "@/components/ui/Container"
 import { Card, CardContent } from "@/components/ui/Card"
 import { ContactForm } from "@/components/forms/ContactForm"
+import { Button } from "@/components/ui/Button"
 import { COMPANY_INFO } from "@/lib/constants"
+import copy from "@/lib/copy"
 
 export const metadata: Metadata = {
   title: "Contacto",
   description:
     "Contáctenos para cotizaciones y consultas sobre servicios de acueducto y alcantarillado. Ubicados en Bogotá, Colombia.",
 }
+
+const formatPhoneLink = (value: string) => value.replace(/[^\d+]/g, "")
+const formatWhatsappLink = (value: string) =>
+  `https://wa.me/${value.replace(/\D/g, "")}`
 
 const contactInfo = [
   {
@@ -22,13 +28,13 @@ const contactInfo = [
     icon: Phone,
     label: "Teléfono Fijo",
     value: COMPANY_INFO.phones.fijo,
-    href: `tel:${COMPANY_INFO.phones.fijo.replace(/\s/g, "")}`,
+    href: `tel:${formatPhoneLink(COMPANY_INFO.phones.fijo)}`,
   },
   {
     icon: Phone,
     label: "Celular Principal",
     value: COMPANY_INFO.phones.celulares[0],
-    href: `tel:${COMPANY_INFO.phones.celulares[0].replace(/\s/g, "")}`,
+    href: `tel:${formatPhoneLink(COMPANY_INFO.phones.celulares[0])}`,
   },
   {
     icon: Mail,
@@ -46,11 +52,10 @@ export default function ContactoPage() {
         <Container>
           <div className="text-center text-white">
             <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4">
-              Contáctenos
+              {copy.contact.title}
             </h1>
             <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto">
-              Estamos listos para ayudarle con su proyecto. Escríbanos y le
-              responderemos a la brevedad.
+              {copy.contact.subtitle}
             </p>
           </div>
         </Container>
@@ -85,8 +90,8 @@ export default function ContactoPage() {
                       rel={item.icon === MapPin ? "noopener noreferrer" : undefined}
                       className="flex items-start gap-4 p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow group"
                     >
-                      <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-azul-bg flex items-center justify-center group-hover:bg-azul-principal transition-colors">
-                        <item.icon className="w-5 h-5 text-azul-principal group-hover:text-white transition-colors" />
+                      <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-azul-principal/10 ring-1 ring-azul-principal/10 flex items-center justify-center group-hover:bg-azul-principal/20 transition-colors">
+                        <item.icon className="w-5 h-5 text-azul-principal group-hover:text-azul-oscuro transition-colors" />
                       </div>
                       <div>
                         <p className="text-sm text-gris-800 font-medium mb-1">{item.label}</p>
@@ -97,13 +102,25 @@ export default function ContactoPage() {
                     </a>
                   ))}
                 </div>
+                <div className="mt-6">
+                  <Button variant="cta" size="md" asChild>
+                    <a
+                      href={formatWhatsappLink(COMPANY_INFO.phones.celulares[0])}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <MessageCircle className="w-4 h-4" aria-hidden="true" />
+                      Escribir por WhatsApp
+                    </a>
+                  </Button>
+                </div>
               </div>
 
               {/* Business Hours */}
               <Card>
                 <CardContent className="p-6">
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="w-10 h-10 rounded-lg bg-azul-bg flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-lg bg-azul-principal/10 ring-1 ring-azul-principal/10 flex items-center justify-center">
                       <Clock className="w-5 h-5 text-azul-principal" />
                     </div>
                     <h3 className="font-heading font-semibold text-lg text-gris-900">
@@ -133,7 +150,7 @@ export default function ContactoPage() {
 
               {/* Map */}
               <Card className="overflow-hidden">
-                <div className="h-64 bg-gris-200 flex items-center justify-center">
+                <div className="h-64 bg-white flex items-center justify-center border-b border-gris-200">
                   <iframe
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3976.6899889697516!2d-74.1237!3d4.6694!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNMKwNDAnMDkuOCJOIDc0wrAwNyczMy4zIlc!5e0!3m2!1ses!2sco!4v1700000000000!5m2!1ses!2sco"
                     width="100%"

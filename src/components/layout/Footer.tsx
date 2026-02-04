@@ -15,6 +15,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion"
 import { cn } from "@/lib/utils"
 import { COMPANY_INFO } from "@/lib/constants"
+import copy from "@/lib/copy"
 import { Container } from "@/components/ui/Container"
 
 const FOOTER_SERVICES = [
@@ -118,8 +119,7 @@ export function Footer() {
               </Link>
 
               <p className="text-gris-200 text-sm leading-relaxed mb-6 max-w-xs">
-                Soluciones integrales en acueducto y alcantarillado con
-                profesionalismo e innovación.
+                {copy.global.tagline}
               </p>
 
               {/* Social Links */}
