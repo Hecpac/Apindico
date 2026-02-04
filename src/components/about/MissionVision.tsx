@@ -10,7 +10,7 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger)
 }
 
-function TargetIcon({ irisRef }: { irisRef: React.RefObject<SVGCircleElement> }) {
+function TargetIcon({ irisRef }: { irisRef: React.RefObject<SVGCircleElement | null> }) {
   return (
     <svg
       width="32"
@@ -36,7 +36,7 @@ function TargetIcon({ irisRef }: { irisRef: React.RefObject<SVGCircleElement> })
   )
 }
 
-function EyeIcon({ irisRef }: { irisRef: React.RefObject<SVGCircleElement> }) {
+function EyeIcon({ irisRef }: { irisRef: React.RefObject<SVGCircleElement | null> }) {
   return (
     <svg
       width="32"
@@ -64,8 +64,8 @@ function EyeIcon({ irisRef }: { irisRef: React.RefObject<SVGCircleElement> }) {
 
 export function MissionVision() {
   const sectionRef = useRef<HTMLElement>(null)
-  const targetRef = useRef<SVGCircleElement>(null)
-  const eyeIrisRef = useRef<SVGCircleElement>(null)
+  const targetRef = useRef<SVGCircleElement | null>(null)
+  const eyeIrisRef = useRef<SVGCircleElement | null>(null)
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(
     () =>
       typeof window !== "undefined" &&
@@ -171,4 +171,3 @@ export function MissionVision() {
     </section>
   )
 }
-
