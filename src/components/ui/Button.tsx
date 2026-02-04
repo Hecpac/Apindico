@@ -7,9 +7,17 @@ import { Loader2 } from "lucide-react"
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "accent" | "cta" | "ghost"
+  variant?:
+    | "primary"
+    | "secondary"
+    | "accent"
+    | "cta"
+    | "ghost"
+    | "editorial"
+    | "editorial-outline"
   size?: "sm" | "md" | "lg"
   isLoading?: boolean
+  loadingLabel?: string
   leftIcon?: React.ReactNode
   rightIcon?: React.ReactNode
   asChild?: boolean
@@ -22,6 +30,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       variant = "primary",
       size = "md",
       isLoading = false,
+      loadingLabel = "Cargando...",
       leftIcon,
       rightIcon,
       disabled,
@@ -47,6 +56,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       accent: "bg-amarillo text-gris-900 hover:bg-amarillo-oscuro hover:-translate-y-0.5 hover:shadow-lg",
       cta: "bg-[#FF6B35] text-white hover:bg-[#E5612F] hover:-translate-y-0.5 hover:shadow-xl hover:shadow-[#FF6B35]/30",
       ghost: "text-azul-principal bg-transparent hover:bg-azul-bg",
+      editorial:
+        "bg-[color:var(--color-accent)] text-[#0B0F17] shadow-[var(--shadow-2)] hover:shadow-[var(--shadow-3)] motion-safe:hover:-translate-y-0.5",
+      "editorial-outline":
+        "border border-[color:var(--color-border)] text-[color:var(--color-text)] bg-transparent hover:border-[color:var(--color-accent)] hover:text-white motion-safe:hover:-translate-y-0.5",
     }
 
     const sizes = {
@@ -84,7 +97,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {isLoading ? (
           <>
             <Loader2 className="h-4 w-4 animate-spin" />
-            <span className="animate-pulse">Cargando...</span>
+            <span className="animate-pulse">{loadingLabel}</span>
           </>
         ) : (
           <>

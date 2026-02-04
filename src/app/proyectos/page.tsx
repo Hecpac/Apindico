@@ -1,10 +1,11 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { FolderOpen } from "lucide-react"
+import { FolderOpen, ArrowUpRight } from "lucide-react"
 import { Container } from "@/components/ui/Container"
 import { Button } from "@/components/ui/Button"
 import { ProjectsPortfolioSection } from "@/components/sections/ProjectsPortfolioSection"
 import { PROYECTOS } from "@/lib/constants"
+import copy from "@/lib/copy"
 
 export const metadata: Metadata = {
   title: "Proyectos",
@@ -84,18 +85,59 @@ export default function ProyectosPage() {
   const proyectos = PROYECTOS.length > 0 ? PROYECTOS : proyectosEjemplo
 
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen theme-editorial bg-[color:var(--color-bg)] text-[color:var(--color-text)]">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-azul-oscuro via-azul-principal to-azul-oscuro pt-32 pb-16 md:pt-40 md:pb-20">
+      <section className="relative overflow-hidden pt-32 pb-16 md:pt-40 md:pb-24">
+        <div className="absolute inset-0" aria-hidden="true">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.18),_transparent_55%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_40%,_rgba(249,115,22,0.2),_transparent_45%)]" />
+          <div className="absolute inset-0 bg-[linear-gradient(140deg,_rgba(15,23,42,0.9),_rgba(11,15,23,0.95))]" />
+          <div className="absolute -top-32 right-0 h-72 w-72 rounded-full bg-[color:var(--color-accent)] opacity-20 blur-3xl" />
+        </div>
         <Container>
-          <div className="text-center text-white">
-            <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4">
-              Nuestros proyectos
-            </h1>
-            <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto">
-              Conozca algunos de los proyectos que hemos realizado para nuestros
-              clientes en todo el país
-            </p>
+          <div className="relative z-10 grid gap-10 lg:grid-cols-[1.1fr,0.9fr] items-center">
+            <div className="space-y-6">
+              <span className="inline-flex items-center gap-2 rounded-full border border-[color:var(--color-border)] bg-white/5 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-[color:var(--color-muted)]">
+                Portafolio
+              </span>
+              <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl font-semibold leading-[1.05]">
+                {copy.projects.index.title}
+              </h1>
+              <p className="text-base sm:text-lg text-[color:var(--color-muted)] max-w-2xl">
+                {copy.projects.index.subtitle}
+              </p>
+              <div className="flex flex-wrap gap-4">
+                <Button variant="editorial" size="lg" asChild>
+                  <Link href="/contacto">
+                    {copy.projects.index.leadCta}
+                    <ArrowUpRight className="h-4 w-4" />
+                  </Link>
+                </Button>
+                <Button variant="editorial-outline" size="lg" asChild>
+                  <Link href="/servicios">Ver servicios</Link>
+                </Button>
+              </div>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-1">
+              {[
+                { value: "500+", label: "Proyectos ejecutados" },
+                { value: "<24h", label: "Respuesta técnica" },
+                { value: "Nacional", label: "Presencia en Colombia" },
+              ].map((stat) => (
+                <div
+                  key={stat.label}
+                  className="rounded-[var(--radius-3)] border border-[color:var(--color-border)] bg-white/5 px-6 py-4 shadow-[var(--shadow-1)]"
+                >
+                  <p className="text-2xl font-semibold text-[color:var(--color-text)]">
+                    {stat.value}
+                  </p>
+                  <p className="text-sm text-[color:var(--color-muted)]">
+                    {stat.label}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
         </Container>
       </section>
@@ -103,15 +145,18 @@ export default function ProyectosPage() {
       {/* Projects Grid */}
       {proyectos.length > 0 ? (
         <>
-          <ProjectsPortfolioSection projects={proyectos} />
-          <section className="pb-16 md:pb-24 bg-gris-100">
+          <ProjectsPortfolioSection
+            projects={proyectos}
+            filters={copy.projects.index.filters}
+          />
+          <section className="pb-16 md:pb-24 bg-[color:var(--color-bg)]">
             <Container>
               <div className="text-center mt-6">
-                <p className="text-gris-800 text-lg mb-6">
+                <p className="text-[color:var(--color-muted)] text-lg mb-6">
                   ¿Desea conocer más sobre nuestros proyectos?
                 </p>
-                <Button variant="primary" size="lg" asChild>
-                  <Link href="/contacto">Solicitar información</Link>
+                <Button variant="editorial" size="lg" asChild>
+                  <Link href="/contacto">{copy.projects.index.leadCta}</Link>
                 </Button>
               </div>
             </Container>
@@ -119,24 +164,24 @@ export default function ProyectosPage() {
         </>
       ) : (
         /* Empty State */
-        <section className="py-16 md:py-24 bg-gris-100">
+        <section className="py-16 md:py-24 bg-[color:var(--color-bg)]">
           <Container>
             <div className="text-center">
-              <div className="w-24 h-24 rounded-full bg-azul-bg flex items-center justify-center mx-auto mb-6">
-                <FolderOpen className="w-12 h-12 text-azul-principal" />
+              <div className="w-24 h-24 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-6">
+                <FolderOpen className="w-12 h-12 text-[color:var(--color-accent)]" />
               </div>
-              <h2 className="font-heading text-2xl font-bold text-azul-principal mb-4">
+              <h2 className="font-heading text-2xl font-bold text-[color:var(--color-text)] mb-4">
                 Próximamente
               </h2>
-              <p className="text-gris-800 text-lg max-w-md mx-auto mb-8">
+              <p className="text-[color:var(--color-muted)] text-lg max-w-md mx-auto mb-8">
                 Estamos preparando nuestro portafolio de proyectos. Mientras
                 tanto, contáctenos para conocer más sobre nuestro trabajo.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button variant="primary" size="lg" asChild>
+                <Button variant="editorial" size="lg" asChild>
                   <Link href="/contacto">Contáctenos</Link>
                 </Button>
-                <Button variant="secondary" size="lg" asChild>
+                <Button variant="editorial-outline" size="lg" asChild>
                   <Link href="/servicios">Ver servicios</Link>
                 </Button>
               </div>
@@ -146,18 +191,17 @@ export default function ProyectosPage() {
       )}
 
       {/* CTA Section */}
-      <section className="py-16 md:py-24 bg-gradient-to-br from-azul-principal to-azul-oscuro">
+      <section className="py-16 md:py-24 bg-gradient-to-br from-[#121826] via-[#0F172A] to-[#0B0F17]">
         <Container>
           <div className="text-center">
-            <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4">
-              ¿Tiene un proyecto en mente?
+            <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-[color:var(--color-text)] mb-4">
+              {copy.projects.index.finalCtaTitle}
             </h2>
-            <p className="text-white/90 max-w-xl mx-auto mb-8">
-              Permítanos ayudarle a llevarlo a cabo. Solicite una cotización
-              personalizada sin compromiso.
+            <p className="text-[color:var(--color-muted)] max-w-xl mx-auto mb-8">
+              {copy.projects.index.finalCtaSubtitle}
             </p>
-            <Button variant="accent" size="lg" asChild>
-              <Link href="/cotizador">Cotizar proyecto</Link>
+            <Button variant="editorial" size="lg" asChild>
+              <Link href="/cotizador">{copy.projects.index.finalCtaButton}</Link>
             </Button>
           </div>
         </Container>

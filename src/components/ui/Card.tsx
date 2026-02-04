@@ -2,7 +2,7 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
-  variant?: "default" | "elevated" | "outlined"
+  variant?: "default" | "elevated" | "outlined" | "editorial"
   hoverable?: boolean
 }
 
@@ -17,6 +17,8 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
       default: "bg-white shadow-md",
       elevated: "bg-white shadow-lg hover:shadow-xl",
       outlined: "bg-white border-2 border-gris-200",
+      editorial:
+        "bg-[color:var(--color-surface)] border border-[color:var(--color-border)] shadow-[var(--shadow-2)]",
     }
 
     const hoverStyles = hoverable

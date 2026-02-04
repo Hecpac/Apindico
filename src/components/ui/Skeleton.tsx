@@ -2,7 +2,7 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 
 export interface SkeletonProps extends React.HTMLAttributes<HTMLDivElement> {
-  variant?: "text" | "card" | "avatar" | "button"
+  variant?: "text" | "card" | "avatar" | "button" | "cover" | "chip"
 }
 
 const Skeleton = React.forwardRef<HTMLDivElement, SkeletonProps>(
@@ -14,6 +14,8 @@ const Skeleton = React.forwardRef<HTMLDivElement, SkeletonProps>(
       card: "h-48 w-full rounded-xl",
       avatar: "h-12 w-12 rounded-full",
       button: "h-11 w-32 rounded-lg",
+      cover: "aspect-[4/3] w-full rounded-2xl",
+      chip: "h-9 w-24 rounded-full",
     }
 
     return (

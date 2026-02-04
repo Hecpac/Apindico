@@ -1,166 +1,128 @@
 "use client"
-
-import * as React from "react"
 import Link from "next/link"
-import Image from "next/image"
-import gsap from "gsap"
+import { ArrowUpRight } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { ProjectCover } from "@/components/ui/ProjectCover"
+import { Badge } from "@/components/ui/Badge"
+import { Button } from "@/components/ui/Button"
+import { ProjectCaseStudyDialog } from "@/components/ui/ProjectCaseStudyDialog"
+import type { ProjectCategory } from "@/lib/projectCover"
+import type { ProjectCaseStudy } from "@/lib/projectCaseStudy"
 
-const CARD_BLUR_DATA_URL =
-  "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nMTAnIGhlaWdodD0nMTAnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zyc+PHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPScjMDgxNjI2Jy8+PC9zdmc+"
-
-interface ProjectCardProps {
-  title: string
-  client: string
-  location: string
-  year: string
-  href: string
-  image?: string
+export interface ProjectCardProps {
+  project: {
+    id: string
+    titulo: string
+    cliente: string
+    ubicacion: string
+    servicioId: string
+    descripcion: string
+    fecha: string
+  }
+  category: ProjectCategory
+  categoryLabel: string
+  caseStudy: ProjectCaseStudy
   className?: string
 }
 
 export function ProjectCard({
-  title,
-  client,
-  location,
-  year,
-  href,
-  image,
+  project,
+  category,
+  categoryLabel,
+  caseStudy,
   className,
 }: ProjectCardProps) {
-  const cardRef = React.useRef<HTMLAnchorElement>(null)
-  const [prefersReducedMotion, setPrefersReducedMotion] = React.useState(false)
-  const [canHover, setCanHover] = React.useState(false)
-
-  React.useEffect(() => {
-    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
-    const hoverQuery = window.matchMedia("(hover: hover) and (pointer: fine)")
-
-    setPrefersReducedMotion(motionQuery.matches)
-    setCanHover(hoverQuery.matches)
-
-    const handleMotionChange = (event: MediaQueryListEvent) => {
-      setPrefersReducedMotion(event.matches)
-    }
-    const handleHoverChange = (event: MediaQueryListEvent) => {
-      setCanHover(event.matches)
-    }
-
-    motionQuery.addEventListener("change", handleMotionChange)
-    hoverQuery.addEventListener("change", handleHoverChange)
-
-    return () => {
-      motionQuery.removeEventListener("change", handleMotionChange)
-      hoverQuery.removeEventListener("change", handleHoverChange)
-    }
-  }, [])
-
-  const handleMouseMove = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    if (prefersReducedMotion || !canHover) return
-    const card = cardRef.current
-    if (!card) return
-    const rect = card.getBoundingClientRect()
-    const x = event.clientX - rect.left
-    const y = event.clientY - rect.top
-    const rotateX = ((y - rect.height / 2) / (rect.height / 2)) * -6
-    const rotateY = ((x - rect.width / 2) / (rect.width / 2)) * 6
-
-    gsap.to(card, {
-      rotateX,
-      rotateY,
-      duration: 0.4,
-      ease: "power2.out",
-      transformPerspective: 900,
-      transformOrigin: "center",
-    })
-  }
-
-  const handleMouseLeave = () => {
-    if (prefersReducedMotion || !canHover) return
-    const card = cardRef.current
-    if (!card) return
-    gsap.to(card, {
-      rotateX: 0,
-      rotateY: 0,
-      duration: 0.6,
-      ease: "power3.out",
-    })
-  }
+  const bulletItems =
+    caseStudy.entregables.length > 0
+      ? caseStudy.entregables
+      : caseStudy.alcance
 
   return (
-    <Link
-      ref={cardRef}
-      href={href}
+    <article
       className={cn(
-        "project-card group relative flex h-full flex-col overflow-hidden rounded-[32px]",
-        "border border-white/10 bg-zinc-950/40 backdrop-blur-2xl p-3",
-        "shadow-[0_12px_30px_rgba(0,0,0,0.28)] md:shadow-none",
-        "transition-all duration-500 hover:border-orange-500/30",
-        "hover:shadow-[0_0_50px_-12px_rgba(234,88,12,0.25)]",
-        "will-change-transform",
+        "group flex h-full flex-col overflow-hidden rounded-[var(--radius-4)]",
+        "border border-[color:var(--color-border)] bg-[color:var(--color-surface)] transition-colors",
+        "shadow-[var(--shadow-2)] transition-all duration-300",
+        "motion-safe:hover:-translate-y-1 motion-safe:hover:shadow-[var(--shadow-3)]",
+        "hover:border-[color:var(--color-accent)]",
+        "focus-within:ring-2 focus-within:ring-[color:var(--color-accent)]",
         className
       )}
-      style={{ transformStyle: "preserve-3d" }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
     >
-      <div className="pointer-events-none absolute inset-0 rounded-[32px] bg-gradient-to-br from-white/10 via-white/5 to-transparent opacity-80" />
+      <ProjectCover
+        id={project.id}
+        category={category}
+        label={categoryLabel}
+        className="transition-transform duration-500 motion-safe:group-hover:scale-[1.02]"
+      />
 
-      <div
-        className="relative aspect-video w-full overflow-hidden rounded-[24px] bg-zinc-800"
-        style={{
-          WebkitMaskImage:
-            "linear-gradient(to bottom, black 80%, transparent 100%)",
-          maskImage: "linear-gradient(to bottom, black 80%, transparent 100%)",
-        }}
-      >
-        {image ? (
-          <Image
-            src={image}
-            alt={title}
-            fill
-            placeholder="blur"
-            blurDataURL={CARD_BLUR_DATA_URL}
-            className="object-cover transition-transform duration-700 group-hover:scale-105"
-            sizes="(max-width: 768px) 100vw, 33vw"
-          />
-        ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-azul-principal to-azul-oscuro" />
-        )}
-        <div className="absolute inset-0 z-10 bg-gradient-to-t from-zinc-950 via-transparent to-transparent" />
-        <div className="absolute top-4 left-4 z-20 px-3 py-1 rounded-full border border-orange-500/50 bg-orange-500/10 backdrop-blur-md">
-          <span className="text-[10px] font-mono font-bold text-[#EA580C]">
-            {year}
-          </span>
-        </div>
-      </div>
-
-      <div className="relative flex h-full flex-col p-5">
-        <h3 className="text-xl font-bold text-white tracking-tight leading-snug transition-colors group-hover:text-orange-500">
-          {title}
-        </h3>
-
-        <div className="mt-auto flex flex-col gap-3 border-t border-white/5 pt-5">
-          <div className="flex items-end justify-between">
-            <div className="flex flex-col">
-              <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/50 mb-1">
-                Cliente
-              </span>
-              <span className="text-sm font-medium text-zinc-100">
-                {client}
-              </span>
-            </div>
-            <div className="flex flex-col items-end">
-              <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/50 mb-1">
-                Ubicación
-              </span>
-              <span className="text-sm font-medium text-zinc-100 italic">
-                {location}
-              </span>
-            </div>
+      <div className="flex flex-1 flex-col gap-6 p-6">
+        <div className="space-y-3">
+          <Badge variant="editorial" size="sm">
+            {project.cliente}
+          </Badge>
+          <div className="space-y-2">
+            <h3 className="text-xl font-semibold text-[color:var(--color-text)] leading-snug">
+              {project.titulo}
+            </h3>
+            <p className="text-sm text-[color:var(--color-muted)]">
+              {project.descripcion}
+            </p>
           </div>
         </div>
+
+        <div className="grid grid-cols-2 gap-4 text-xs text-[color:var(--color-muted)]">
+          <div className="space-y-1">
+            <p className="uppercase tracking-[0.2em] text-[10px]">Ubicación</p>
+            <p className="text-sm text-[color:var(--color-text)]">
+              {project.ubicacion}
+            </p>
+          </div>
+          <div className="space-y-1">
+            <p className="uppercase tracking-[0.2em] text-[10px]">Año</p>
+            <p className="text-sm text-[color:var(--color-text)]">{project.fecha}</p>
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <p className="text-xs uppercase tracking-[0.2em] text-[color:var(--color-muted)]">
+            Alcance & entregables
+          </p>
+          <ul className="space-y-2 text-sm text-[color:var(--color-text)]">
+            {bulletItems.slice(0, 2).map((item) => (
+              <li key={item} className="flex items-start gap-2">
+                <span
+                  className="mt-1 h-1.5 w-1.5 rounded-full bg-[color:var(--color-accent)]"
+                  aria-hidden="true"
+                />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="mt-auto flex flex-wrap items-center gap-3">
+          <ProjectCaseStudyDialog
+            project={project}
+            caseStudy={caseStudy}
+            trigger={
+              <Button variant="editorial" size="sm">
+                Ver caso
+              </Button>
+            }
+          />
+          <Link
+            href={`/proyectos/${project.id}`}
+            className={cn(
+              "inline-flex items-center gap-2 text-sm font-semibold text-[color:var(--color-text)]",
+              "transition-colors hover:text-[color:var(--color-accent)]"
+            )}
+          >
+            Ir al detalle
+            <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+          </Link>
+        </div>
       </div>
-    </Link>
+    </article>
   )
 }
