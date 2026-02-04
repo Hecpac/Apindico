@@ -43,7 +43,10 @@ const step2Schema = z.object({
   material: z.string().optional(),
   ciudad: z.string().min(2, "Ingrese la ciudad o municipio"),
   urgencia: z.string().min(1, "Seleccione la urgencia"),
-  detallesServicio: z.record(z.string().min(10, "Agregue un detalle mínimo"))
+  detallesServicio: z.record(
+    z.string(),
+    z.string().min(10, "Agregue un detalle mínimo")
+  )
     .optional(),
 })
 
