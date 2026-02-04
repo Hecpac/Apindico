@@ -190,7 +190,7 @@ export function ProjectsPortfolioSection({
 
           {sortedProjects.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {sortedProjects.map((project) => {
+              {sortedProjects.map((project, index) => {
                 const category = CATEGORY_MAP[project.servicioId] ?? "otro"
                 return (
                   <ProjectCard
@@ -199,6 +199,7 @@ export function ProjectsPortfolioSection({
                     category={category}
                     categoryLabel={CATEGORY_LABELS[category]}
                     caseStudy={getProjectCaseStudy(project.id)}
+                    displayIndex={index + 1}
                   />
                 )
               })}

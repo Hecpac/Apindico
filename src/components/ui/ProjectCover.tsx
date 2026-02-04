@@ -14,7 +14,7 @@ import {
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import {
-  buildPatternDataUri,
+  buildPatternSvg,
   getCoverConfig,
   type ProjectCategory,
 } from "@/lib/projectCover"
@@ -24,6 +24,7 @@ export interface ProjectCoverProps
   id: string
   category: ProjectCategory
   label?: string
+  displayIndex?: number
 }
 
 const ICONS_BY_CATEGORY: Record<ProjectCategory, LucideIcon[]> = {
@@ -34,11 +35,15 @@ const ICONS_BY_CATEGORY: Record<ProjectCategory, LucideIcon[]> = {
 }
 
 const ProjectCover = React.forwardRef<HTMLDivElement, ProjectCoverProps>(
-  ({ className, id, category, label, ...props }, ref) => {
+  ({ className, id, category, label, displayIndex, ...props }, ref) => {
     const config = React.useMemo(() => getCoverConfig(id, category), [id, category])
-    const pattern = React.useMemo(() => buildPatternDataUri(config), [config])
+    const pattern = React.useMemo(() => buildPatternSvg(config), [config])
     const icons = ICONS_BY_CATEGORY[category] ?? ICONS_BY_CATEGORY.otro
     const WatermarkIcon = icons[config.iconIndex % icons.length]
+    const numberLabel =
+      typeof displayIndex === "number"
+        ? String(displayIndex).padStart(2, "0")
+        : config.seededNumber
 
     return (
       <div
@@ -76,7 +81,7 @@ const ProjectCover = React.forwardRef<HTMLDivElement, ProjectCoverProps>(
             className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[10px] font-mono font-semibold uppercase tracking-[0.3em] text-white/80"
             aria-hidden="true"
           >
-            {config.number}
+            {numberLabel}
           </span>
           {label && (
             <span className="rounded-full border border-white/15 bg-white/5 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/70">

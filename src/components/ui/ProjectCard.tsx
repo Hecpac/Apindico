@@ -22,6 +22,7 @@ export interface ProjectCardProps {
   category: ProjectCategory
   categoryLabel: string
   caseStudy: ProjectCaseStudy
+  displayIndex?: number
   className?: string
 }
 
@@ -30,6 +31,7 @@ export function ProjectCard({
   category,
   categoryLabel,
   caseStudy,
+  displayIndex,
   className,
 }: ProjectCardProps) {
   const bulletItems =
@@ -49,38 +51,33 @@ export function ProjectCard({
         className
       )}
     >
-      <ProjectCover
-        id={project.id}
-        category={category}
-        label={categoryLabel}
-        className="transition-transform duration-500 motion-safe:group-hover:scale-[1.02]"
-      />
+      <div className="flex flex-col gap-4 p-4 pb-0">
+        <ProjectCover
+          id={project.id}
+          category={category}
+          displayIndex={displayIndex}
+          className="transition-transform duration-500 motion-safe:group-hover:scale-[1.02]"
+        />
+        <Badge variant="editorial" size="sm" className="self-start">
+          {categoryLabel}
+        </Badge>
+      </div>
 
-      <div className="flex flex-1 flex-col gap-6 p-6">
-        <div className="space-y-3">
-          <Badge variant="editorial" size="sm">
-            {project.cliente}
-          </Badge>
-          <div className="space-y-2">
-            <h3 className="text-xl font-semibold text-[color:var(--color-text)] leading-snug">
-              {project.titulo}
-            </h3>
-            <p className="text-sm text-[color:var(--color-muted)]">
-              {project.descripcion}
-            </p>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-2 gap-4 text-xs text-[color:var(--color-muted)]">
-          <div className="space-y-1">
-            <p className="uppercase tracking-[0.2em] text-[10px]">Ubicación</p>
-            <p className="text-sm text-[color:var(--color-text)]">
+      <div className="flex flex-1 flex-col gap-6 p-6 pt-4">
+        <div className="space-y-2">
+          <h3 className="text-xl font-semibold text-[color:var(--color-text)] leading-snug">
+            {project.titulo}
+          </h3>
+          <div className="flex flex-wrap gap-3 text-xs text-[color:var(--color-muted)]">
+            <span className="rounded-full border border-[color:var(--color-border)] px-3 py-1">
+              {project.cliente}
+            </span>
+            <span className="rounded-full border border-[color:var(--color-border)] px-3 py-1">
               {project.ubicacion}
-            </p>
-          </div>
-          <div className="space-y-1">
-            <p className="uppercase tracking-[0.2em] text-[10px]">Año</p>
-            <p className="text-sm text-[color:var(--color-text)]">{project.fecha}</p>
+            </span>
+            <span className="rounded-full border border-[color:var(--color-border)] px-3 py-1">
+              {project.fecha}
+            </span>
           </div>
         </div>
 

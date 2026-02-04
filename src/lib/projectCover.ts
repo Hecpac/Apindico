@@ -1,6 +1,6 @@
 export type ProjectCategory = "cctv" | "vactor" | "acueducto" | "otro"
 
-type PatternType = "grid" | "dots" | "diagonal" | "cross"
+type PatternType = "grid" | "dots" | "lines"
 
 const GRADIENTS = [
   { from: "#0B1324", to: "#1B2A43" },
@@ -11,7 +11,7 @@ const GRADIENTS = [
 
 const ACCENTS = ["#F97316", "#38BDF8", "#14B8A6", "#F59E0B"]
 
-const PATTERNS: PatternType[] = ["grid", "dots", "diagonal", "cross"]
+const PATTERNS: PatternType[] = ["grid", "dots", "lines"]
 
 const CATEGORY_SEEDS: Record<ProjectCategory, number> = {
   cctv: 11,
@@ -59,7 +59,7 @@ export type CoverConfig = {
   patternSize: number
   patternOpacity: number
   iconIndex: number
-  number: string
+  seededNumber: string
   seed: number
 }
 
@@ -84,12 +84,12 @@ export const getCoverConfig = (id: string, category: ProjectCategory): CoverConf
     patternSize,
     patternOpacity,
     iconIndex,
-    number: String(numberValue).padStart(2, "0"),
+    seededNumber: String(numberValue).padStart(2, "0"),
     seed,
   }
 }
 
-export const buildPatternDataUri = (config: CoverConfig) => {
+export const buildPatternSvg = (config: CoverConfig) => {
   const size = config.patternSize
   const stroke = "#FFFFFF"
   const opacity = config.patternOpacity.toFixed(2)
@@ -105,12 +105,9 @@ export const buildPatternDataUri = (config: CoverConfig) => {
         size * 0.08
       )}" fill="${stroke}" fill-opacity="${opacity}" />`
       break
-    case "diagonal":
-      patternShape = `<path d="M -${size} ${size} L ${size} -${size} M 0 ${size} L ${size} 0 M ${size} ${size} L ${size * 2} 0" stroke="${stroke}" stroke-opacity="${opacity}" stroke-width="1" />`
-      break
-    case "cross":
+    case "lines":
     default:
-      patternShape = `<path d="M ${size / 2} 0 L ${size / 2} ${size} M 0 ${size / 2} L ${size} ${size / 2}" stroke="${stroke}" stroke-opacity="${opacity}" stroke-width="1" />`
+      patternShape = `<path d="M 0 ${size * 0.2} H ${size} M 0 ${size * 0.6} H ${size} M 0 ${size} H ${size}" stroke="${stroke}" stroke-opacity="${opacity}" stroke-width="1" />`
       break
   }
 
@@ -126,3 +123,5 @@ export const buildPatternDataUri = (config: CoverConfig) => {
 
   return svgToDataUri(svg)
 }
+
+export const buildPatternDataUri = buildPatternSvg
