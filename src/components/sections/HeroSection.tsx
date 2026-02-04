@@ -7,9 +7,7 @@ import Image from "next/image"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { useGSAP } from "@gsap/react"
-import { ArrowRight, Video } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { PROYECTOS } from "@/lib/constants"
 import { Badge } from "@/components/ui/Badge"
 
 // Register GSAP plugins
@@ -30,43 +28,6 @@ interface HeroSectionProps {
     href?: string
   }
   badges?: string[]
-}
-
-// Case Study Card Component with Glassmorphism
-function CaseStudyCard() {
-  const proyecto = PROYECTOS[0]
-
-  return (
-    <Link
-      href={`/proyectos/${proyecto.id}`}
-      className={cn(
-        "hero-card hero-card-fresnel group relative flex w-full max-w-md md:w-[361px] md:max-w-[361px]",
-        "overflow-hidden rounded-3xl border border-white/20 bg-zinc-900/40 p-1",
-        "backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] transition-all duration-300 hover:border-orange-500/50",
-        "opacity-100 translate-y-0"
-      )}
-    >
-      <div className="flex items-center gap-4 p-4">
-        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-orange-500/10 text-orange-500">
-          <Video className="h-6 w-6" />
-        </div>
-        <div className="min-w-0">
-          <p className="text-xs font-medium text-zinc-400 uppercase">
-            Nuevo
-          </p>
-          <h4 className="text-sm font-semibold text-white">
-            Inspección de 15 km de red
-          </h4>
-          <p className="mt-1 text-xs text-zinc-400 line-clamp-2">
-            {proyecto.descripcion || proyecto.titulo}
-          </p>
-        </div>
-        <ArrowRight className="ml-auto h-4 w-4 text-orange-400 transition-transform duration-300 group-hover:translate-x-1" />
-      </div>
-
-      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-orange-500/20 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-    </Link>
-  )
 }
 
 // Primary CTA Button
@@ -135,7 +96,7 @@ export function HeroSection({
     () => {
       // Skip animations if reduced motion is preferred
       if (prefersReducedMotion) {
-        gsap.set("[data-hero-title], .hero-cta-wrapper, .hero-card", {
+        gsap.set("[data-hero-title], .hero-cta-wrapper", {
           opacity: 1,
           y: 0,
         })
@@ -144,9 +105,6 @@ export function HeroSection({
 
       const section = sectionRef.current
       if (!section) return
-
-      // Ensure the case study card is always visible
-      gsap.set(".hero-card", { opacity: 1, x: 0, y: 0 })
 
       // Entrance animation timeline
       const tl = gsap.timeline({
@@ -158,9 +116,7 @@ export function HeroSection({
         opacity: 0,
         duration: 1,
         delay: 0.2,
-      })
-
-      tl.from(
+      }).from(
         ".hero-cta-wrapper",
         {
           y: 20,
@@ -168,15 +124,6 @@ export function HeroSection({
           duration: 0.6,
         },
         "-=0.3"
-      ).from(
-        ".hero-card",
-        {
-          x: 80,
-          opacity: 0,
-          duration: 0.9,
-          ease: "expo.out",
-        },
-        "-=0.4"
       )
 
       // Parallax effect on video/background (desktop only)
@@ -195,7 +142,6 @@ export function HeroSection({
         },
       })
 
-      // Keep the case study card fixed (no scroll animation)
     },
     { scope: sectionRef, dependencies: [prefersReducedMotion] }
   )
@@ -269,10 +215,6 @@ export function HeroSection({
           </div>
         </div>
 
-        {/* Bento Card - Static on mobile, floating on desktop */}
-        <div className="mt-10 w-full max-w-md md:mt-0 md:absolute md:bottom-12 md:right-12 md:w-[361px]">
-          <CaseStudyCard />
-        </div>
       </div>
     </header>
   )

@@ -1,20 +1,13 @@
 "use client"
 
 import * as React from "react"
-import { useRef, useEffect, useState } from "react"
+import { useState } from "react"
 import Image from "next/image"
-import gsap from "gsap"
-import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { useGSAP } from "@gsap/react"
+import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { CLIENTES_DATA } from "@/lib/constants"
 import { Container } from "@/components/ui/Container"
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger)
-}
-
-const DUPLICATED_CLIENTES = [...CLIENTES_DATA, ...CLIENTES_DATA]
+import { Button } from "@/components/ui/Button"
 
 interface ClientLogoProps {
   name: string
@@ -57,100 +50,50 @@ export function ClientsSection({
   subtitle = "Empresas líderes que han elegido nuestros servicios de ingeniería",
   className,
 }: ClientsSectionProps) {
-  const sectionRef = useRef<HTMLElement>(null)
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(
-    () =>
-      typeof window !== "undefined" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-  )
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
-
-    const handleChange = (e: MediaQueryListEvent) => {
-      setPrefersReducedMotion(e.matches)
-    }
-
-    mediaQuery.addEventListener("change", handleChange)
-    return () => mediaQuery.removeEventListener("change", handleChange)
+  const uniqueClients = React.useMemo(() => {
+    const seen = new Set<string>()
+    return CLIENTES_DATA.filter((cliente) => {
+      if (seen.has(cliente.name)) return false
+      seen.add(cliente.name)
+      return true
+    })
   }, [])
 
-  useGSAP(
-    () => {
-      if (prefersReducedMotion) {
-        gsap.set(".clients-header, .clients-track", { opacity: 1, y: 0 })
-        return
-      }
-
-      const section = sectionRef.current
-      if (!section) return
-
-      gsap.from(".clients-header", {
-        scrollTrigger: {
-          trigger: section,
-          start: "top 80%",
-          toggleActions: "play none none none",
-        },
-        y: 40,
-        opacity: 0,
-        duration: 0.8,
-        ease: "power3.out",
-      })
-
-      gsap.from(".clients-track", {
-        scrollTrigger: {
-          trigger: ".clients-track",
-          start: "top 90%",
-          toggleActions: "play none none none",
-        },
-        opacity: 0,
-        duration: 1,
-        ease: "power3.out",
-      })
-    },
-    { scope: sectionRef, dependencies: [prefersReducedMotion] }
-  )
+  const visibleClients = uniqueClients.slice(0, 12)
 
   return (
     <section
-      ref={sectionRef}
       className={cn("py-16 md:py-20 bg-gris-100 overflow-hidden", className)}
     >
       <Container>
-        <div className="clients-header text-center max-w-3xl mx-auto mb-12">
+        <div className="text-center max-w-3xl mx-auto mb-12">
           <h2 className="font-heading text-3xl md:text-4xl font-bold text-gris-900 mb-4">
             {title}
           </h2>
           <p className="text-gris-600 text-lg">{subtitle}</p>
         </div>
-      </Container>
-
-      <div className="relative">
-        {/* Fade gradients on sides */}
-        <div className="absolute left-0 top-0 bottom-0 w-24 md:w-40 bg-gradient-to-r from-gris-100 to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-24 md:w-40 bg-gradient-to-l from-gris-100 to-transparent z-10 pointer-events-none" />
 
         <ul
-          className={cn(
-            "clients-track flex gap-8 md:gap-12 list-none p-0 m-0",
-            !prefersReducedMotion && "animate-scroll-clients"
-          )}
-          style={{
-            width: "max-content",
-          }}
+          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4"
           aria-label="Lista de clientes"
         >
-          {DUPLICATED_CLIENTES.map((cliente, index) => (
+          {visibleClients.map((cliente) => (
             <li
-              key={`${cliente.name}-${index}`}
-              className="flex-shrink-0 flex items-center justify-center px-6 py-4 bg-white rounded-lg shadow-sm border border-gris-200 hover:shadow-md hover:border-azul-principal/30 transition-all duration-300 min-w-[140px]"
+              key={cliente.name}
+              className="flex items-center justify-center px-6 py-4 bg-white rounded-lg shadow-sm border border-gris-200 hover:shadow-md hover:border-azul-principal/30 transition-all duration-300 min-h-[72px]"
               title={cliente.name}
             >
               <ClientLogo name={cliente.name} logo={cliente.logo} />
             </li>
           ))}
         </ul>
-      </div>
+
+        <div className="mt-10 text-center">
+          <Button variant="secondary" size="md" asChild>
+            <Link href="/nosotros">Ver todos</Link>
+          </Button>
+        </div>
+      </Container>
     </section>
   )
 }

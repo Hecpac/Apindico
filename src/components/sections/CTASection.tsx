@@ -145,12 +145,14 @@ export function CTASection({
           </div>
 
           {benefits && benefits.length > 0 && (
-            <div className="cta-benefits flex flex-wrap justify-center gap-4 md:gap-6 mb-10">
+            <ul className="cta-benefits flex flex-wrap justify-center mb-10">
               {benefits.map((benefit, index) => (
-                <div
+                <li
                   key={index}
                   className={cn(
-                    "cta-benefit flex items-center gap-2 text-sm md:text-base",
+                    "cta-benefit flex items-center gap-2 text-sm md:text-base px-4 py-2",
+                    index > 0 && "border-l border-gris-200/60",
+                    isGradient && index > 0 && "border-white/20",
                     isGradient ? "text-white/90" : "text-gris-700"
                   )}
                 >
@@ -161,9 +163,9 @@ export function CTASection({
                     )}
                   />
                   <span>{benefit}</span>
-                </div>
+                </li>
               ))}
-            </div>
+            </ul>
           )}
 
           <div className="cta-buttons flex flex-col sm:flex-row gap-4 justify-center">

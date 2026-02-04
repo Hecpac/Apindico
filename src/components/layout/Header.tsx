@@ -225,11 +225,7 @@ export function Header() {
             )}>
               {/* Services Dropdown */}
               <div ref={servicesRef} className="relative">
-                <button
-                  onClick={() => setIsServicesOpen(!isServicesOpen)}
-                  aria-expanded={isServicesOpen}
-                  aria-haspopup="true"
-                  aria-label="Menú de servicios"
+                <div
                   className={cn(
                     "flex items-center gap-1 font-body font-medium transition-all duration-300",
                     isScrolled
@@ -238,15 +234,29 @@ export function Header() {
                     isServicesOpen && "text-cyan"
                   )}
                 >
-                  {copy.nav.services}
-                  <ChevronDown
-                    className={cn(
-                      "h-4 w-4 transition-transform duration-200",
-                      isServicesOpen && "rotate-180"
-                    )}
-                    aria-hidden="true"
-                  />
-                </button>
+                  <Link
+                    href="/servicios"
+                    className="transition-colors duration-300"
+                  >
+                    {copy.nav.services}
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => setIsServicesOpen(!isServicesOpen)}
+                    aria-expanded={isServicesOpen}
+                    aria-haspopup="true"
+                    aria-label="Abrir menú de servicios"
+                    className="flex items-center justify-center rounded-full p-1 hover:bg-white/10 transition-colors"
+                  >
+                    <ChevronDown
+                      className={cn(
+                        "h-4 w-4 transition-transform duration-200",
+                        isServicesOpen && "rotate-180"
+                      )}
+                      aria-hidden="true"
+                    />
+                  </button>
+                </div>
 
                 <AnimatePresence>
                   {isServicesOpen && (
@@ -402,21 +412,30 @@ export function Header() {
                 >
                   {/* Services Accordion */}
                   <div className="mb-4">
-                    <button
-                      onClick={() => setIsServicesOpen(!isServicesOpen)}
-                      aria-expanded={isServicesOpen}
-                      aria-label="Menú de servicios"
-                      className="flex items-center justify-between w-full py-3 font-body font-medium text-gris-800 hover:text-azul-principal transition-colors"
-                    >
-                      {copy.nav.services}
-                      <ChevronDown
-                        className={cn(
-                          "h-4 w-4 transition-transform duration-200",
-                          isServicesOpen && "rotate-180"
-                        )}
-                        aria-hidden="true"
-                      />
-                    </button>
+                    <div className="flex items-center justify-between w-full py-3 font-body font-medium text-gris-800">
+                      <Link
+                        href="/servicios"
+                        className="hover:text-azul-principal transition-colors"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        {copy.nav.services}
+                      </Link>
+                      <button
+                        type="button"
+                        onClick={() => setIsServicesOpen(!isServicesOpen)}
+                        aria-expanded={isServicesOpen}
+                        aria-label="Abrir menú de servicios"
+                        className="p-1 rounded-full hover:text-azul-principal transition-colors"
+                      >
+                        <ChevronDown
+                          className={cn(
+                            "h-4 w-4 transition-transform duration-200",
+                            isServicesOpen && "rotate-180"
+                          )}
+                          aria-hidden="true"
+                        />
+                      </button>
+                    </div>
 
                     <AnimatePresence>
                       {isServicesOpen && (

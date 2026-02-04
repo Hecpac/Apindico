@@ -7,9 +7,6 @@ import {
   Phone,
   Smartphone,
   Mail,
-  Linkedin,
-  Instagram,
-  Facebook,
   ChevronDown,
 } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
@@ -17,26 +14,11 @@ import { cn } from "@/lib/utils"
 import { COMPANY_INFO } from "@/lib/constants"
 import copy from "@/lib/copy"
 import { Container } from "@/components/ui/Container"
-
-const FOOTER_SERVICES = [
-  { href: "/servicios/inspeccion-cctv", label: "Inspección CCTV" },
-  { href: "/servicios/servicios-vactor", label: "Servicios Vactor" },
-  { href: "/servicios/prueba-hermeticidad", label: "Prueba de Hermeticidad" },
-  { href: "/servicios/prueba-hidrostatica", label: "Prueba Hidrostática" },
-]
-
-const FOOTER_COMPANY = [
-  { href: "/nosotros", label: "Sobre Nosotros" },
-  { href: "/proyectos", label: "Proyectos" },
-  { href: "/nosotros#certificaciones", label: "Certificaciones" },
-  { href: "/contacto#trabaja-con-nosotros", label: "Trabaja con Nosotros" },
-]
-
-const SOCIAL_LINKS = [
-  { href: "https://linkedin.com", icon: Linkedin, label: "LinkedIn" },
-  { href: "https://instagram.com", icon: Instagram, label: "Instagram" },
-  { href: "https://facebook.com", icon: Facebook, label: "Facebook" },
-]
+import {
+  FOOTER_SERVICES,
+  FOOTER_COMPANY,
+  SOCIAL_LINKS,
+} from "@/components/layout/footerLinks"
 
 interface FooterSectionProps {
   title: string
@@ -46,37 +28,47 @@ interface FooterSectionProps {
 
 function FooterSection({ title, children, defaultOpen = false }: FooterSectionProps) {
   const [isOpen, setIsOpen] = React.useState(defaultOpen)
+  const [isDesktop, setIsDesktop] = React.useState(false)
+
+  React.useEffect(() => {
+    if (typeof window === "undefined") return
+    const mediaQuery = window.matchMedia("(min-width: 768px)")
+    const handleChange = (event: MediaQueryListEvent | MediaQueryList) => {
+      const matches = "matches" in event ? event.matches : mediaQuery.matches
+      setIsDesktop(matches)
+      setIsOpen(matches ? true : defaultOpen)
+    }
+    handleChange(mediaQuery)
+    mediaQuery.addEventListener("change", handleChange)
+    return () => mediaQuery.removeEventListener("change", handleChange)
+  }, [defaultOpen])
+
+  const handleToggle = () => {
+    if (isDesktop) return
+    setIsOpen((prev) => !prev)
+  }
 
   return (
     <div className="border-b border-gris-800 md:border-0">
-      {/* Mobile Accordion Header */}
       <button
-        onClick={() => setIsOpen(!isOpen)}
+        type="button"
+        onClick={handleToggle}
         aria-expanded={isOpen}
-        aria-label={`${isOpen ? 'Cerrar' : 'Abrir'} sección ${title}`}
-        className="flex items-center justify-between w-full py-4 md:hidden hover:opacity-80 transition-opacity"
+        aria-label={`${isOpen ? "Cerrar" : "Abrir"} sección ${title}`}
+        className="flex items-center justify-between w-full py-4 hover:opacity-80 transition-opacity md:cursor-default"
       >
-        <h3 className="font-heading font-semibold text-white">{title}</h3>
+        <span className="font-heading font-semibold text-white">{title}</span>
         <ChevronDown
           className={cn(
-            "h-5 w-5 text-gris-400 transition-transform duration-200",
+            "h-5 w-5 text-gris-400 transition-transform duration-200 md:hidden",
             isOpen && "rotate-180"
           )}
           aria-hidden="true"
         />
       </button>
 
-      {/* Desktop Title */}
-      <h3 className="hidden md:block font-heading font-semibold text-white mb-4">
-        {title}
-      </h3>
+      <div className="hidden md:block">{children}</div>
 
-      {/* Content - Responsive: Collapsible on mobile, always visible on desktop */}
-      <div className="hidden md:block">
-        {children}
-      </div>
-
-      {/* Mobile only: Animated collapsible */}
       <div className="md:hidden">
         <AnimatePresence initial={false}>
           {isOpen && (
