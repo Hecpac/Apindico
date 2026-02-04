@@ -22,6 +22,15 @@ export { ChipFilter, type ChipFilterProps } from "./ChipFilter"
 export { SearchInput, type SearchInputProps } from "./SearchInput"
 export { SectionHeader, type SectionHeaderProps } from "./SectionHeader"
 export { EmptyState, type EmptyStateProps } from "./EmptyState"
+export {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogTitle,
+  DialogDescription,
+  DialogClose,
+  DialogOverlay,
+} from "./Dialog"
 export { ProjectCover, type ProjectCoverProps } from "./ProjectCover"
 export { ProjectCaseStudyDialog, type ProjectCaseStudyDialogProps } from "./ProjectCaseStudyDialog"
 export { Textarea, type TextareaProps } from "./Textarea"
