@@ -175,10 +175,10 @@ export function Header() {
             role="navigation"
             aria-label="Navegación principal"
             className={cn(
-              "flex items-center justify-between transition-all duration-300 rounded-full",
+              "flex items-center justify-between transition-all duration-300 rounded-full border border-white/10 backdrop-blur-2xl",
               isScrolled
-                ? "h-14 bg-[color:var(--color-bg)]/70 backdrop-blur-md border border-[color:var(--color-border)]/60 shadow-[0_10px_30px_rgba(0,0,0,0.22)]"
-                : "h-16 md:h-20 bg-white/10 backdrop-blur-xl border border-white/10"
+                ? "h-14 bg-zinc-950/20 shadow-[0_10px_30px_rgba(0,0,0,0.22)]"
+                : "h-16 md:h-20 bg-zinc-950/10"
             )}
           >
             {/* Logo + Mini Label */}
@@ -349,7 +349,10 @@ export function Header() {
             <button
               ref={mobileMenuButtonRef}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-2 text-gris-800"
+              className={cn(
+                "md:hidden p-2 transition-colors",
+                isScrolled ? "text-white/90" : "text-white/80"
+              )}
               aria-label={isMobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
             >
               {isMobileMenuOpen ? (

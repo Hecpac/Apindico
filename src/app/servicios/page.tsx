@@ -53,16 +53,22 @@ export default function ServiciosPage() {
       {/* Services Grid */}
       <section className="py-16 md:py-24 bg-gris-100">
         <Container>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {SERVICIOS.map((servicio) => (
-              <ServiceCard
+          <div className="flex flex-col gap-8 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-8">
+            {SERVICIOS.map((servicio, index) => (
+              <div
                 key={servicio.id}
-                icon={servicio.icon}
-                nombre={servicio.nombre}
-                descripcion={servicio.descripcion}
-                slug={servicio.slug}
-                normativa={servicio.normativa}
-              />
+                className="sticky top-24 mb-12 md:relative md:top-0 md:mb-0"
+                style={{ zIndex: (index + 1) * 10 }}
+              >
+                <ServiceCard
+                  icon={servicio.icon}
+                  nombre={servicio.nombre}
+                  descripcion={servicio.descripcion}
+                  slug={servicio.slug}
+                  normativa={servicio.normativa}
+                  displayIndex={index + 1}
+                />
+              </div>
             ))}
           </div>
         </Container>
