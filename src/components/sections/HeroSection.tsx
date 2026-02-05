@@ -3,6 +3,7 @@
 import * as React from "react"
 import Link from "next/link"
 import { useRef } from "react"
+import Image from "next/image"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { useGSAP } from "@gsap/react"
@@ -75,26 +76,52 @@ export function HeroSection({
   badges,
 }: HeroSectionProps) {
   const sectionRef = useRef<HTMLElement>(null)
-  const [prefersReducedMotion, setPrefersReducedMotion] = React.useState(false)
+  const [canAnimate, setCanAnimate] = React.useState(false)
+  const [shouldUseVideo, setShouldUseVideo] = React.useState(false)
 
   // Check for reduced motion preference
   React.useEffect(() => {
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
-    setPrefersReducedMotion(mediaQuery.matches)
+    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
+    const desktopQuery = window.matchMedia("(min-width: 768px)")
+    const connection = (
+      navigator as Navigator & {
+        connection?: {
+          saveData?: boolean
+          effectiveType?: string
+          addEventListener?: (type: string, listener: () => void) => void
+          removeEventListener?: (type: string, listener: () => void) => void
+        }
+      }
+    ).connection
 
-    const handleChange = (e: MediaQueryListEvent) => {
-      setPrefersReducedMotion(e.matches)
+    const update = () => {
+      const reduceMotion = motionQuery.matches
+      const saveData = connection?.saveData ?? false
+      const effectiveType = connection?.effectiveType ?? ""
+      const slowNetwork = effectiveType === "slow-2g" || effectiveType === "2g"
+      const allowMotion = !reduceMotion && !saveData && !slowNetwork
+
+      setCanAnimate(allowMotion && desktopQuery.matches)
+      setShouldUseVideo(allowMotion && desktopQuery.matches)
     }
 
-    mediaQuery.addEventListener("change", handleChange)
-    return () => mediaQuery.removeEventListener("change", handleChange)
+    update()
+    motionQuery.addEventListener("change", update)
+    desktopQuery.addEventListener("change", update)
+    connection?.addEventListener?.("change", update)
+
+    return () => {
+      motionQuery.removeEventListener("change", update)
+      desktopQuery.removeEventListener("change", update)
+      connection?.removeEventListener?.("change", update)
+    }
   }, [])
 
   // GSAP Animations
   useGSAP(
     () => {
-      // Skip animations if reduced motion is preferred
-      if (prefersReducedMotion) {
+      // Skip animations if reduced motion is preferred or on low-power networks
+      if (!canAnimate) {
         gsap.set("[data-hero-title], .hero-cta-wrapper", {
           opacity: 1,
           y: 0,
@@ -142,7 +169,7 @@ export function HeroSection({
       })
 
     },
-    { scope: sectionRef, dependencies: [prefersReducedMotion] }
+    { scope: sectionRef, dependencies: [canAnimate] }
   )
 
   return (
@@ -161,28 +188,29 @@ export function HeroSection({
     >
       {/* Poster + Video Layer */}
       <div className="hero-video-container absolute inset-0 z-0 will-change-transform">
-        {prefersReducedMotion ? (
-          <div className="absolute inset-0">
-            <img
-              src="/images/hero-clean.webp"
-              alt="Infraestructura de acueducto y alcantarillado APINDICO"
-              className="h-full w-full object-cover opacity-90"
-            />
-          </div>
-        ) : (
+        {shouldUseVideo ? (
           <video
             className="h-full w-full object-cover opacity-90"
             autoPlay
             loop
             muted
             playsInline
-            preload="metadata"
+            preload="none"
             poster="/images/hero-clean.webp"
             aria-hidden="true"
           >
             <source src="/videos/Hero.webm" type="video/webm" />
             <source src="/videos/Hero.mp4" type="video/mp4" />
           </video>
+        ) : (
+          <Image
+            src="/images/hero-clean.webp"
+            alt="Infraestructura de acueducto y alcantarillado APINDICO"
+            fill
+            priority
+            className="object-cover opacity-90"
+            sizes="100vw"
+          />
         )}
       </div>
 
@@ -203,7 +231,7 @@ export function HeroSection({
               <div className="space-y-6">
                 <h1
                   data-hero-title
-                  className="font-extrabold tracking-[-0.04em] leading-[0.95] text-[clamp(48px,9vw,56px)] md:text-[clamp(60px,8vw,96px)] lg:text-[clamp(120px,8.5vw,144px)] text-balance"
+                  className="font-extrabold tracking-[-0.03em] leading-[1] text-[clamp(40px,8.5vw,52px)] md:text-[clamp(56px,7vw,88px)] lg:text-[clamp(96px,6.5vw,120px)] text-balance"
                 >
                   {title}
                 </h1>

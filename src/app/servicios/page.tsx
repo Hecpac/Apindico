@@ -36,7 +36,7 @@ export default function ServiciosPage() {
               <div className="text-xs uppercase tracking-[0.1em] text-white/70">
                 Servicios
               </div>
-              <h1 className="mt-3 font-heading font-extrabold tracking-[-0.04em] leading-[0.95] text-[clamp(48px,9vw,56px)] md:text-[clamp(60px,8vw,96px)] lg:text-[clamp(120px,8.5vw,144px)] text-balance">
+              <h1 className="mt-3 font-heading font-extrabold tracking-[-0.03em] leading-[1] text-[clamp(40px,8.5vw,52px)] md:text-[clamp(56px,7vw,88px)] lg:text-[clamp(96px,6.5vw,120px)] text-balance">
                 {copy.services.index.title}
               </h1>
             </div>
