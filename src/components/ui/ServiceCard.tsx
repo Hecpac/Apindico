@@ -52,7 +52,7 @@ const ServiceCard = React.forwardRef<HTMLDivElement, ServiceCardProps>(
           "service-card group relative overflow-hidden rounded-[32px]",
           "border border-white/10 bg-zinc-900/40 backdrop-blur-3xl p-8",
           "transition-all duration-500 ease-out will-change-transform",
-          "shadow-[0_-20px_50px_rgba(0,0,0,0.4)] md:shadow-[0_20px_60px_-40px_rgba(0,0,0,0.6)]",
+          "shadow-[0_-25px_50px_-12px_rgba(0,0,0,0.7)] md:shadow-[0_20px_60px_-40px_rgba(0,0,0,0.6)]",
           "motion-safe:hover:-translate-y-1",
           "hover:shadow-[0_20px_40px_-20px_rgba(0,0,0,0.45)]",
           "hover:ring-1 hover:ring-[color:var(--color-accent)]/25",

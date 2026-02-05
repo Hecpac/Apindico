@@ -103,7 +103,7 @@
   /* Fluid Typography System (clamp for responsive scaling) */
   --fluid-h1: clamp(2.5rem, 8vw + 1rem, 4.5rem);                  /* 40px → 72px */
   --fluid-body: clamp(1rem, 0.5vw + 0.9rem, 1.125rem);             /* 16px → 18px */
-  --line-height-tight-display: 1.1;
+  --line-height-tight-display: 0.85;
   --line-height-body: 1.6;
 
   --font-size-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);       /* 12px → 14px */

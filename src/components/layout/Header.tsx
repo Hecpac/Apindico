@@ -175,7 +175,7 @@ export function Header() {
             role="navigation"
             aria-label="Navegación principal"
             className={cn(
-              "flex items-center justify-between transition-all duration-300 rounded-full border border-white/10 backdrop-blur-2xl px-10",
+              "flex items-center justify-between transition-all duration-300 rounded-full border border-white/10 backdrop-blur-2xl px-10 py-3",
               isScrolled
                 ? "h-14 bg-zinc-950/20 shadow-[0_10px_30px_rgba(0,0,0,0.22)]"
                 : "h-16 md:h-20 bg-zinc-950/20"

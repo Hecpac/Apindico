@@ -246,7 +246,7 @@ export function HeroSection({
                       <Badge
                         key={badge}
                         size="sm"
-                        className="bg-white/10 text-white border border-white/15"
+                        className="bg-white/10 backdrop-blur-md text-white border border-white/15"
                       >
                         {badge}
                       </Badge>
