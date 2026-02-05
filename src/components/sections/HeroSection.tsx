@@ -176,45 +176,51 @@ export function HeroSection({
       <div className="absolute inset-0 z-20 bg-gradient-to-t from-zinc-950 via-transparent to-black/40" />
 
       {/* Main Container */}
-      <div
-        className="hero-content container mx-auto max-w-7xl px-6 md:px-12 relative z-30 flex h-full w-full flex-col items-center justify-start text-center text-white will-change-transform pt-32 md:pt-40 lg:pt-44 pb-24 md:pb-32 md:items-start md:text-left"
-      >
-        {/* Headline */}
-        <div className="headline-section flex flex-col items-center md:items-start max-w-3xl gap-8">
-          <div className="space-y-6 text-center md:text-left">
-            <h1
-              data-hero-title
-              className="tracking-tighter font-black text-6xl md:text-8xl leading-[0.9]"
-            >
-              {title}
-            </h1>
-            {subtitle && (
-              <p className="text-white/90 text-lg md:text-xl leading-relaxed max-w-2xl font-medium">
-                {subtitle}
-              </p>
-            )}
-            {badges && badges.length > 0 && (
-              <div className="flex flex-wrap gap-2 justify-center md:justify-start">
-                {badges.map((badge) => (
-                  <Badge
-                    key={badge}
-                    size="sm"
-                    className="bg-white/10 text-white border border-white/15"
-                  >
-                    {badge}
-                  </Badge>
-                ))}
-              </div>
-            )}
+      <div className="hero-content container mx-auto max-w-7xl px-6 md:px-12 relative z-30 flex h-full w-full flex-col justify-start text-white will-change-transform pt-28 md:pt-36 lg:pt-40 pb-24 md:pb-32">
+        <div className="grid grid-cols-12 gap-6 w-full">
+          <div className="col-span-12 lg:col-span-1">
+            <div className="text-xs uppercase tracking-[0.1em] text-white/70">
+              01
+            </div>
           </div>
 
-          {/* CTA Wrapper */}
-          <div className="hero-cta-wrapper flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto">
-            <PrimaryCTA label={primaryCta.label} href={primaryCta.href} />
-            <SecondaryCTA label={secondaryCta.label} href={secondaryCta.href} />
+          <div className="col-span-12 lg:col-start-2 lg:col-span-7">
+            <div className="space-y-8 text-left">
+              <div className="space-y-6">
+                <h1
+                  data-hero-title
+                  className="font-extrabold tracking-[-0.04em] leading-[1.05] text-[clamp(44px,7.2vw,120px)] lg:text-[clamp(120px,8.5vw,144px)] text-balance"
+                >
+                  {title}
+                </h1>
+                {subtitle && (
+                  <p className="text-white/90 text-lg md:text-xl leading-[1.7] max-w-2xl font-medium">
+                    {subtitle}
+                  </p>
+                )}
+                {badges && badges.length > 0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {badges.map((badge) => (
+                      <Badge
+                        key={badge}
+                        size="sm"
+                        className="bg-white/10 text-white border border-white/15"
+                      >
+                        {badge}
+                      </Badge>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* CTA Wrapper */}
+              <div className="hero-cta-wrapper flex flex-col sm:flex-row items-start gap-4 w-full">
+                <PrimaryCTA label={primaryCta.label} href={primaryCta.href} />
+                <SecondaryCTA label={secondaryCta.label} href={secondaryCta.href} />
+              </div>
+            </div>
           </div>
         </div>
-
       </div>
     </header>
   )
