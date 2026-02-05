@@ -175,7 +175,7 @@ export function Header() {
             role="navigation"
             aria-label="Navegación principal"
             className={cn(
-              "flex items-center justify-between transition-all duration-300 rounded-full border border-white/10 backdrop-blur-2xl px-8",
+              "flex items-center justify-between transition-all duration-300 rounded-full border border-white/10 backdrop-blur-2xl px-10",
               isScrolled
                 ? "h-14 bg-zinc-950/20 shadow-[0_10px_30px_rgba(0,0,0,0.22)]"
                 : "h-16 md:h-20 bg-zinc-950/20"
@@ -186,11 +186,11 @@ export function Header() {
               <Link
                 href="/"
                 className={cn(
-                  "flex items-center gap-2 font-heading font-extrabold transition-all duration-300",
-                  isScrolled ? "text-lg" : "text-xl md:text-2xl"
+                  "flex items-center gap-2 font-heading font-extrabold leading-none transition-all duration-300",
+                  "text-base md:text-lg"
                 )}
               >
-                <span className="bg-azul-principal text-white px-2 py-1 rounded-md">
+                <span className="flex h-6 w-6 items-center justify-center rounded-md bg-azul-principal text-[10px] font-bold text-white">
                   AP
                 </span>
                 <span className={cn(
