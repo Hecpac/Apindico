@@ -190,12 +190,11 @@ export function Header() {
                   "text-base md:text-lg"
                 )}
               >
-                <span className="flex h-6 w-6 items-center justify-center rounded-md bg-azul-principal text-[10px] font-bold text-white">
+                <span className="flex h-6 w-6 items-center justify-center rounded-md bg-azul-principal text-[10px] font-bold text-white ring-1 ring-white/10">
                   AP
                 </span>
                 <span className={cn(
-                  "text-azul-principal",
-                  !isScrolled && "text-white md:text-azul-principal"
+                  "text-white",
                 )}>
                   INDICO
                 </span>
