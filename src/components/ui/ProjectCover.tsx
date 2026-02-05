@@ -69,7 +69,7 @@ const ProjectCover = React.forwardRef<HTMLDivElement, ProjectCoverProps>(
           aria-hidden="true"
         />
         <div
-          className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/10 to-transparent"
+          className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"
           aria-hidden="true"
         />
         <WatermarkIcon
