@@ -94,42 +94,47 @@ export default function ProyectosPage() {
           <div className="absolute inset-0 bg-[linear-gradient(140deg,_rgba(15,23,42,0.9),_rgba(11,15,23,0.95))]" />
         </div>
         <div className="relative mx-auto max-w-[1440px] px-6 md:px-10 xl:px-[100px] py-16 md:py-24">
-          <div className="grid grid-cols-12 gap-6">
-            <div className="col-span-12 lg:col-span-1">
+          <div className="grid grid-cols-4 md:grid-cols-12 gap-6">
+            <div className="col-span-4 md:col-span-1">
               <div className="text-xs uppercase tracking-[0.1em] text-[color:var(--color-muted)]">
                 01
               </div>
             </div>
 
-            <div className="col-span-12 lg:col-start-2 lg:col-span-6">
+            <div className="col-span-4 md:col-start-2 md:col-span-7">
               <div className="text-xs uppercase tracking-[0.1em] text-[color:var(--color-muted)]">
                 Portafolio
               </div>
 
-              <h1 className="mt-3 font-heading font-extrabold tracking-[-0.04em] leading-[1.05] text-[clamp(44px,7.2vw,120px)] lg:text-[clamp(120px,8.5vw,144px)] text-balance">
+              <h1 className="mt-3 font-heading font-extrabold tracking-[-0.04em] leading-[0.95] text-[clamp(48px,9vw,56px)] md:text-[clamp(60px,8vw,96px)] lg:text-[clamp(120px,8.5vw,144px)] text-balance">
                 {copy.projects.index.title}
               </h1>
 
-              <div className="mt-8 flex flex-col sm:flex-row gap-3">
-                <Button variant="editorial" size="lg" asChild>
+              <div className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-start gap-3">
+                <Button variant="editorial" size="lg" className="w-full sm:w-auto" asChild>
                   <Link href="/contacto">
                     {copy.projects.index.leadCta}
                     <ArrowUpRight className="h-4 w-4" />
                   </Link>
                 </Button>
-                <Button variant="editorial-outline" size="lg" asChild>
+                <Button
+                  variant="editorial-outline"
+                  size="lg"
+                  className="w-full sm:w-auto"
+                  asChild
+                >
                   <Link href="/servicios">Ver servicios</Link>
                 </Button>
               </div>
             </div>
 
-            <div className="col-span-12 lg:col-start-8 lg:col-span-3 lg:mt-16">
+            <div className="col-span-4 md:col-start-8 md:col-span-3 md:mt-16">
               <p className="text-base md:text-lg leading-[1.7] text-[color:var(--color-muted)] max-w-[44ch]">
                 {copy.projects.index.subtitle}
               </p>
             </div>
 
-            <div className="col-span-12 lg:col-start-2 lg:col-span-11 mt-10 md:mt-14">
+            <div className="col-span-4 md:col-start-2 md:col-span-11 mt-10 md:mt-14">
               <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
                 {[
                   { value: "500+", label: "Proyectos ejecutados" },
