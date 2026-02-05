@@ -129,7 +129,12 @@ export default function ServiciosPage() {
               <Button variant="cta" size="lg" asChild>
                 <Link href="/cotizador">{copy.services.index.quoteCta}</Link>
               </Button>
-              <Button variant="secondary" size="lg" asChild>
+              <Button
+                variant="cta"
+                size="lg"
+                className="opacity-90 hover:opacity-100"
+                asChild
+              >
                 <Link href="/contacto">{copy.services.index.contactCta}</Link>
               </Button>
             </div>
