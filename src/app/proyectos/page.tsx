@@ -97,7 +97,7 @@ export default function ProyectosPage() {
           <div className="grid grid-cols-4 md:grid-cols-12 gap-6">
             <div className="col-span-4 md:col-span-1">
               <div className="text-xs uppercase tracking-[0.1em] text-[color:var(--color-muted)]">
-                01
+                03
               </div>
             </div>
 

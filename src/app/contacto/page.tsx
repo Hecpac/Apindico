@@ -53,7 +53,7 @@ export default function ContactoPage() {
           <div className="grid grid-cols-4 md:grid-cols-12 gap-6 text-white">
             <div className="col-span-4 md:col-span-1">
               <div className="text-xs uppercase tracking-[0.1em] text-white/70">
-                01
+                05
               </div>
             </div>
 
