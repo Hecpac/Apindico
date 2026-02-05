@@ -57,7 +57,7 @@ export default function ServiciosPage() {
             {SERVICIOS.map((servicio, index) => (
               <div
                 key={servicio.id}
-                className="sticky top-24 mb-12 md:relative md:top-0 md:mb-0"
+                className="sticky top-[100px] mb-12 md:relative md:top-0 md:mb-0"
                 style={{ zIndex: (index + 1) * 10 }}
               >
                 <ServiceCard

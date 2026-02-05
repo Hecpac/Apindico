@@ -175,10 +175,10 @@ export function Header() {
             role="navigation"
             aria-label="Navegación principal"
             className={cn(
-              "flex items-center justify-between transition-all duration-300 rounded-full border border-white/10 backdrop-blur-2xl",
+              "flex items-center justify-between transition-all duration-300 rounded-full border border-white/10 backdrop-blur-2xl px-8",
               isScrolled
                 ? "h-14 bg-zinc-950/20 shadow-[0_10px_30px_rgba(0,0,0,0.22)]"
-                : "h-16 md:h-20 bg-zinc-950/10"
+                : "h-16 md:h-20 bg-zinc-950/20"
             )}
           >
             {/* Logo + Mini Label */}
@@ -229,9 +229,9 @@ export function Header() {
                   className={cn(
                     "flex items-center gap-1 font-body font-medium transition-all duration-300",
                     isScrolled
-                      ? "text-[color:var(--color-text)] hover:text-[color:var(--color-accent)] text-sm"
-                      : "text-white/90 hover:text-cyan",
-                    isServicesOpen && "text-cyan"
+                      ? "text-white hover:text-white/80 text-sm"
+                      : "text-white hover:text-white/80",
+                    isServicesOpen && "text-white"
                   )}
                 >
                   <Link
@@ -318,10 +318,10 @@ export function Header() {
                   className={cn(
                     "font-body font-medium transition-all duration-300",
                     pathname === link.href
-                      ? "text-[color:var(--color-accent)]"
+                      ? "text-white underline underline-offset-8 decoration-white/40"
                       : isScrolled
-                        ? "text-[color:var(--color-text)] hover:text-[color:var(--color-accent)] text-sm"
-                        : "text-white/90 hover:text-cyan"
+                        ? "text-white hover:text-white/80 text-sm"
+                        : "text-white hover:text-white/80"
                   )}
                 >
                   {link.label}
@@ -351,7 +351,7 @@ export function Header() {
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className={cn(
                 "md:hidden p-2 transition-colors",
-                isScrolled ? "text-white/90" : "text-white/80"
+                "text-white"
               )}
               aria-label={isMobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
             >

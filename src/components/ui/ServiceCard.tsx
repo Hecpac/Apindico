@@ -51,7 +51,7 @@ const ServiceCard = React.forwardRef<HTMLDivElement, ServiceCardProps>(
         className={cn(
           "service-card group relative overflow-hidden rounded-[32px]",
           "border border-white/10 bg-zinc-900/40 backdrop-blur-3xl p-8",
-          "transition-all duration-500 ease-out shadow-[0_20px_60px_-40px_rgba(0,0,0,0.6)]",
+          "transition-all duration-500 ease-out shadow-[0_-20px_50px_rgba(0,0,0,0.5)]",
           "motion-safe:hover:-translate-y-1",
           "hover:shadow-[0_20px_40px_-20px_rgba(0,0,0,0.45)]",
           "hover:ring-1 hover:ring-[color:var(--color-accent)]/25",
@@ -116,9 +116,9 @@ const ServiceCard = React.forwardRef<HTMLDivElement, ServiceCardProps>(
         <div className="mt-auto pt-4 flex flex-wrap items-center gap-3">
           <Link
             href={`/servicios/${slug}`}
-            className="inline-flex items-center gap-2 text-sm font-semibold text-[color:var(--color-accent)] motion-safe:hover:translate-x-0.5 transition-transform"
+            className="inline-flex items-center gap-2 rounded-md border border-[color:var(--color-accent)]/40 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.12em] text-[color:var(--color-accent)]/90 transition-colors hover:border-[color:var(--color-accent)]/70 hover:text-[color:var(--color-accent)]"
           >
-            Ver detalle
+            Saber más
           </Link>
           {showQuoteCta && (
             <Button variant="secondary" size="sm" asChild>
