@@ -23,13 +23,13 @@ export default function CertificacionesPage() {
               <div className="text-xs uppercase tracking-[0.1em] text-white/70">
                 Certificaciones
               </div>
-              <h1 className="mt-3 font-heading font-extrabold tracking-[-0.03em] leading-[1] text-[clamp(40px,8.5vw,52px)] md:text-[clamp(56px,7vw,88px)] lg:text-[clamp(96px,6.5vw,120px)] text-balance">
+              <h1 className="mt-3 font-heading font-extrabold tracking-[-0.02em] leading-[var(--line-height-tight-display)] text-[length:var(--fluid-h1)] text-balance">
                 Certificaciones
               </h1>
             </div>
 
             <div className="col-span-4 md:col-start-8 md:col-span-3 md:mt-16">
-              <p className="text-lg md:text-xl text-white/90 leading-[1.7] max-w-[44ch]">
+              <p className="text-[length:var(--fluid-body)] text-white/90 leading-[var(--line-height-body)] max-w-[44ch]">
                 Formación y estándares que respaldan la calidad de nuestros servicios.
               </p>
             </div>

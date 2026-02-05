@@ -36,14 +36,14 @@ export default function NosotrosPage() {
                 <Badge variant="info" size="md" className="bg-white/20 text-white">
                   Desde 2011
                 </Badge>
-                <h1 className="font-heading font-extrabold tracking-[-0.03em] leading-[1] text-[clamp(40px,8.5vw,52px)] md:text-[clamp(56px,7vw,88px)] lg:text-[clamp(96px,6.5vw,120px)] text-balance">
+                <h1 className="font-heading font-extrabold tracking-[-0.02em] leading-[var(--line-height-tight-display)] text-[length:var(--fluid-h1)] text-balance">
                   Sobre APINDICO
                 </h1>
               </div>
             </div>
 
             <div className="col-span-4 md:col-start-8 md:col-span-3 md:mt-16">
-              <p className="text-lg md:text-xl text-white/90 leading-[1.7] max-w-[44ch]">
+              <p className="text-[length:var(--fluid-body)] text-white/90 leading-[var(--line-height-body)] max-w-[44ch]">
                 Líderes en soluciones de ingeniería para sistemas de acueducto y
                 alcantarillado en Colombia
               </p>

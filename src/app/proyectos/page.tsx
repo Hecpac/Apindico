@@ -106,7 +106,7 @@ export default function ProyectosPage() {
                 Portafolio
               </div>
 
-              <h1 className="mt-3 font-heading font-extrabold tracking-[-0.03em] leading-[1] text-[clamp(40px,8.5vw,52px)] md:text-[clamp(56px,7vw,88px)] lg:text-[clamp(96px,6.5vw,120px)] text-balance">
+              <h1 className="mt-3 font-heading font-extrabold tracking-[-0.02em] leading-[var(--line-height-tight-display)] text-[length:var(--fluid-h1)] text-balance">
                 {copy.projects.index.title}
               </h1>
 
@@ -129,7 +129,7 @@ export default function ProyectosPage() {
             </div>
 
             <div className="col-span-4 md:col-start-8 md:col-span-3 md:mt-16">
-              <p className="text-base md:text-lg leading-[1.7] text-[color:var(--color-muted)] max-w-[44ch]">
+              <p className="text-[length:var(--fluid-body)] leading-[var(--line-height-body)] text-[color:var(--color-muted)] max-w-[44ch]">
                 {copy.projects.index.subtitle}
               </p>
             </div>

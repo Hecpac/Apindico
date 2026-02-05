@@ -231,12 +231,12 @@ export function HeroSection({
               <div className="space-y-6">
                 <h1
                   data-hero-title
-                  className="font-extrabold tracking-[-0.03em] leading-[1] text-[clamp(40px,8.5vw,52px)] md:text-[clamp(56px,7vw,88px)] lg:text-[clamp(96px,6.5vw,120px)] text-balance"
+                  className="font-extrabold tracking-[-0.02em] leading-[var(--line-height-tight-display)] text-[length:var(--fluid-h1)] text-balance"
                 >
                   {title}
                 </h1>
                 {subtitle && (
-                  <p className="text-white/90 text-lg md:text-xl leading-[1.7] max-w-2xl font-medium">
+                  <p className="text-white/90 text-[length:var(--fluid-body)] leading-[var(--line-height-body)] max-w-2xl font-medium">
                     {subtitle}
                   </p>
                 )}
