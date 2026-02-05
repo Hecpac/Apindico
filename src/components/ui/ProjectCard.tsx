@@ -67,7 +67,7 @@ export function ProjectCard({
     <article
       className={cn(
         "group flex h-full flex-col overflow-hidden rounded-[2.5rem]",
-        "border border-white/5 bg-zinc-950/50 backdrop-blur-2xl transition-all duration-300",
+        "border border-white/10 bg-zinc-950/40 backdrop-blur-xl transition-all duration-300",
         "shadow-[0_30px_60px_-50px_rgba(0,0,0,0.8)]",
         "motion-safe:hover:-translate-y-1",
         "hover:border-orange-500/30 hover:shadow-[0_0_0_1px_rgba(249,115,22,0.35),0_20px_50px_-30px_rgba(249,115,22,0.5)]",
@@ -76,15 +76,25 @@ export function ProjectCard({
       )}
     >
       <div className="flex flex-col gap-4 p-5 pb-0">
-        <ProjectCover
-          id={project.id}
-          category={category}
-          displayIndex={displayIndex}
-          className={cn(
-            "transition-transform duration-500 motion-safe:group-hover:scale-[1.02]",
-            featured ? "aspect-[16/10]" : "aspect-[4/3]"
-          )}
-        />
+        <div className="relative">
+          <ProjectCover
+            id={project.id}
+            category={category}
+            displayIndex={displayIndex}
+            className={cn(
+              "transition-transform duration-700 motion-safe:group-hover:scale-105",
+              featured ? "aspect-[16/10]" : "aspect-[4/3]"
+            )}
+            style={{
+              WebkitMaskImage:
+                "linear-gradient(to bottom, black 70%, transparent 100%)",
+              maskImage: "linear-gradient(to bottom, black 70%, transparent 100%)",
+            }}
+          />
+          <span className="absolute left-4 top-4 rounded-full border border-orange-500/20 bg-orange-500/10 px-3 py-1 text-[10px] font-mono font-semibold uppercase tracking-[0.3em] text-orange-400">
+            {project.fecha}
+          </span>
+        </div>
         <Badge variant="editorial" size="sm" className="self-start bg-white/10">
           {categoryLabel}
         </Badge>
@@ -96,11 +106,8 @@ export function ProjectCard({
             <h3 className="text-2xl font-semibold tracking-tight text-white leading-snug">
               {project.titulo}
             </h3>
-            <span className="font-mono text-xs uppercase tracking-[0.2em] text-white/70">
-              {project.fecha}
-            </span>
           </div>
-          <div className="flex flex-wrap items-center gap-4 text-xs text-zinc-400">
+          <div className="flex flex-wrap items-center gap-4 text-xs font-mono text-zinc-400">
             <span className="inline-flex items-center gap-1.5">
               <Building2 className="h-3.5 w-3.5 text-zinc-500" strokeWidth={1.5} />
               <span className="text-zinc-300">{project.cliente}</span>

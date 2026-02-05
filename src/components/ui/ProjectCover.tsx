@@ -35,7 +35,7 @@ const ICONS_BY_CATEGORY: Record<ProjectCategory, LucideIcon[]> = {
 }
 
 const ProjectCover = React.forwardRef<HTMLDivElement, ProjectCoverProps>(
-  ({ className, id, category, label, displayIndex, ...props }, ref) => {
+  ({ className, id, category, label, displayIndex, style, ...props }, ref) => {
     const config = React.useMemo(() => getCoverConfig(id, category), [id, category])
     const pattern = React.useMemo(() => buildPatternSvg(config), [config])
     const icons = ICONS_BY_CATEGORY[category] ?? ICONS_BY_CATEGORY.otro
@@ -55,6 +55,7 @@ const ProjectCover = React.forwardRef<HTMLDivElement, ProjectCoverProps>(
         )}
         style={{
           backgroundImage: `linear-gradient(${config.angle}deg, ${config.gradientFrom}, ${config.gradientTo})`,
+          ...style,
         }}
         {...props}
       >

@@ -175,7 +175,7 @@ export function ProjectsPortfolioSection({
                       >
                         {isActive && (
                           <motion.div
-                            layoutId="project-filter-pill"
+                            layoutId="active"
                             className="absolute inset-0 rounded-full bg-orange-600"
                             transition={{ type: "spring", duration: 0.5 }}
                           />
