@@ -49,16 +49,30 @@ export default function ContactoPage() {
     <main className="min-h-screen">
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-azul-oscuro via-azul-principal to-azul-oscuro pt-32 pb-16 md:pt-40 md:pb-20">
-        <Container>
-          <div className="text-center text-white">
-            <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4">
-              {copy.contact.title}
-            </h1>
-            <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto">
-              {copy.contact.subtitle}
-            </p>
+        <div className="mx-auto max-w-[1440px] px-6 md:px-10 xl:px-[100px]">
+          <div className="grid grid-cols-12 gap-6 text-white">
+            <div className="col-span-12 lg:col-span-1">
+              <div className="text-xs uppercase tracking-[0.1em] text-white/70">
+                01
+              </div>
+            </div>
+
+            <div className="col-span-12 lg:col-start-2 lg:col-span-6">
+              <div className="text-xs uppercase tracking-[0.1em] text-white/70">
+                Contacto
+              </div>
+              <h1 className="mt-3 font-heading font-extrabold tracking-[-0.04em] leading-[1.05] text-[clamp(44px,7.2vw,120px)] lg:text-[clamp(120px,8.5vw,144px)] text-balance">
+                {copy.contact.title}
+              </h1>
+            </div>
+
+            <div className="col-span-12 lg:col-start-8 lg:col-span-3 lg:mt-16">
+              <p className="text-lg md:text-xl text-white/90 leading-[1.7] max-w-[44ch]">
+                {copy.contact.subtitle}
+              </p>
+            </div>
           </div>
-        </Container>
+        </div>
       </section>
 
       {/* Contact Section */}

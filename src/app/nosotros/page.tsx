@@ -20,20 +20,36 @@ export default function NosotrosPage() {
     <main className="min-h-screen">
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-azul-principal via-azul-oscuro to-azul-principal pt-32 pb-16 md:pt-40 md:pb-20">
-        <Container>
-          <div className="text-center text-white">
-            <Badge variant="info" size="md" className="mb-4 bg-white/20 text-white">
-              Desde 2011
-            </Badge>
-            <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4">
-              Sobre APINDICO
-            </h1>
-            <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto">
-              Líderes en soluciones de ingeniería para sistemas de acueducto y
-              alcantarillado en Colombia
-            </p>
+        <div className="mx-auto max-w-[1440px] px-6 md:px-10 xl:px-[100px]">
+          <div className="grid grid-cols-12 gap-6 text-white">
+            <div className="col-span-12 lg:col-span-1">
+              <div className="text-xs uppercase tracking-[0.1em] text-white/70">
+                01
+              </div>
+            </div>
+
+            <div className="col-span-12 lg:col-start-2 lg:col-span-6">
+              <div className="space-y-4">
+                <div className="text-xs uppercase tracking-[0.1em] text-white/70">
+                  Nosotros
+                </div>
+                <Badge variant="info" size="md" className="bg-white/20 text-white">
+                  Desde 2011
+                </Badge>
+                <h1 className="font-heading font-extrabold tracking-[-0.04em] leading-[1.05] text-[clamp(44px,7.2vw,120px)] lg:text-[clamp(120px,8.5vw,144px)] text-balance">
+                  Sobre APINDICO
+                </h1>
+              </div>
+            </div>
+
+            <div className="col-span-12 lg:col-start-8 lg:col-span-3 lg:mt-16">
+              <p className="text-lg md:text-xl text-white/90 leading-[1.7] max-w-[44ch]">
+                Líderes en soluciones de ingeniería para sistemas de acueducto y
+                alcantarillado en Colombia
+              </p>
+            </div>
           </div>
-        </Container>
+        </div>
       </section>
 
       <div className="bg-grid-tech text-white">
