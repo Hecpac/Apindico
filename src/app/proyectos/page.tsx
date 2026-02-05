@@ -93,7 +93,7 @@ export default function ProyectosPage() {
           <div className="absolute inset-0 opacity-[0.1] [background-image:radial-gradient(currentColor_1px,transparent_1px)] [background-size:18px_18px] text-[color:var(--color-border)]" />
           <div className="absolute inset-0 bg-[linear-gradient(140deg,_rgba(15,23,42,0.9),_rgba(11,15,23,0.95))]" />
         </div>
-        <div className="relative mx-auto max-w-[1440px] px-6 md:px-10 xl:px-[100px] py-16 md:py-24">
+        <div className="relative mx-auto max-w-[1440px] px-6 md:px-10 xl:px-[100px] pt-24 pb-16 md:pt-32 md:pb-24 lg:pt-36">
           <div className="grid grid-cols-4 md:grid-cols-12 gap-6">
             <div className="col-span-4 md:col-span-1">
               <div className="text-xs uppercase tracking-[0.1em] text-[color:var(--color-muted)]">
