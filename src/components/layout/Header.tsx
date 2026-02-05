@@ -176,9 +176,10 @@ export function Header() {
             aria-label="Navegación principal"
             className={cn(
               "flex items-center justify-between transition-all duration-300 rounded-full border border-white/10 backdrop-blur-2xl px-10 py-3",
+              "bg-white/10 shadow-[0_8px_24px_rgba(0,0,0,0.18)]",
               isScrolled
-                ? "h-14 bg-zinc-950/20 shadow-[0_10px_30px_rgba(0,0,0,0.22)]"
-                : "h-16 md:h-20 bg-zinc-950/20"
+                ? "h-14 md:bg-zinc-950/20 md:shadow-[0_10px_30px_rgba(0,0,0,0.22)]"
+                : "h-14 md:h-20 md:bg-zinc-950/20 md:shadow-[0_14px_40px_rgba(0,0,0,0.25)]"
             )}
           >
             {/* Logo + Mini Label */}
