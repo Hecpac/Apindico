@@ -145,7 +145,7 @@ export function ProjectCaseStudyDialog({
                   <ArrowUpRight className="h-4 w-4" />
                 </Link>
               </Button>
-              <Button variant="editorial-outline" size="md" asChild>
+              <Button variant="editorial" size="md" asChild>
                 <Link href="/contacto">Solicitar información</Link>
               </Button>
             </div>
