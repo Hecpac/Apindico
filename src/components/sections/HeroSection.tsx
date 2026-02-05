@@ -41,7 +41,7 @@ function PrimaryCTA({
   return (
     <Link
       href={href}
-      className="group relative overflow-hidden inline-flex items-center justify-center px-8 py-4 bg-orange-600 hover:bg-orange-500 text-white rounded-full font-bold shadow-[0_0_20px_rgba(234,88,12,0.3)] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_0_28px_rgba(234,88,12,0.4)]"
+      className="group relative overflow-hidden inline-flex items-center justify-center px-8 py-4 bg-orange-600 hover:bg-orange-500 text-white rounded-md font-bold shadow-[0_0_20px_rgba(234,88,12,0.3)] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_0_28px_rgba(234,88,12,0.4)]"
     >
       <span className="pointer-events-none absolute inset-0 bg-black/25" aria-hidden="true" />
       <span className="relative z-10">{label}</span>
@@ -60,7 +60,7 @@ function SecondaryCTA({
   return (
     <Link
       href={href}
-      className="group inline-flex items-center justify-center px-8 py-4 bg-white/5 backdrop-blur-md text-white border border-white/20 rounded-full font-bold text-lg hover:bg-white/10 transition-all duration-300"
+      className="group inline-flex items-center justify-center px-8 py-4 bg-white/5 backdrop-blur-md text-white border border-white/20 rounded-md font-bold text-lg hover:bg-white/10 transition-all duration-300"
     >
       <span>{label}</span>
     </Link>
