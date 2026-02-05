@@ -50,6 +50,22 @@ const svgToDataUri = (svg: string) => {
   return `data:image/svg+xml,${encoded}`
 }
 
+const buildPatternShape = (pattern: PatternType, size: number, opacity: string) => {
+  const stroke = "#FFFFFF"
+  switch (pattern) {
+    case "grid":
+      return `<path d="M ${size} 0 L 0 0 0 ${size}" stroke="${stroke}" stroke-opacity="${opacity}" stroke-width="1" />`
+    case "dots":
+      return `<circle cx="${size / 2}" cy="${size / 2}" r="${Math.max(
+        1.5,
+        size * 0.08
+      )}" fill="${stroke}" fill-opacity="${opacity}" />`
+    case "lines":
+    default:
+      return `<path d="M 0 ${size * 0.2} H ${size} M 0 ${size * 0.6} H ${size} M 0 ${size} H ${size}" stroke="${stroke}" stroke-opacity="${opacity}" stroke-width="1" />`
+  }
+}
+
 export type CoverConfig = {
   gradientFrom: string
   gradientTo: string
@@ -91,25 +107,8 @@ export const getCoverConfig = (id: string, category: ProjectCategory): CoverConf
 
 export const buildPatternSvg = (config: CoverConfig) => {
   const size = config.patternSize
-  const stroke = "#FFFFFF"
   const opacity = config.patternOpacity.toFixed(2)
-
-  let patternShape = ""
-  switch (config.pattern) {
-    case "grid":
-      patternShape = `<path d="M ${size} 0 L 0 0 0 ${size}" stroke="${stroke}" stroke-opacity="${opacity}" stroke-width="1" />`
-      break
-    case "dots":
-      patternShape = `<circle cx="${size / 2}" cy="${size / 2}" r="${Math.max(
-        1.5,
-        size * 0.08
-      )}" fill="${stroke}" fill-opacity="${opacity}" />`
-      break
-    case "lines":
-    default:
-      patternShape = `<path d="M 0 ${size * 0.2} H ${size} M 0 ${size * 0.6} H ${size} M 0 ${size} H ${size}" stroke="${stroke}" stroke-opacity="${opacity}" stroke-width="1" />`
-      break
-  }
+  const patternShape = buildPatternShape(config.pattern, size, opacity)
 
   const svg = `<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
@@ -125,3 +124,35 @@ export const buildPatternSvg = (config: CoverConfig) => {
 }
 
 export const buildPatternDataUri = buildPatternSvg
+
+export const buildCoverSvg = (
+  config: CoverConfig,
+  options: { width?: number; height?: number } = {}
+) => {
+  const width = options.width ?? 1200
+  const height = options.height ?? 900
+  const size = Math.max(24, Math.round(config.patternSize * (width / 1200)))
+  const opacity = config.patternOpacity.toFixed(2)
+  const patternShape = buildPatternShape(config.pattern, size, opacity)
+  const accentOpacity = 0.22
+
+  const svg = `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
+  <defs>
+    <linearGradient id="g" gradientTransform="rotate(${config.angle})">
+      <stop offset="0%" stop-color="${config.gradientFrom}" />
+      <stop offset="100%" stop-color="${config.gradientTo}" />
+    </linearGradient>
+    <pattern id="p" width="${size}" height="${size}" patternUnits="userSpaceOnUse">
+      ${patternShape}
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#g)" />
+  <rect width="100%" height="100%" fill="url(#p)" opacity="0.7" />
+  <circle cx="${width * 0.78}" cy="${height * 0.2}" r="${
+    width * 0.18
+  }" fill="${config.accent}" opacity="${accentOpacity}" />
+</svg>`
+
+  return svgToDataUri(svg)
+}

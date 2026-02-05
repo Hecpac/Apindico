@@ -1,4 +1,5 @@
 import * as React from "react"
+import Image from "next/image"
 import {
   Droplet,
   Map,
@@ -13,11 +14,7 @@ import {
   LucideIcon,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
-import {
-  buildPatternSvg,
-  getCoverConfig,
-  type ProjectCategory,
-} from "@/lib/projectCover"
+import { buildCoverSvg, getCoverConfig, type ProjectCategory } from "@/lib/projectCover"
 
 export interface ProjectCoverProps
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -25,6 +22,9 @@ export interface ProjectCoverProps
   category: ProjectCategory
   label?: string
   displayIndex?: number
+  priority?: boolean
+  sizes?: string
+  alt?: string
 }
 
 const ICONS_BY_CATEGORY: Record<ProjectCategory, LucideIcon[]> = {
@@ -35,9 +35,19 @@ const ICONS_BY_CATEGORY: Record<ProjectCategory, LucideIcon[]> = {
 }
 
 const ProjectCover = React.forwardRef<HTMLDivElement, ProjectCoverProps>(
-  ({ className, id, category, label, displayIndex, style, ...props }, ref) => {
+  (
+    { className, id, category, label, displayIndex, priority, sizes, alt, style, ...props },
+    ref
+  ) => {
     const config = React.useMemo(() => getCoverConfig(id, category), [id, category])
-    const pattern = React.useMemo(() => buildPatternSvg(config), [config])
+    const coverSrc = React.useMemo(
+      () => buildCoverSvg(config, { width: 1200, height: 900 }),
+      [config]
+    )
+    const blurSrc = React.useMemo(
+      () => buildCoverSvg(config, { width: 24, height: 18 }),
+      [config]
+    )
     const icons = ICONS_BY_CATEGORY[category] ?? ICONS_BY_CATEGORY.otro
     const WatermarkIcon = icons[config.iconIndex % icons.length]
     const numberLabel =
@@ -59,15 +69,20 @@ const ProjectCover = React.forwardRef<HTMLDivElement, ProjectCoverProps>(
         }}
         {...props}
       >
-        <div
-          className="absolute inset-0 opacity-70"
-          style={{ backgroundImage: `url(${pattern})` }}
-          aria-hidden="true"
-        />
-        <div
-          className="absolute -right-16 -top-16 h-40 w-40 rounded-full blur-3xl"
-          style={{ background: config.accent, opacity: 0.25 }}
-          aria-hidden="true"
+        <Image
+          src={coverSrc}
+          alt={alt ?? ""}
+          fill
+          priority={priority}
+          unoptimized
+          placeholder="blur"
+          blurDataURL={blurSrc}
+          sizes={
+            sizes ??
+            "(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+          }
+          className="object-cover"
+          aria-hidden={!alt}
         />
         <div
           className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"

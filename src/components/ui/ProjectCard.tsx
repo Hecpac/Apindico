@@ -66,7 +66,7 @@ export function ProjectCard({
   return (
     <article
       className={cn(
-        "group flex h-full flex-col overflow-hidden rounded-[2.5rem]",
+        "group flex h-full flex-col overflow-hidden rounded-[32px]",
         "border border-white/10 bg-zinc-950/40 backdrop-blur-xl transition-all duration-300",
         "shadow-[0_30px_60px_-50px_rgba(0,0,0,0.8)]",
         "motion-safe:hover:-translate-y-1",
@@ -90,9 +90,16 @@ export function ProjectCard({
                 "linear-gradient(to bottom, black 70%, transparent 100%)",
               maskImage: "linear-gradient(to bottom, black 70%, transparent 100%)",
             }}
+            priority={Boolean(displayIndex && displayIndex <= 2)}
+            sizes={
+              featured
+                ? "(min-width: 1024px) 66vw, (min-width: 768px) 100vw, 100vw"
+                : "(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+            }
+            alt={`Cover técnico del proyecto ${project.titulo}`}
           />
-          <span className="absolute left-4 top-4 rounded-full border border-orange-500/20 bg-orange-500/10 px-3 py-1 text-[10px] font-mono font-semibold uppercase tracking-[0.3em] text-orange-400">
-            {project.fecha}
+          <span className="absolute left-4 top-4 rounded-full border border-orange-500/20 bg-orange-500/10 px-3 py-1 text-[10px] font-mono font-semibold uppercase tracking-[0.3em] text-orange-500">
+            {`ID-${project.id} // ${project.fecha}`}
           </span>
         </div>
         <Badge variant="editorial" size="sm" className="self-start bg-white/10">

@@ -230,18 +230,29 @@ export function ProjectsPortfolioSection({
           </div>
 
           {sortedProjects.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[1fr]">
+            <motion.div
+              className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[1fr]"
+              variants={{
+                hidden: { opacity: 0 },
+                show: {
+                  opacity: 1,
+                  transition: { staggerChildren: 0.08 },
+                },
+              }}
+              initial="hidden"
+              animate="show"
+            >
               {showSkeletons
                 ? Array.from({ length: 6 }).map((_, index) => (
                     <div
                       key={`skeleton-${index}`}
                       className={cn(
-                        "relative overflow-hidden rounded-[2.5rem] border border-white/5 bg-zinc-950/50 backdrop-blur-2xl p-6",
+                        "relative overflow-hidden rounded-[32px] border border-white/10 bg-zinc-950/40 backdrop-blur-xl p-6",
                         "animate-pulse",
                         index % 5 === 0 ? "md:col-span-2" : "md:col-span-1"
                       )}
                     >
-                      <div className="aspect-[4/3] w-full rounded-[2rem] bg-white/5" />
+                      <div className="aspect-[4/3] w-full rounded-[28px] bg-white/5" />
                       <div className="mt-6 h-5 w-3/4 rounded-full bg-white/5" />
                       <div className="mt-4 h-4 w-1/2 rounded-full bg-white/5" />
                       <div className="mt-6 h-10 w-10 rounded-full bg-white/5" />
@@ -249,21 +260,31 @@ export function ProjectsPortfolioSection({
                   ))
                 : sortedProjects.map((project, index) => {
                     const category = CATEGORY_MAP[project.servicioId] ?? "otro"
-                    const isFeatured = featuredProjectIds.has(project.id) || index % 5 === 0
+                    const isFeatured =
+                      featuredProjectIds.has(project.id) ||
+                      index % 5 === 0 ||
+                      project.titulo.toLowerCase().includes("bogotá")
                     return (
-                      <ProjectCard
+                      <motion.div
                         key={project.id}
-                        project={project}
-                        category={category}
-                        categoryLabel={CATEGORY_LABELS[category]}
-                        caseStudy={getProjectCaseStudy(project.id)}
-                        displayIndex={index + 1}
-                        featured={isFeatured}
+                        variants={{
+                          hidden: { opacity: 0, y: 16 },
+                          show: { opacity: 1, y: 0 },
+                        }}
                         className={isFeatured ? "md:col-span-2" : "md:col-span-1"}
-                      />
+                      >
+                        <ProjectCard
+                          project={project}
+                          category={category}
+                          categoryLabel={CATEGORY_LABELS[category]}
+                          caseStudy={getProjectCaseStudy(project.id)}
+                          displayIndex={index + 1}
+                          featured={isFeatured}
+                        />
+                      </motion.div>
                     )
                   })}
-            </div>
+            </motion.div>
           ) : (
             <EmptyState
               title="No hay proyectos con estos filtros"
