@@ -57,7 +57,7 @@ export function StaggerContainer({
         <motion.div
           key={index}
           variants={{
-            hidden: { opacity: 1, y: 18 },
+            hidden: { opacity: 0, y: 24 },
             visible: {
               opacity: 1,
               y: 0,

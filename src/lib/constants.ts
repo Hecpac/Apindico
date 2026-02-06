@@ -194,21 +194,26 @@ export const COMPANY_INFO = {
   email: "info@apindico.com",
 } as const
 
-// Cliente data structure supporting both logos and text fallback
-// Note: logos are optional - if not provided or file doesn't exist, the component will fallback to text
-export const CLIENTES_DATA = [
-  { name: "EAAB", logo: null },
-  { name: "EAAV", logo: null },
-  { name: "ESACOR ESP", logo: null },
-  { name: "WSP", logo: null },
-  { name: "CICO Construcciones", logo: null },
-  { name: "Inversiones Racuellar", logo: null },
-  { name: "Consucasa S.A.S.", logo: null },
-  { name: "Multifamiliares Pepe 8", logo: null },
-  { name: "Detergentes Ltda.", logo: null },
-  { name: "Coinsa S.A.S.", logo: null },
-  { name: "Consorcio Eurocivil", logo: null },
-  { name: "Melos y Melos", logo: null },
+export interface ClientLogo {
+  name: string
+  logo: string | null
+  alt?: string
+}
+
+// The first 12 clients are shown on Home and include logo files.
+export const CLIENTES_DATA: readonly ClientLogo[] = [
+  { name: "EAAB", logo: "/logos/clients/eaab.svg", alt: "Logo de EAAB" },
+  { name: "EAAV", logo: "/logos/clients/eaav.svg", alt: "Logo de EAAV" },
+  { name: "ESACOR ESP", logo: "/logos/clients/esacor-esp.svg", alt: "Logo de ESACOR ESP" },
+  { name: "WSP", logo: "/logos/clients/wsp.svg", alt: "Logo de WSP" },
+  { name: "CICO Construcciones", logo: "/logos/clients/cico.svg", alt: "Logo de CICO Construcciones" },
+  { name: "Inversiones Racuellar", logo: "/logos/clients/inversiones-racuellar.svg", alt: "Logo de Inversiones Racuellar" },
+  { name: "Consucasa S.A.S.", logo: "/logos/clients/consucasa.svg", alt: "Logo de Consucasa S.A.S." },
+  { name: "Multifamiliares Pepe 8", logo: "/logos/clients/multifamiliares-pepe8.svg", alt: "Logo de Multifamiliares Pepe 8" },
+  { name: "Detergentes Ltda.", logo: "/logos/clients/detergentes.svg", alt: "Logo de Detergentes Ltda." },
+  { name: "Coinsa S.A.S.", logo: "/logos/clients/coinsa.svg", alt: "Logo de Coinsa S.A.S." },
+  { name: "Consorcio Eurocivil", logo: "/logos/clients/consorcio-eurocivil.svg", alt: "Logo de Consorcio Eurocivil" },
+  { name: "Melos y Melos", logo: "/logos/clients/melos-melos.svg", alt: "Logo de Melos y Melos" },
   { name: "CNOC", logo: null },
   { name: "COCO Ltda.", logo: null },
   { name: "Multidrive / Cumbrera", logo: null },

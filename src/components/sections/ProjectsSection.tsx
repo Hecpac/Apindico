@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils"
 import { PROYECTOS } from "@/lib/constants"
 import { Button } from "@/components/ui/Button"
 import { AnimatedSection } from "@/components/motion/AnimatedSection"
+import { StaggerContainer } from "@/components/motion/StaggerContainer"
 
 interface ProjectsSectionProps {
   title?: string
@@ -62,7 +63,7 @@ export function ProjectsSection({
           </div>
         </AnimatedSection>
 
-        <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-3 md:gap-6">
+        <StaggerContainer className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-3 md:gap-6">
           {displayedProjects.map((proyecto, index) => (
             <article
               key={proyecto.id}
@@ -113,7 +114,7 @@ export function ProjectsSection({
               </div>
             </article>
           ))}
-        </div>
+        </StaggerContainer>
       </div>
     </section>
   )

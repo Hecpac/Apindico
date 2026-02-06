@@ -12,9 +12,10 @@ import { Button } from "@/components/ui/Button"
 interface ClientLogoProps {
   name: string
   logo: string | null
+  alt?: string
 }
 
-function ClientLogo({ name, logo }: ClientLogoProps) {
+function ClientLogo({ name, logo, alt }: ClientLogoProps) {
   const [hasError, setHasError] = useState(false)
 
   // If no logo provided or image failed to load, show text
@@ -29,10 +30,10 @@ function ClientLogo({ name, logo }: ClientLogoProps) {
   return (
     <Image
       src={logo}
-      alt={`Logo de ${name}`}
-      width={120}
-      height={60}
-      className="h-12 w-auto object-contain grayscale transition-all duration-300 hover:grayscale-0"
+      alt={alt ?? `Logo de ${name}`}
+      width={220}
+      height={72}
+      className="h-11 w-full max-w-[180px] object-contain grayscale transition-all duration-300 hover:grayscale-0"
       onError={() => setHasError(true)}
       loading="lazy"
     />
@@ -91,7 +92,7 @@ export function ClientsSection({
               className="flex min-h-[72px] items-center justify-center rounded-lg border border-[color:var(--color-border)] bg-[color:var(--color-surface)]/80 px-6 py-4 shadow-[var(--shadow-1)] transition-all duration-300 hover:border-[color:var(--color-accent)]/35 hover:shadow-[var(--shadow-2)]"
               title={cliente.name}
             >
-              <ClientLogo name={cliente.name} logo={cliente.logo} />
+              <ClientLogo name={cliente.name} logo={cliente.logo} alt={cliente.alt} />
             </li>
           ))}
         </ul>

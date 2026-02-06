@@ -2,14 +2,11 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { useRef } from "react"
 import Image from "next/image"
-import { useGSAP } from "@gsap/react"
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/Badge"
 import { Button } from "@/components/ui/Button"
 import { AnimatedSection } from "@/components/motion/AnimatedSection"
-import { gsap, ScrollTrigger } from "@/lib/gsap-config"
 
 interface HeroSectionProps {
   className?: string
@@ -36,13 +33,14 @@ export function HeroSection({
   secondaryCta = { label: "Agendar una llamada", href: "/contacto" },
   badges,
 }: HeroSectionProps) {
-  const sectionRef = useRef<HTMLElement>(null)
+  const sectionRef = React.useRef<HTMLElement>(null)
   const [canAnimate, setCanAnimate] = React.useState(false)
   const [shouldUseVideo, setShouldUseVideo] = React.useState(false)
+  const [shouldLoadVideo, setShouldLoadVideo] = React.useState(false)
 
   React.useEffect(() => {
     const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
-    const desktopQuery = window.matchMedia("(min-width: 768px)")
+    const desktopQuery = window.matchMedia("(min-width: 1024px)")
 
     const update = () => {
       const allowMotion = !motionQuery.matches
@@ -60,11 +58,57 @@ export function HeroSection({
     }
   }, [])
 
-  useGSAP(
-    () => {
-      if (!canAnimate || !sectionRef.current) return
+  React.useEffect(() => {
+    if (!shouldUseVideo) {
+      setShouldLoadVideo(false)
+      return
+    }
 
-      gsap.to(".hero-video-container", {
+    let didLoad = false
+    let idleHandle: number | null = null
+    let timeoutHandle: ReturnType<typeof setTimeout> | null = null
+
+    const activateVideo = () => {
+      if (didLoad) return
+      didLoad = true
+      setShouldLoadVideo(true)
+    }
+
+    if ("requestIdleCallback" in window) {
+      idleHandle = window.requestIdleCallback(activateVideo, { timeout: 2200 })
+    } else {
+      timeoutHandle = setTimeout(activateVideo, 1400)
+    }
+
+    const onInteraction = () => activateVideo()
+    window.addEventListener("pointerdown", onInteraction, { once: true, passive: true })
+    window.addEventListener("keydown", onInteraction, { once: true })
+    window.addEventListener("scroll", onInteraction, { once: true, passive: true })
+
+    return () => {
+      if (idleHandle !== null && "cancelIdleCallback" in window) {
+        window.cancelIdleCallback(idleHandle)
+      }
+      if (timeoutHandle !== null) {
+        clearTimeout(timeoutHandle)
+      }
+      window.removeEventListener("pointerdown", onInteraction)
+      window.removeEventListener("keydown", onInteraction)
+      window.removeEventListener("scroll", onInteraction)
+    }
+  }, [shouldUseVideo])
+
+  React.useEffect(() => {
+    if (!canAnimate || !sectionRef.current) return
+
+    let canceled = false
+    let cleanup: (() => void) | null = null
+
+    ;(async () => {
+      const { gsap } = await import("@/lib/gsap-config")
+      if (canceled || !sectionRef.current) return
+
+      const videoTween = gsap.to(".hero-video-container", {
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
@@ -75,7 +119,7 @@ export function HeroSection({
         scale: 1.06,
       })
 
-      gsap.to(".hero-content", {
+      const contentTween = gsap.to(".hero-content", {
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
@@ -85,16 +129,19 @@ export function HeroSection({
         y: -24,
       })
 
-      return () => {
-        ScrollTrigger.getAll().forEach((trigger) => {
-          if (trigger.trigger === sectionRef.current) {
-            trigger.kill()
-          }
-        })
+      cleanup = () => {
+        videoTween.scrollTrigger?.kill()
+        videoTween.kill()
+        contentTween.scrollTrigger?.kill()
+        contentTween.kill()
       }
-    },
-    { scope: sectionRef, dependencies: [canAnimate] }
-  )
+    })()
+
+    return () => {
+      canceled = true
+      cleanup?.()
+    }
+  }, [canAnimate])
 
   return (
     <header
@@ -104,14 +151,14 @@ export function HeroSection({
       style={{ background: "var(--hero-bg)" }}
     >
       <div className="hero-video-container absolute inset-0 z-0 will-change-transform">
-        {shouldUseVideo ? (
+        {shouldUseVideo && shouldLoadVideo ? (
           <video
             className="h-full w-full object-cover opacity-80"
             autoPlay
             loop
             muted
             playsInline
-            preload="none"
+            preload="metadata"
             poster="/images/hero-clean.webp"
             aria-hidden="true"
           >
