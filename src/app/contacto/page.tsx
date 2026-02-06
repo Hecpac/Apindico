@@ -14,7 +14,8 @@ export const metadata: Metadata = {
 }
 
 const formatPhoneLink = (value: string) => value.replace(/[^\d+]/g, "")
-const formatWhatsappLink = (value: string) => `https://wa.me/${value.replace(/\D/g, "")}`
+const formatWhatsappLink = (value: string, message: string) =>
+  `https://wa.me/${value.replace(/\D/g, "")}?text=${encodeURIComponent(message)}`
 
 const contactInfo = [
   {
@@ -103,11 +104,19 @@ export default function ContactoPage() {
                 </div>
                 <div className="mt-6">
                   <Button variant="cta" size="md" asChild>
-                    <a href={formatWhatsappLink(COMPANY_INFO.phones.celulares[0])} target="_blank" rel="noopener noreferrer">
+                    <a
+                      href={formatWhatsappLink(COMPANY_INFO.phones.celulares[0], copy.whatsapp.prefilled)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`${copy.whatsapp.label} (${copy.whatsapp.badge})`}
+                    >
                       <MessageCircle className="h-4 w-4" aria-hidden="true" />
-                      Escribir por WhatsApp
+                      {copy.whatsapp.label}
                     </a>
                   </Button>
+                  <p className="mt-2 text-xs font-medium uppercase tracking-[0.12em] text-[color:var(--color-muted)]">
+                    {copy.whatsapp.badge}
+                  </p>
                 </div>
               </div>
 

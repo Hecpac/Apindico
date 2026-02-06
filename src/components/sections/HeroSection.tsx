@@ -15,6 +15,7 @@ interface HeroSectionProps {
   className?: string
   title?: string
   subtitle?: string
+  subtitleExtended?: string
   primaryCta?: {
     label: string
     href?: string
@@ -30,6 +31,7 @@ export function HeroSection({
   className,
   title = "Ingeniería que Transforma",
   subtitle,
+  subtitleExtended,
   primaryCta = { label: "Cotizar proyecto", href: "/cotizador" },
   secondaryCta = { label: "Agendar una llamada", href: "/contacto" },
   badges,
@@ -146,6 +148,12 @@ export function HeroSection({
                 {subtitle && (
                   <p className="max-w-3xl text-[length:var(--fluid-body)] font-medium leading-[var(--line-height-body)] text-[color:var(--hero-text-secondary)]">
                     {subtitle}
+                  </p>
+                )}
+
+                {subtitleExtended && (
+                  <p className="max-w-3xl text-sm leading-relaxed text-[color:var(--hero-text-muted)] md:text-base">
+                    {subtitleExtended}
                   </p>
                 )}
 

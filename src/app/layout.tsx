@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Header, Footer } from "@/components/layout";
+import { Header, Footer, WhatsAppCTA } from "@/components/layout";
 import { SmoothScrollProvider } from "@/components/providers/SmoothScrollProvider";
 import { QuoteStepProvider } from "@/components/providers/QuoteStepProvider";
 import "./globals.css";
@@ -63,6 +63,7 @@ export default function RootLayout({
           <QuoteStepProvider>
             <Header />
             <main id="main-content" className="min-h-screen">{children}</main>
+            <WhatsAppCTA />
             <Footer />
           </QuoteStepProvider>
         </SmoothScrollProvider>

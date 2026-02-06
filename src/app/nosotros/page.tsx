@@ -8,11 +8,11 @@ import { TechnicalTimeline } from "@/components/about/TechnicalTimeline"
 import { ValuesGrid } from "@/components/about/ValuesGrid"
 import { ClientsSlider } from "@/components/about/ClientsSlider"
 import { CERTIFICACIONES } from "@/lib/constants"
+import copy from "@/lib/copy"
 
 export const metadata: Metadata = {
   title: "Nosotros",
-  description:
-    "Conozca APINDICO S.A.S., empresa líder en servicios de ingeniería de acueducto y alcantarillado en Colombia. Más de 10 años de experiencia.",
+  description: copy.about.metaDescription,
 }
 
 export default function NosotrosPage() {
@@ -31,21 +31,20 @@ export default function NosotrosPage() {
             <div className="col-span-4 md:col-start-2 md:col-span-7">
               <div className="space-y-4">
                 <div className="text-xs uppercase tracking-[0.1em] text-white/70">
-                  Nosotros
+                  {copy.about.hero.eyebrow}
                 </div>
                 <Badge variant="info" size="md" className="bg-white/20 text-white">
-                  Desde 2011
+                  {copy.about.hero.badge}
                 </Badge>
                 <h1 className="font-heading font-extrabold tracking-[-0.02em] leading-[var(--line-height-tight-display)] text-[length:var(--fluid-h1)] text-balance">
-                  Sobre APINDICO
+                  {copy.about.hero.title}
                 </h1>
               </div>
             </div>
 
             <div className="col-span-4 md:col-start-8 md:col-span-3 md:mt-16">
               <p className="text-[length:var(--fluid-body)] text-white/90 leading-[var(--line-height-body)] max-w-[44ch]">
-                Líderes en soluciones de ingeniería para sistemas de acueducto y
-                alcantarillado en Colombia
+                {copy.about.hero.subtitle}
               </p>
             </div>
           </div>
@@ -60,10 +59,10 @@ export default function NosotrosPage() {
         <section className="py-16 md:py-24">
           <div className="max-w-4xl mx-auto px-6 text-center">
             <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4">
-              Certificaciones
+              {copy.about.certifications.title}
             </h2>
             <p className="text-zinc-400 mb-10">
-              Certificaciones que respaldan nuestra competencia técnica.
+              {copy.about.certifications.subtitle}
             </p>
 
             <div className="rounded-[2rem] bg-zinc-900/50 border border-white/10 backdrop-blur-md p-8 inline-block">
@@ -95,24 +94,23 @@ export default function NosotrosPage() {
         <Container>
           <div className="text-center text-white">
             <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
-              ¿Listo para trabajar con nosotros?
+              {copy.about.cta.title}
             </h2>
             <p className="text-white/90 max-w-xl mx-auto mb-8">
-              Contáctenos hoy y descubra cómo podemos ayudarle con su proyecto
-              de acueducto y alcantarillado
+              {copy.about.cta.subtitle}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href="/cotizador"
                 className="inline-flex items-center justify-center px-8 py-3 bg-coral-energetico text-white font-semibold rounded-full hover:bg-coral-oscuro transition-colors"
 	              >
-	                Solicitar cotización
+	                {copy.about.cta.primaryCta}
 	              </Link>
               <Link
                 href="/contacto"
                 className="inline-flex items-center justify-center px-8 py-3 border-2 border-white text-white font-semibold rounded-full hover:bg-white/10 transition-colors"
               >
-                Contáctenos
+                {copy.about.cta.secondaryCta}
               </Link>
             </div>
           </div>

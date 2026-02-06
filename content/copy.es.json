@@ -13,7 +13,8 @@
   "home": {
     "hero": {
       "h1": "Ingeniería que Transforma",
-      "sub": "Inspección, diagnóstico y rehabilitación de redes de acueducto y alcantarillado. Inspección CCTV (PACP), Vactor, pruebas de hermeticidad e hidrostáticas, catastro y topografía. Respuesta en menos de 24 horas hábiles.",
+      "sub": "Inspección, diagnóstico y rehabilitación de redes de acueducto y alcantarillado.",
+      "subExtended": "Inspección CCTV (PACP), Vactor, pruebas de hermeticidad e hidrostáticas, catastro y topografía. Respuesta en menos de 24 horas hábiles.",
       "primaryCta": "Cotizar proyecto",
       "secondaryCta": "Hablar con un ingeniero",
       "badges": [
@@ -22,15 +23,53 @@
         "Cobertura nacional"
       ]
     },
+    "metrics": [
+      {
+        "value": 500,
+        "suffix": "+ km",
+        "label": "Redes inspeccionadas"
+      },
+      {
+        "value": 150,
+        "suffix": "+",
+        "label": "Proyectos completados"
+      },
+      {
+        "value": 12,
+        "suffix": "",
+        "label": "Años de experiencia"
+      },
+      {
+        "value": 24,
+        "suffix": "h",
+        "label": "Tiempo de respuesta"
+      }
+    ],
     "services": {
       "title": "Servicios especializados",
       "subtitle": "Soluciones para diagnóstico, mantenimiento y rehabilitación, con metodología clara y entregables verificables.",
       "cta": "Ver todos los servicios"
     },
+    "midCta": {
+      "title": "¿Necesita una solución especializada?",
+      "subtitle": "Nuestro equipo de ingenieros certificados está listo para ayudarle.",
+      "bullets": [
+        "Consulta sin compromiso",
+        "Cotización en 24 horas",
+        "Personal certificado NASSCO / PACP"
+      ],
+      "primaryCta": "Solicitar cotización",
+      "secondaryCta": "Ver servicios"
+    },
     "projects": {
       "title": "Proyectos destacados",
       "subtitle": "Casos reales con alcance, metodología y entregables.",
       "cta": "Ver proyectos"
+    },
+    "clients": {
+      "title": "Clientes que confían en nosotros",
+      "subtitle": "Empresas líderes en servicios públicos e infraestructura",
+      "cta": "Ver todos"
     },
     "finalCta": {
       "title": "¿Listo para iniciar?",
@@ -61,11 +100,35 @@
     "index": {
       "title": "Proyectos y experiencia en campo",
       "subtitle": "Casos reales en inspección, limpieza y rehabilitación de redes.",
-      "filters": ["Todos", "CCTV", "Vactor", "Acueducto"],
+      "filters": [
+        "Todos",
+        "CCTV",
+        "Vactor",
+        "Acueducto"
+      ],
       "leadCta": "Solicitar información",
       "finalCtaTitle": "¿Tiene un proyecto en mente?",
       "finalCtaSubtitle": "Solicite una cotización personalizada sin compromiso.",
       "finalCtaButton": "Cotizar proyecto"
+    }
+  },
+  "about": {
+    "metaDescription": "Conozca APINDICO S.A.S., empresa líder en servicios de ingeniería de acueducto y alcantarillado en Colombia.",
+    "hero": {
+      "eyebrow": "Nosotros",
+      "badge": "Desde 2011",
+      "title": "Sobre APINDICO",
+      "subtitle": "Líderes en soluciones de ingeniería para sistemas de acueducto y alcantarillado en Colombia."
+    },
+    "certifications": {
+      "title": "Certificaciones",
+      "subtitle": "Certificaciones que respaldan nuestra competencia técnica."
+    },
+    "cta": {
+      "title": "¿Listo para trabajar con nosotros?",
+      "subtitle": "Contáctenos hoy y descubra cómo podemos ayudarle con su proyecto de acueducto y alcantarillado.",
+      "primaryCta": "Solicitar cotización",
+      "secondaryCta": "Contáctenos"
     }
   },
   "contact": {
@@ -81,6 +144,68 @@
       "submitting": "Enviando…",
       "success": "¡Recibido! Un ingeniero revisará su solicitud y le contactaremos en menos de 24 horas hábiles.",
       "error": "No pudimos enviar el mensaje. Intente de nuevo o escríbanos a info@apindico.com."
+    }
+  },
+  "whatsapp": {
+    "label": "Escríbanos",
+    "badge": "Respuesta en 24h",
+    "prefilled": "Hola, me interesa cotizar un servicio de APINDICO"
+  },
+  "footer": {
+    "services": {
+      "title": "Servicios",
+      "viewAll": "Ver todos",
+      "links": [
+        {
+          "href": "/servicios/inspeccion-cctv",
+          "label": "Inspección CCTV"
+        },
+        {
+          "href": "/servicios/servicios-vactor",
+          "label": "Servicios Vactor"
+        },
+        {
+          "href": "/servicios/prueba-hermeticidad",
+          "label": "Prueba de Hermeticidad"
+        },
+        {
+          "href": "/servicios/prueba-hidrostatica",
+          "label": "Prueba Hidrostática"
+        }
+      ]
+    },
+    "company": {
+      "title": "Empresa",
+      "links": [
+        {
+          "href": "/nosotros",
+          "label": "Sobre Nosotros"
+        },
+        {
+          "href": "/proyectos",
+          "label": "Proyectos"
+        },
+        {
+          "href": "/certificaciones",
+          "label": "Certificaciones"
+        },
+        {
+          "href": "/trabaja-con-nosotros",
+          "label": "Trabaja con Nosotros"
+        }
+      ]
+    },
+    "contact": {
+      "title": "Contacto",
+      "addressLabel": "Dirección Principal",
+      "phoneLabel": "Teléfono Fijo",
+      "mobileLabel": "Celular Principal",
+      "emailLabel": "Correo Electrónico"
+    },
+    "legal": {
+      "rights": "Todos los derechos reservados.",
+      "privacy": "Política de Privacidad",
+      "terms": "Términos de Uso"
     }
   }
 }

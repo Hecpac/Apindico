@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils"
 import { COMPANY_INFO } from "@/lib/constants"
 import copy from "@/lib/copy"
 import { Container } from "@/components/ui/Container"
-import { FOOTER_SERVICES, FOOTER_COMPANY, SOCIAL_LINKS } from "@/components/layout/footerLinks"
+import { SOCIAL_LINKS } from "@/components/layout/footerLinks"
 
 interface FooterSectionProps {
   title: string
@@ -78,6 +78,7 @@ function FooterSection({ title, children, defaultOpen = false }: FooterSectionPr
 
 export function Footer() {
   const currentYear = new Date().getFullYear()
+  const footerCopy = copy.footer
 
   return (
     <footer className="relative border-t border-[color:var(--color-border)] bg-[color:var(--color-bg)] text-[color:var(--color-text)]">
@@ -118,9 +119,9 @@ export function Footer() {
               </div>
             </div>
 
-            <FooterSection title="Servicios">
+            <FooterSection title={footerCopy.services.title}>
               <ul className="space-y-3">
-                {FOOTER_SERVICES.map((service) => (
+                {footerCopy.services.links.map((service) => (
                   <li key={service.href}>
                     <Link
                       href={service.href}
@@ -135,15 +136,15 @@ export function Footer() {
                     href="/servicios"
                     className="inline-flex items-center text-sm font-medium text-[color:var(--color-accent)] transition-colors duration-200 hover:text-[color:var(--color-accent-2)]"
                   >
-                    Ver todos →
+                    {footerCopy.services.viewAll} →
                   </Link>
                 </li>
               </ul>
             </FooterSection>
 
-            <FooterSection title="Empresa">
+            <FooterSection title={footerCopy.company.title}>
               <ul className="space-y-3">
-                {FOOTER_COMPANY.map((link) => (
+                {footerCopy.company.links.map((link) => (
                   <li key={link.href}>
                     <Link
                       href={link.href}
@@ -156,7 +157,7 @@ export function Footer() {
               </ul>
             </FooterSection>
 
-            <FooterSection title="Contacto">
+            <FooterSection title={footerCopy.contact.title}>
               <ul className="space-y-4">
                 <li>
                   <a
@@ -166,7 +167,10 @@ export function Footer() {
                     className="group flex items-start gap-3 text-[color:var(--color-muted)] transition-colors duration-200 hover:text-[color:var(--color-text)]"
                   >
                     <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-[color:var(--color-accent)]" />
-                    <span className="text-sm">{COMPANY_INFO.address.principal}</span>
+                    <span className="text-sm">
+                      <span className="sr-only">{footerCopy.contact.addressLabel}: </span>
+                      {COMPANY_INFO.address.principal}
+                    </span>
                   </a>
                 </li>
                 <li>
@@ -175,7 +179,10 @@ export function Footer() {
                     className="flex items-center gap-3 text-[color:var(--color-muted)] transition-colors duration-200 hover:text-[color:var(--color-text)]"
                   >
                     <Phone className="h-5 w-5 shrink-0 text-[color:var(--color-accent)]" />
-                    <span className="text-sm">{COMPANY_INFO.phones.fijo}</span>
+                    <span className="text-sm">
+                      <span className="sr-only">{footerCopy.contact.phoneLabel}: </span>
+                      {COMPANY_INFO.phones.fijo}
+                    </span>
                   </a>
                 </li>
                 <li>
@@ -184,7 +191,10 @@ export function Footer() {
                     className="flex items-center gap-3 text-[color:var(--color-muted)] transition-colors duration-200 hover:text-[color:var(--color-text)]"
                   >
                     <Smartphone className="h-5 w-5 shrink-0 text-[color:var(--color-accent)]" />
-                    <span className="text-sm">{COMPANY_INFO.phones.celulares[0]}</span>
+                    <span className="text-sm">
+                      <span className="sr-only">{footerCopy.contact.mobileLabel}: </span>
+                      {COMPANY_INFO.phones.celulares[0]}
+                    </span>
                   </a>
                 </li>
                 <li>
@@ -193,7 +203,10 @@ export function Footer() {
                     className="flex items-center gap-3 text-[color:var(--color-muted)] transition-colors duration-200 hover:text-[color:var(--color-text)]"
                   >
                     <Mail className="h-5 w-5 shrink-0 text-[color:var(--color-accent)]" />
-                    <span className="text-sm">{COMPANY_INFO.emails.info}</span>
+                    <span className="text-sm">
+                      <span className="sr-only">{footerCopy.contact.emailLabel}: </span>
+                      {COMPANY_INFO.emails.info}
+                    </span>
                   </a>
                 </li>
               </ul>
@@ -206,14 +219,14 @@ export function Footer() {
         <Container>
           <div className="flex flex-col items-center justify-between gap-4 py-6 md:flex-row">
             <p className="text-center text-sm text-[color:var(--color-muted)] md:text-left">
-              © {currentYear} {COMPANY_INFO.name} Todos los derechos reservados.
+              © {currentYear} {COMPANY_INFO.name} {footerCopy.legal.rights}
             </p>
             <div className="flex items-center gap-6">
               <Link href="/privacidad" className="text-sm text-[color:var(--color-muted)] transition-colors hover:text-[color:var(--color-accent-2)]">
-                Política de Privacidad
+                {footerCopy.legal.privacy}
               </Link>
               <Link href="/terminos" className="text-sm text-[color:var(--color-muted)] transition-colors hover:text-[color:var(--color-accent-2)]">
-                Términos de Uso
+                {footerCopy.legal.terms}
               </Link>
             </div>
           </div>

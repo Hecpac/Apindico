@@ -12,11 +12,22 @@ if (typeof window !== "undefined") {
 }
 
 interface StatsSectionProps {
-  variant?: "light" | "dark"
+  metrics?: Array<{
+    value: number
+    suffix?: string
+    label: string
+  }>
   className?: string
 }
 
-export function StatsSection({ variant = "light", className }: StatsSectionProps) {
+export function StatsSection({
+  metrics = COMPANY_STATS.map((item) => ({
+    value: item.value,
+    suffix: item.suffix,
+    label: item.label,
+  })),
+  className,
+}: StatsSectionProps) {
   const sectionRef = useRef<HTMLElement>(null)
   const statsContainerRef = useRef<HTMLDivElement>(null)
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(
@@ -62,25 +73,24 @@ export function StatsSection({ variant = "light", className }: StatsSectionProps
     <section
       ref={sectionRef}
       className={cn(
-        "relative z-40 -mt-16 md:-mt-20 pt-8 md:pt-0 pb-12",
-        variant === "dark" ? "bg-transparent text-white" : "bg-white text-gris-900",
+        "relative z-30 -mt-12 bg-transparent pb-10 pt-6 md:-mt-16 md:pb-14 md:pt-0",
         className
       )}
     >
       <div className="max-w-7xl mx-auto px-6">
         <div
           ref={statsContainerRef}
-          className="stats-container group rounded-[32px] border border-white/10 bg-zinc-900/60 p-4 backdrop-blur-2xl transition-all duration-500 hover:border-orange-500/40 hover:shadow-[0_0_0_1px_rgba(249,115,22,0.25),0_30px_80px_-50px_rgba(249,115,22,0.6)] md:p-6"
+          className="stats-container rounded-[24px] border border-[color:var(--color-border)] bg-[color:var(--color-surface)]/80 p-3 shadow-[var(--shadow-2)] backdrop-blur-xl md:rounded-[30px] md:p-4"
         >
-          <div className="grid w-full grid-cols-2 gap-4 lg:grid-cols-4">
-            {COMPANY_STATS.map((stat, index) => (
+          <div className="grid w-full grid-cols-2 gap-3 lg:grid-cols-4">
+            {metrics.map((stat, index) => (
               <StatCard
                 key={index}
                 value={stat.value}
                 suffix={stat.suffix}
                 label={stat.label}
                 reducedMotion={prefersReducedMotion}
-                highlight={index === 1}
+                highlight={index === 0}
               />
             ))}
           </div>

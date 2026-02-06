@@ -3,6 +3,7 @@ import {
   ServicesSection,
   CTASection,
   ProjectsSection,
+  StatsSection,
   ClientsSection,
 } from "@/components/sections"
 import copy from "@/lib/copy"
@@ -13,10 +14,12 @@ export default function Home() {
       <HeroSection
         title={copy.home.hero.h1}
         subtitle={copy.home.hero.sub}
+        subtitleExtended={copy.home.hero.subExtended}
         primaryCta={{ label: copy.home.hero.primaryCta, href: "/cotizador" }}
         secondaryCta={{ label: copy.home.hero.secondaryCta, href: "/contacto" }}
         badges={copy.home.hero.badges}
       />
+      <StatsSection metrics={copy.home.metrics} />
       <ServicesSection
         title={copy.home.services.title}
         subtitle={copy.home.services.subtitle}
@@ -25,16 +28,12 @@ export default function Home() {
       />
       <CTASection
         variant="secondary"
-        title="¿Necesita una solución especializada?"
-        subtitle="Nuestro equipo de ingenieros certificados está listo para ayudarle con su proyecto."
-        benefits={[
-          "Consulta sin compromiso",
-          "Cotización en 24 horas",
-          "Personal certificado NASSCO / PACP",
-        ]}
+        title={copy.home.midCta.title}
+        subtitle={copy.home.midCta.subtitle}
+        benefits={copy.home.midCta.bullets}
         buttons={[
-          { label: "Solicitar cotización", href: "/cotizador", variant: "cta" },
-          { label: "Ver servicios", href: "/servicios", variant: "outline" },
+          { label: copy.home.midCta.primaryCta, href: "/cotizador", variant: "cta" },
+          { label: copy.home.midCta.secondaryCta, href: "/servicios", variant: "outline" },
         ]}
       />
       <ProjectsSection
@@ -42,7 +41,11 @@ export default function Home() {
         subtitle={copy.home.projects.subtitle}
         ctaLabel={copy.home.projects.cta}
       />
-      <ClientsSection />
+      <ClientsSection
+        title={copy.home.clients.title}
+        subtitle={copy.home.clients.subtitle}
+        ctaLabel={copy.home.clients.cta}
+      />
       <CTASection
         variant="gradient"
         title={copy.home.finalCta.title}
