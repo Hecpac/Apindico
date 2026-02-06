@@ -26,8 +26,9 @@ export const FOOTER_COMPANY: FooterLink[] = [
   { href: "/trabaja-con-nosotros", label: "Trabaja con Nosotros" },
 ]
 
+// TODO: Actualizar con URLs reales
 export const SOCIAL_LINKS: SocialLink[] = [
-  { href: "https://linkedin.com", icon: Linkedin, label: "LinkedIn" },
-  { href: "https://instagram.com", icon: Instagram, label: "Instagram" },
-  { href: "https://facebook.com", icon: Facebook, label: "Facebook" },
+  { href: "https://linkedin.com/company/apindico", icon: Linkedin, label: "LinkedIn" },
+  { href: "https://instagram.com/apindico_sas", icon: Instagram, label: "Instagram" },
+  { href: "https://facebook.com/apindicosas", icon: Facebook, label: "Facebook" },
 ]

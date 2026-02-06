@@ -24,7 +24,7 @@ export function AnimatedSection({
       return
     }
 
-    const desktopQuery = window.matchMedia("(min-width: 768px)")
+    const desktopQuery = window.matchMedia("(min-width: 640px)")
     const update = () => setCanAnimate(desktopQuery.matches)
     update()
     desktopQuery.addEventListener("change", update)

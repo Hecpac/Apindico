@@ -97,7 +97,7 @@ export function ServicesSection({
 
         <AnimatedSection delay={0.05}>
           <div className="mb-10 flex flex-wrap justify-center gap-2">
-            {FILTERS.map((filter) => (
+            {FILTERS.filter((filter) => filter.id === "all" || counts[filter.id] > 0).map((filter) => (
               <ChipFilter
                 key={filter.id}
                 label={filter.label}

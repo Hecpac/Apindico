@@ -8,6 +8,8 @@ import { cn } from "@/lib/utils"
 import { CLIENTES_DATA } from "@/lib/constants"
 import { Container } from "@/components/ui/Container"
 import { Button } from "@/components/ui/Button"
+import { AnimatedSection } from "@/components/motion/AnimatedSection"
+import { StaggerContainer } from "@/components/motion/StaggerContainer"
 
 interface ClientLogoProps {
   name: string
@@ -75,27 +77,28 @@ export function ClientsSection({
       </div>
 
       <Container>
-        <div className="relative mx-auto mb-12 max-w-3xl text-center">
-          <h2 className="mb-4 font-heading text-3xl font-bold text-[color:var(--color-text)] md:text-4xl">
-            {title}
-          </h2>
-          <p className="text-lg text-[color:var(--color-muted)]">{subtitle}</p>
-        </div>
+        <AnimatedSection>
+          <div className="relative mx-auto mb-12 max-w-3xl text-center">
+            <h2 className="mb-4 font-heading text-3xl font-bold text-[color:var(--color-text)] md:text-4xl">
+              {title}
+            </h2>
+            <p className="text-lg text-[color:var(--color-muted)]">{subtitle}</p>
+          </div>
+        </AnimatedSection>
 
-        <ul
+        <StaggerContainer
           className="relative grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4"
-          aria-label="Lista de clientes"
         >
           {visibleClients.map((cliente) => (
             <li
               key={cliente.name}
-              className="flex min-h-[72px] items-center justify-center rounded-lg border border-[color:var(--color-border)] bg-[color:var(--color-surface)]/80 px-6 py-4 shadow-[var(--shadow-1)] transition-all duration-300 hover:border-[color:var(--color-accent)]/35 hover:shadow-[var(--shadow-2)]"
+              className="group flex min-h-[72px] items-center justify-center rounded-lg border border-[color:var(--color-border)] bg-[color:var(--color-surface)]/80 px-6 py-4 shadow-[var(--shadow-1)] transition-all duration-300 hover:scale-105 hover:border-[color:var(--color-accent)]/35 hover:bg-[color:var(--color-surface)] hover:shadow-[var(--shadow-2)]"
               title={cliente.name}
             >
               <ClientLogo name={cliente.name} logo={cliente.logo} alt={cliente.alt} />
             </li>
           ))}
-        </ul>
+        </StaggerContainer>
 
         <div className="relative mt-10 text-center">
           <Button variant="secondary" size="md" asChild>

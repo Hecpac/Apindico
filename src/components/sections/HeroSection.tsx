@@ -4,6 +4,7 @@ import * as React from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { cn } from "@/lib/utils"
+import { ChevronDown } from "lucide-react"
 import { Badge } from "@/components/ui/Badge"
 import { Button } from "@/components/ui/Button"
 import { AnimatedSection } from "@/components/motion/AnimatedSection"
@@ -126,7 +127,8 @@ export function HeroSection({
           end: "bottom top",
           scrub: 0.6,
         },
-        y: -24,
+        y: -60,
+        opacity: 0.3,
       })
 
       cleanup = () => {
@@ -226,6 +228,12 @@ export function HeroSection({
             </div>
           </div>
         </AnimatedSection>
+      </div>
+
+      {/* Scroll indicator */}
+      <div className="absolute bottom-6 left-1/2 z-20 -translate-x-1/2 flex flex-col items-center gap-1 opacity-60">
+        <span className="text-[10px] uppercase tracking-[0.2em] text-white/70">Scroll</span>
+        <ChevronDown className="h-5 w-5 animate-bounce text-white/70" aria-hidden="true" />
       </div>
     </header>
   )

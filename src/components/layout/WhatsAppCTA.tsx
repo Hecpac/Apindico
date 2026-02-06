@@ -14,7 +14,7 @@ export function WhatsAppCTA() {
   const href = buildWhatsAppHref(COMPANY_INFO.phones.celulares[0], copy.whatsapp.prefilled)
 
   return (
-    <div className="fixed bottom-5 right-5 z-[80]">
+    <div className="fixed bottom-6 right-5 z-[80] max-sm:bottom-20">
       <Link
         href={href}
         target="_blank"

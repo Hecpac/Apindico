@@ -55,9 +55,9 @@ const ServiceCard = React.forwardRef<HTMLDivElement, ServiceCardProps>(
           "border border-[color:var(--color-border)] bg-[color:var(--color-surface)]/80 backdrop-blur-2xl p-6 md:p-8",
           "transition-all duration-500 ease-out will-change-transform",
           "shadow-[0_-30px_60px_-15px_rgba(0,0,0,0.8)] md:shadow-[var(--shadow-2)]",
-          "motion-safe:hover:-translate-y-1",
-          "hover:shadow-[var(--shadow-3)]",
-          "hover:ring-1 hover:ring-[color:var(--color-accent)]/25",
+          "motion-safe:hover:-translate-y-1.5",
+          "hover:shadow-[0_0_30px_rgba(255,107,53,0.12)]",
+          "hover:ring-1 hover:ring-[color:var(--color-accent)]/40",
           featured ? "min-h-[380px]" : "min-h-[320px]",
           "h-full flex flex-col",
           className
@@ -73,7 +73,7 @@ const ServiceCard = React.forwardRef<HTMLDivElement, ServiceCardProps>(
           <div className="pointer-events-none absolute inset-0 rounded-2xl bg-[radial-gradient(circle_at_center,rgba(234,88,12,0.22),transparent_70%)] opacity-60" />
           {IconComponent ? (
             <IconComponent
-              className="relative h-7 w-7 transition-transform duration-300 group-hover:scale-105"
+              className="relative h-7 w-7 transition-transform duration-300 group-hover:scale-105 group-hover:rotate-3"
               strokeWidth={1.75}
               aria-hidden="true"
               focusable="false"
