@@ -25,6 +25,7 @@ export default function Home() {
         subtitle={copy.home.services.subtitle}
         limit={6}
         ctaLabel={copy.home.services.cta}
+        stackOnMobile
       />
       <CTASection
         variant="secondary"

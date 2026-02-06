@@ -1,15 +1,9 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import gsap from "gsap"
-import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { cn } from "@/lib/utils"
 import { COMPANY_STATS } from "@/lib/constants"
 import { StatCard } from "@/components/stats/StatCounter"
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger)
-}
 
 interface StatsSectionProps {
   metrics?: Array<{
@@ -53,19 +47,32 @@ export function StatsSection({
     const heroSection = document.querySelector(".hero-section")
     if (!statsContainer || !heroSection) return
 
-    const tween = gsap.to(statsContainer, {
-      y: -20,
-      scrollTrigger: {
-        trigger: heroSection,
-        start: "top top",
-        end: "bottom top",
-        scrub: true,
-      },
-    })
+    let canceled = false
+    let cleanup: (() => void) | null = null
+
+    ;(async () => {
+      const { gsap } = await import("@/lib/gsap-config")
+      if (canceled || !statsContainer) return
+
+      const tween = gsap.to(statsContainer, {
+        y: -20,
+        scrollTrigger: {
+          trigger: heroSection,
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+        },
+      })
+
+      cleanup = () => {
+        tween.scrollTrigger?.kill()
+        tween.kill()
+      }
+    })()
 
     return () => {
-      tween.scrollTrigger?.kill()
-      tween.kill()
+      canceled = true
+      cleanup?.()
     }
   }, [prefersReducedMotion])
 

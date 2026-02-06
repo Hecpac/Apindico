@@ -76,9 +76,9 @@ export function HeroSection({
     }
 
     if ("requestIdleCallback" in window) {
-      idleHandle = window.requestIdleCallback(activateVideo, { timeout: 2200 })
+      idleHandle = window.requestIdleCallback(activateVideo, { timeout: 800 })
     } else {
-      timeoutHandle = setTimeout(activateVideo, 1400)
+      timeoutHandle = setTimeout(activateVideo, 800)
     }
 
     const onInteraction = () => activateVideo()
@@ -160,7 +160,7 @@ export function HeroSection({
             loop
             muted
             playsInline
-            preload="metadata"
+            preload="none"
             poster="/images/hero-clean.webp"
             aria-hidden="true"
           >

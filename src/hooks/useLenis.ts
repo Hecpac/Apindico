@@ -16,8 +16,10 @@ export function useLenis() {
     let lenisInstance: { raf: (time: number) => void; destroy: () => void } | null = null
     let gsapRef: { ticker: { add: (cb: (time: number) => void) => void; remove: (cb: (time: number) => void) => void; lagSmoothing: (value: number) => void } } | null = null
     let rafCallback: ((time: number) => void) | null = null
+    let idleHandle: number | null = null
+    let timeoutHandle: ReturnType<typeof setTimeout> | null = null
 
-    ;(async () => {
+    const init = async () => {
       const [{ default: Lenis }, { gsap, ScrollTrigger }] = await Promise.all([
         import('lenis'),
         import('@/lib/gsap-config'),
@@ -43,10 +45,22 @@ export function useLenis() {
       lenisInstance = lenis
       gsapRef = gsap
       rafCallback = update
-    })()
+    }
+
+    if ('requestIdleCallback' in window) {
+      idleHandle = window.requestIdleCallback(() => init(), { timeout: 1500 })
+    } else {
+      timeoutHandle = setTimeout(() => init(), 1000)
+    }
 
     return () => {
       canceled = true
+      if (idleHandle !== null && 'cancelIdleCallback' in window) {
+        window.cancelIdleCallback(idleHandle)
+      }
+      if (timeoutHandle !== null) {
+        clearTimeout(timeoutHandle)
+      }
       if (gsapRef && rafCallback) {
         gsapRef.ticker.remove(rafCallback)
       }

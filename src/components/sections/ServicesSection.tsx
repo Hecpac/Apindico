@@ -3,6 +3,7 @@
 import * as React from "react"
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
+import { motion, useReducedMotion, useScroll, useTransform, type MotionValue } from "framer-motion"
 import { cn } from "@/lib/utils"
 import { SERVICIOS } from "@/lib/constants"
 import { Container } from "@/components/ui/Container"
@@ -21,6 +22,7 @@ const FILTERS = [
 ] as const
 
 type FilterId = (typeof FILTERS)[number]["id"]
+type ServiceItem = (typeof SERVICIOS)[number]
 
 const CATEGORY_MAP: Record<string, FilterId> = {
   "inspeccion-cctv": "diagnostico",
@@ -36,12 +38,75 @@ const CATEGORY_MAP: Record<string, FilterId> = {
   topografia: "diagnostico",
 }
 
+interface MobileStackCardProps {
+  service: ServiceItem
+  index: number
+  total: number
+  progress: MotionValue<number>
+  reduceMotion: boolean
+}
+
+function MobileStackCard({ service, index, total, progress, reduceMotion }: MobileStackCardProps) {
+  const start = Math.max(0, index * 0.1 - 0.12)
+  const settle = Math.min(1, start + 0.24)
+  const finish = Math.min(1, settle + 0.26)
+
+  const y = useTransform(progress, [start, settle, finish], [76, 0, -14])
+  const scale = useTransform(progress, [start, settle, finish], [0.9, 1, 0.975])
+  const opacity = useTransform(progress, [start, settle], [0.15, 1])
+  const rotate = useTransform(progress, [start, settle], [1.8, 0])
+
+  const topOffset = 132 + index * 28
+  const isHero = index === 0
+
+  if (reduceMotion) {
+    return (
+      <div
+        className={cn("service-tile h-full", index === 0 ? "mt-0" : "mt-6")}
+        style={{ position: "sticky", top: `${topOffset}px`, zIndex: total - index }}
+      >
+        <ServiceCard
+          icon={service.icon}
+          nombre={service.nombre}
+          descripcion={service.descripcion}
+          slug={service.slug}
+          normativa={service.normativa}
+          showQuoteCta
+          displayIndex={index + 1}
+          featured={isHero}
+          className="h-full"
+        />
+      </div>
+    )
+  }
+
+  return (
+    <motion.div
+      className={cn("service-tile h-full will-change-transform", index === 0 ? "mt-0" : "mt-6")}
+      style={{ position: "sticky", top: `${topOffset}px`, zIndex: total - index, y, scale, opacity, rotate }}
+    >
+      <ServiceCard
+        icon={service.icon}
+        nombre={service.nombre}
+        descripcion={service.descripcion}
+        slug={service.slug}
+        normativa={service.normativa}
+        showQuoteCta
+        displayIndex={index + 1}
+        featured={isHero}
+        className="h-full"
+      />
+    </motion.div>
+  )
+}
+
 interface ServicesSectionProps {
   title?: string
   subtitle?: string
   showAllLink?: boolean
   limit?: number
   ctaLabel?: string
+  stackOnMobile?: boolean
   className?: string
 }
 
@@ -51,9 +116,16 @@ export function ServicesSection({
   showAllLink = true,
   limit,
   ctaLabel = "Ver todos los servicios",
+  stackOnMobile = false,
   className,
 }: ServicesSectionProps) {
   const [activeFilter, setActiveFilter] = React.useState<FilterId>("all")
+  const reduceMotion = useReducedMotion()
+  const mobileStackRef = React.useRef<HTMLDivElement>(null)
+  const { scrollYProgress } = useScroll({
+    target: mobileStackRef,
+    offset: ["start 85%", "end 25%"],
+  })
 
   const displayedServices = limit ? SERVICIOS.slice(0, limit) : SERVICIOS
   const filteredServices =
@@ -75,7 +147,7 @@ export function ServicesSection({
     <section
       id="servicios"
       className={cn(
-        "servicios-section relative overflow-hidden bg-[color:var(--color-bg)] py-20 text-[color:var(--color-text)] md:py-24",
+        "servicios-section relative overflow-clip bg-[color:var(--color-bg)] py-20 text-[color:var(--color-text)] md:py-24",
         className
       )}
     >
@@ -109,7 +181,31 @@ export function ServicesSection({
           </div>
         </AnimatedSection>
 
-        <StaggerContainer className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4 xl:auto-rows-fr">
+        {stackOnMobile && (
+          <div className="md:hidden">
+            <div ref={mobileStackRef} className="relative pb-10">
+              {filteredServices.map((servicio, index) => {
+                return (
+                  <MobileStackCard
+                    key={`mobile-${servicio.id}`}
+                    service={servicio}
+                    index={index}
+                    total={filteredServices.length}
+                    progress={scrollYProgress}
+                    reduceMotion={Boolean(reduceMotion)}
+                  />
+                )
+              })}
+            </div>
+          </div>
+        )}
+
+        <StaggerContainer
+          className={cn(
+            "grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4 xl:auto-rows-fr",
+            stackOnMobile && "hidden md:grid"
+          )}
+        >
           {filteredServices.map((servicio, index) => {
             const isHero = index === 0
             const isTall = index === 1 || index === 2
