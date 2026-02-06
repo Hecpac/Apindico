@@ -59,11 +59,13 @@ function MobileStackCard({ service, index, total, progress, reduceMotion }: Mobi
   const topOffset = 132 + index * 28
   const isHero = index === 0
 
+  const cardClass = "h-full !bg-[color:var(--color-surface)] !backdrop-blur-none"
+
   if (reduceMotion) {
     return (
       <div
         className={cn("service-tile h-full", index === 0 ? "mt-0" : "mt-6")}
-        style={{ position: "sticky", top: `${topOffset}px`, zIndex: total - index }}
+        style={{ position: "sticky", top: `${topOffset}px`, zIndex: index + 1 }}
       >
         <ServiceCard
           icon={service.icon}
@@ -74,7 +76,7 @@ function MobileStackCard({ service, index, total, progress, reduceMotion }: Mobi
           showQuoteCta
           displayIndex={index + 1}
           featured={isHero}
-          className="h-full"
+          className={cardClass}
         />
       </div>
     )
@@ -83,7 +85,7 @@ function MobileStackCard({ service, index, total, progress, reduceMotion }: Mobi
   return (
     <motion.div
       className={cn("service-tile h-full will-change-transform", index === 0 ? "mt-0" : "mt-6")}
-      style={{ position: "sticky", top: `${topOffset}px`, zIndex: total - index, y, scale, opacity, rotate }}
+      style={{ position: "sticky", top: `${topOffset}px`, zIndex: index + 1, y, scale, opacity, rotate }}
     >
       <ServiceCard
         icon={service.icon}
@@ -94,7 +96,7 @@ function MobileStackCard({ service, index, total, progress, reduceMotion }: Mobi
         showQuoteCta
         displayIndex={index + 1}
         featured={isHero}
-        className="h-full"
+        className={cardClass}
       />
     </motion.div>
   )
