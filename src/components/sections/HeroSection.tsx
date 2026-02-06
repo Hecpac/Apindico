@@ -188,7 +188,7 @@ export function HeroSection({
 
             <div className="col-span-4 md:col-start-2 md:col-span-9">
               <div className="space-y-7 text-left">
-                <h1 className="text-balance font-heading text-[length:var(--fluid-h1)] font-extrabold tracking-[-0.02em] leading-[var(--line-height-tight-display)] text-[color:var(--hero-text-primary)]">
+                <h1 className="text-balance font-heading text-[length:var(--fluid-h1)] font-extrabold tracking-[-0.02em] leading-[0.85] text-[color:var(--hero-text-primary)]">
                   {title}
                 </h1>
 

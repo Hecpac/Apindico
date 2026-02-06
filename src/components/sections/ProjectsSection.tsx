@@ -67,7 +67,7 @@ export function ProjectsSection({
           {displayedProjects.map((proyecto, index) => (
             <article
               key={proyecto.id}
-              className="group min-w-[86vw] snap-center overflow-hidden rounded-[28px] border border-[color:var(--color-border)] bg-[color:var(--color-surface)]/80 shadow-[var(--shadow-2)] md:min-w-[62vw] lg:min-w-[44vw]"
+              className="group min-w-[86vw] snap-center overflow-hidden rounded-[28px] border border-[color:var(--color-border)] bg-[color:var(--color-surface)]/80 shadow-[0_-30px_60px_-15px_rgba(0,0,0,0.8)] md:min-w-[62vw] md:shadow-[var(--shadow-2)] lg:min-w-[44vw]"
             >
               <div className="relative aspect-[16/10] overflow-hidden">
                 {proyecto.imagen ? (

@@ -125,8 +125,8 @@ export function Header() {
             role="navigation"
             aria-label="Navegación principal"
             className={cn(
-              "pointer-events-auto flex items-center justify-between rounded-full border px-4 sm:px-5 lg:px-6 xl:px-8 transition-all duration-300",
-              "backdrop-blur-2xl",
+              "pointer-events-auto flex items-center justify-between rounded-full border pl-6 pr-4 sm:pl-8 sm:pr-5 lg:pl-10 lg:pr-6 xl:pr-8 transition-all duration-300",
+              "backdrop-blur-[32px]",
               isScrolled
                 ? "h-14 border-[color:var(--color-border)] bg-[color:var(--color-bg)]/90 shadow-[var(--shadow-2)]"
                 : "h-16 lg:h-[72px] border-white/15 bg-[color:var(--color-bg)]/60 shadow-[var(--shadow-1)]"

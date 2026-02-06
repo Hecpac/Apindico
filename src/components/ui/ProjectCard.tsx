@@ -68,7 +68,7 @@ export function ProjectCard({
       className={cn(
         "project-card group flex h-full flex-col overflow-hidden rounded-[32px]",
         "border border-[color:var(--color-border)] bg-[color:var(--color-surface)]/80 backdrop-blur-xl transition-all duration-300",
-        "shadow-[var(--shadow-2)]",
+        "shadow-[0_-30px_60px_-15px_rgba(0,0,0,0.8)] md:shadow-[var(--shadow-2)]",
         "motion-safe:hover:-translate-y-1",
         "hover:border-[color:var(--color-accent)]/40 hover:shadow-[var(--shadow-3)]",
         "focus-within:ring-2 focus-within:ring-[color:var(--color-accent)]",

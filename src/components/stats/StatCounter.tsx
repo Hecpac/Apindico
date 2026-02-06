@@ -67,11 +67,16 @@ export function StatCard({
         <div className="pointer-events-none absolute -left-8 -top-8 h-16 w-16 rounded-full bg-[color:var(--color-accent)]/18 blur-2xl" />
       ) : null}
       <div className="flex items-baseline text-[color:var(--color-text)]">
-        <span ref={countRef} className="text-3xl font-black tracking-tight md:text-4xl">
+        <span
+          ref={countRef}
+          className="text-3xl font-black tracking-tight [font-family:var(--font-space-mono),var(--font-mono)] md:text-4xl"
+        >
           0
         </span>
         {suffix ? (
-          <span className="ml-1 text-2xl font-black text-[color:var(--color-accent)] md:text-3xl">{suffix}</span>
+          <span className="ml-1 text-2xl font-black text-[color:var(--color-accent)] [font-family:var(--font-space-mono),var(--font-mono)] md:text-3xl">
+            {suffix}
+          </span>
         ) : null}
       </div>
       <p className="mt-2 text-[10px] font-mono font-semibold uppercase tracking-[0.18em] text-[color:var(--color-muted)] md:text-[11px]">

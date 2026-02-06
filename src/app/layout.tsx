@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Space_Mono } from "next/font/google";
 import { Header, Footer, WhatsAppCTA } from "@/components/layout";
 import { SmoothScrollProvider } from "@/components/providers/SmoothScrollProvider";
 import { QuoteStepProvider } from "@/components/providers/QuoteStepProvider";
@@ -49,6 +50,13 @@ export const metadata: Metadata = {
   },
 };
 
+const spaceMono = Space_Mono({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-space-mono",
+  display: "swap",
+})
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -57,7 +65,7 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body
-        className="antialiased"
+        className={`${spaceMono.variable} antialiased`}
       >
         <SmoothScrollProvider>
           <QuoteStepProvider>
