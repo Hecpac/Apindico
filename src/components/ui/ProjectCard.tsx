@@ -66,11 +66,11 @@ export function ProjectCard({
   return (
     <article
       className={cn(
-        "group flex h-full flex-col overflow-hidden rounded-[32px]",
-        "border border-white/10 bg-zinc-950/40 backdrop-blur-xl transition-all duration-300",
-        "shadow-[0_30px_60px_-50px_rgba(0,0,0,0.8)]",
+        "project-card group flex h-full flex-col overflow-hidden rounded-[32px]",
+        "border border-[color:var(--color-border)] bg-[color:var(--color-surface)]/80 backdrop-blur-xl transition-all duration-300",
+        "shadow-[var(--shadow-2)]",
         "motion-safe:hover:-translate-y-1",
-        "hover:border-orange-500/30 hover:shadow-[0_0_0_1px_rgba(249,115,22,0.35),0_20px_50px_-30px_rgba(249,115,22,0.5)]",
+        "hover:border-[color:var(--color-accent)]/40 hover:shadow-[var(--shadow-3)]",
         "focus-within:ring-2 focus-within:ring-[color:var(--color-accent)]",
         className
       )}
@@ -98,11 +98,11 @@ export function ProjectCard({
             }
             alt={`Cover técnico del proyecto ${project.titulo}`}
           />
-          <span className="absolute left-4 top-4 rounded-full border border-orange-500/20 bg-orange-500/10 px-3 py-1 text-[10px] font-mono font-semibold uppercase tracking-[0.3em] text-orange-500">
+          <span className="absolute left-4 top-4 rounded-full border border-[color:var(--color-accent)]/35 bg-[color:var(--color-accent)]/15 px-3 py-1 text-[10px] font-mono font-semibold uppercase tracking-[0.3em] text-[color:var(--color-accent)]">
             {`ID-${project.id} // ${project.fecha}`}
           </span>
         </div>
-        <Badge variant="editorial" size="sm" className="self-start bg-white/10">
+        <Badge variant="accent" size="sm" className="self-start bg-[color:var(--color-surface-3)]/70">
           {categoryLabel}
         </Badge>
       </div>
@@ -110,31 +110,31 @@ export function ProjectCard({
       <div className="flex flex-1 flex-col gap-6 p-6 pt-4">
         <div className="space-y-3">
           <div className="flex items-start justify-between gap-4">
-            <h3 className="text-2xl font-semibold tracking-tight text-white leading-snug">
+            <h3 className="text-2xl font-semibold tracking-tight text-[color:var(--color-text)] leading-snug">
               {project.titulo}
             </h3>
           </div>
-          <div className="flex flex-wrap items-center gap-4 text-xs font-mono text-zinc-400">
+          <div className="flex flex-wrap items-center gap-4 text-xs font-mono text-[color:var(--color-dim)]">
             <span className="inline-flex items-center gap-1.5">
-              <Building2 className="h-3.5 w-3.5 text-zinc-500" strokeWidth={1.5} />
-              <span className="text-zinc-300">{project.cliente}</span>
+              <Building2 className="h-3.5 w-3.5 text-[color:var(--color-dim)]" strokeWidth={1.5} />
+              <span className="text-[color:var(--color-muted)]">{project.cliente}</span>
             </span>
             <span className="inline-flex items-center gap-1.5">
-              <MapPin className="h-3.5 w-3.5 text-zinc-500" strokeWidth={1.5} />
-              <span className="text-zinc-300">{project.ubicacion}</span>
+              <MapPin className="h-3.5 w-3.5 text-[color:var(--color-dim)]" strokeWidth={1.5} />
+              <span className="text-[color:var(--color-muted)]">{project.ubicacion}</span>
             </span>
           </div>
         </div>
 
         <div className="space-y-2">
-          <p className="text-xs uppercase tracking-[0.2em] text-zinc-400">
+          <p className="text-xs uppercase tracking-[0.2em] text-[color:var(--color-dim)]">
             Alcance & entregables
           </p>
-          <ul className="space-y-2 text-sm text-zinc-200">
+          <ul className="space-y-2 text-sm text-[color:var(--color-text)]">
             {bulletItems.slice(0, 2).map((item) => (
               <li key={item} className="flex items-start gap-2">
                 <span
-                  className="mt-1 h-1.5 w-1.5 rounded-full bg-orange-500"
+                  className="mt-1 h-1.5 w-1.5 rounded-full bg-[color:var(--color-accent)]"
                   aria-hidden="true"
                 />
                 <span>{item}</span>
@@ -150,7 +150,7 @@ export function ProjectCard({
             trigger={
               <button
                 type="button"
-                className="group/cta inline-flex h-10 w-10 items-center justify-center rounded-full border border-orange-500/30 text-orange-400 transition-all hover:border-orange-500/60 hover:text-orange-300"
+                className="group/cta inline-flex h-10 w-10 items-center justify-center rounded-full border border-[color:var(--color-accent)]/35 text-[color:var(--color-accent)] transition-all hover:border-[color:var(--color-accent)]/70 hover:bg-[color:var(--color-accent)]/10"
                 aria-label="Ver caso"
               >
                 <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover/cta:translate-x-1 group-hover/cta:-translate-y-1 group-hover/cta:rotate-45" />
@@ -160,8 +160,8 @@ export function ProjectCard({
           <Link
             href={`/proyectos/${project.id}`}
             className={cn(
-              "inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400",
-              "transition-colors hover:text-orange-400"
+              "inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--color-dim)]",
+              "transition-colors hover:text-[color:var(--color-accent)]"
             )}
           >
             Ver detalle

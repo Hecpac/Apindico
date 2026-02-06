@@ -1,5 +1,10 @@
 import type { MetadataRoute } from "next"
 
+const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://www.apindico.com").replace(
+  /\/$/,
+  ""
+)
+
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
@@ -8,7 +13,7 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
       },
     ],
-    sitemap: "/sitemap.xml",
+    sitemap: `${SITE_URL}/sitemap.xml`,
+    host: SITE_URL,
   }
 }
-

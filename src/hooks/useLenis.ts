@@ -2,14 +2,10 @@
 
 import { useEffect } from 'react'
 import Lenis from 'lenis'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
-gsap.registerPlugin(ScrollTrigger)
+import { gsap, ScrollTrigger } from '@/lib/gsap-config'
 
 export function useLenis() {
   useEffect(() => {
-    // Respetar preferencia de movimiento reducido
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       return
     }
@@ -20,17 +16,17 @@ export function useLenis() {
       smoothWheel: true,
     })
 
-    // Sincronizar Lenis con ScrollTrigger
     lenis.on('scroll', ScrollTrigger.update)
 
-    // Usar GSAP ticker para mejor sincronización
-    gsap.ticker.add((time) => {
+    const update = (time: number) => {
       lenis.raf(time * 1000)
-    })
+    }
+    gsap.ticker.add(update)
 
     gsap.ticker.lagSmoothing(0)
 
     return () => {
+      gsap.ticker.remove(update)
       lenis.destroy()
     }
   }, [])

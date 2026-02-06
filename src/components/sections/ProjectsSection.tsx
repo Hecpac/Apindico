@@ -1,13 +1,13 @@
 "use client"
 
 import * as React from "react"
-import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, Building2, MapPin } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { PROYECTOS } from "@/lib/constants"
 import { Button } from "@/components/ui/Button"
+import { AnimatedSection } from "@/components/motion/AnimatedSection"
 
 interface ProjectsSectionProps {
   title?: string
@@ -26,181 +26,94 @@ export function ProjectsSection({
   ctaLabel = "Ver todos",
   className,
 }: ProjectsSectionProps) {
-  const [currentSlide, setCurrentSlide] = useState(0)
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true)
   const displayedProjects = PROYECTOS.slice(0, limit)
-  const resumeTimeoutRef = useRef<number | null>(null)
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(
-    () =>
-      typeof window !== "undefined" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-  )
 
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
-    const handleChange = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches)
-    mediaQuery.addEventListener("change", handleChange)
-    return () => mediaQuery.removeEventListener("change", handleChange)
-  }, [])
-
-  // Auto-play carousel every 3 seconds
-  useEffect(() => {
-    if (!isAutoPlaying || prefersReducedMotion || displayedProjects.length <= 1) return
-
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % displayedProjects.length)
-    }, 3000)
-
-    return () => clearInterval(interval)
-  }, [isAutoPlaying, prefersReducedMotion, displayedProjects.length])
-
-  useEffect(() => {
-    return () => {
-      if (resumeTimeoutRef.current) {
-        window.clearTimeout(resumeTimeoutRef.current)
-        resumeTimeoutRef.current = null
-      }
-    }
-  }, [])
-
-  const goToSlide = (index: number) => {
-    setCurrentSlide(index)
-    setIsAutoPlaying(false)
-
-    // Resume autoplay after 5 seconds (unless reduced motion is enabled)
-    if (resumeTimeoutRef.current) {
-      window.clearTimeout(resumeTimeoutRef.current)
-    }
-    if (!prefersReducedMotion) {
-      resumeTimeoutRef.current = window.setTimeout(() => setIsAutoPlaying(true), 5000)
-    }
-  }
-
-  if (displayedProjects.length === 0) {
-    return null
-  }
+  if (displayedProjects.length === 0) return null
 
   return (
     <section
       id="proyectos"
       className={cn(
-        "relative h-screen overflow-hidden bg-gris-900 scroll-mt-28 md:scroll-mt-32",
+        "relative overflow-hidden bg-[color:var(--color-bg)] py-20 text-[color:var(--color-text)] md:py-24",
         className
       )}
     >
-      {/* Slides Container */}
-      <div className="relative h-full w-full">
-        {displayedProjects.map((proyecto, index) => (
-          <div
-            key={proyecto.id}
-            className={cn(
-              "absolute inset-0 transition-all duration-700 ease-in-out",
-              index === currentSlide
-                ? "opacity-100 scale-100"
-                : "opacity-0 scale-105 pointer-events-none"
-            )}
-          >
-            {/* Background Image */}
-            <div className="absolute inset-0">
-              {proyecto.imagen ? (
-                <Image
-                  src={proyecto.imagen}
-                  alt={proyecto.titulo}
-                  fill
-                  className="object-cover"
-                  priority={index === 0}
-                />
-              ) : (
-                <div className="w-full h-full bg-gradient-to-br from-azul-oscuro to-azul-principal" />
-              )}
-              {/* Dark Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-azul-principal/90 via-azul-principal/50 to-transparent" />
-            </div>
+      <div className="pointer-events-none absolute inset-0 opacity-60" aria-hidden="true">
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,28,46,0.2),rgba(7,26,45,1))]" />
+        <div className="absolute -left-24 top-28 h-72 w-72 rounded-full bg-[color:var(--color-accent)]/18 blur-3xl" />
+        <div className="absolute -right-24 bottom-20 h-72 w-72 rounded-full bg-[color:var(--color-accent-2)]/14 blur-3xl" />
+      </div>
 
-            {/* Content */}
-            <div className="relative h-full flex items-end">
-              <div className="w-full max-w-7xl mx-auto px-8 pb-20 md:pb-32">
-                {/* Project Number */}
-                <div className="mb-4">
-                  <span className="inline-block px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 text-white rounded-full text-sm font-bold">
-                    Proyecto {String(index + 1).padStart(2, "0")}
+      <div className="relative mx-auto max-w-7xl px-6 md:px-10 xl:px-[100px]">
+        <AnimatedSection>
+          <div className="mb-10 flex flex-col gap-6 md:mb-12 md:flex-row md:items-end md:justify-between">
+            <div className="max-w-2xl">
+              <h2 className="font-heading text-3xl font-bold text-[color:var(--color-text)] md:text-5xl">{title}</h2>
+              <p className="mt-4 text-base text-[color:var(--color-muted)] md:text-lg">{subtitle}</p>
+            </div>
+            {showAllLink && PROYECTOS.length > limit && (
+              <Button variant="outline" size="md" asChild>
+                <Link href="/proyectos">
+                  {ctaLabel}
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+            )}
+          </div>
+        </AnimatedSection>
+
+        <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-3 md:gap-6">
+          {displayedProjects.map((proyecto, index) => (
+            <article
+              key={proyecto.id}
+              className="group min-w-[86vw] snap-center overflow-hidden rounded-[28px] border border-[color:var(--color-border)] bg-[color:var(--color-surface)]/80 shadow-[var(--shadow-2)] md:min-w-[62vw] lg:min-w-[44vw]"
+            >
+              <div className="relative aspect-[16/10] overflow-hidden">
+                {proyecto.imagen ? (
+                  <Image
+                    src={proyecto.imagen}
+                    alt={proyecto.titulo}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    priority={index === 0}
+                    sizes="(max-width: 768px) 86vw, (max-width: 1200px) 62vw, 44vw"
+                  />
+                ) : (
+                  <div className="h-full w-full bg-[linear-gradient(140deg,#0a2642_0%,#0e3559_50%,#123f63_100%)]" />
+                )}
+                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(4,13,22,0)_20%,rgba(4,13,22,0.9)_100%)]" />
+                <span className="absolute left-4 top-4 rounded-full border border-[color:var(--color-accent)]/35 bg-[color:var(--color-accent)]/15 px-3 py-1 text-[11px] font-mono uppercase tracking-[0.22em] text-[color:var(--color-accent)]">
+                  Proyecto {String(index + 1).padStart(2, "0")}
+                </span>
+              </div>
+
+              <div className="space-y-5 p-6">
+                <h3 className="font-heading text-2xl font-bold leading-tight text-[color:var(--color-text)]">{proyecto.titulo}</h3>
+
+                <div className="flex flex-wrap items-center gap-4 text-sm text-[color:var(--color-muted)]">
+                  <span className="inline-flex items-center gap-2">
+                    <Building2 className="h-4 w-4 text-[color:var(--color-accent-2)]" />
+                    {proyecto.cliente}
+                  </span>
+                  <span className="inline-flex items-center gap-2">
+                    <MapPin className="h-4 w-4 text-[color:var(--color-accent-2)]" />
+                    {proyecto.ubicacion}
                   </span>
                 </div>
 
-                {/* Title */}
-                <h2 className="font-heading text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-4 max-w-4xl leading-tight">
-                  {proyecto.titulo}
-                </h2>
+                <p className="text-sm leading-relaxed text-[color:var(--color-muted)] md:text-base">{proyecto.descripcion}</p>
 
-                {/* Client */}
-                {proyecto.cliente && (
-                  <p className="text-xl md:text-2xl text-white/80 mb-6">
-                    Cliente: {proyecto.cliente}
-                  </p>
-                )}
-
-                {/* Description */}
-                {proyecto.descripcion && (
-                  <p className="text-base sm:text-lg md:text-xl text-white/70 mb-8 max-w-2xl">
-                    {proyecto.descripcion}
-                  </p>
-                )}
-
-                {/* CTA */}
                 <Link
                   href={`/proyectos/${proyecto.id}`}
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-coral-energetico text-white rounded-full font-semibold hover:bg-coral-oscuro transition-colors duration-300 group"
+                  className="inline-flex items-center gap-2 rounded-full border border-[color:var(--color-accent)]/35 px-4 py-2 text-sm font-semibold text-[color:var(--color-accent)] transition-colors hover:bg-[color:var(--color-accent)]/12"
                 >
                   Ver detalles
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="h-4 w-4" />
                 </Link>
               </div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Dots Navigation */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20">
-        <div className="flex gap-3 px-4 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full">
-          {displayedProjects.map((proyecto, index) => (
-            <button
-              key={index}
-              onClick={() => goToSlide(index)}
-              className={cn(
-                "transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-transparent rounded-full",
-                index === currentSlide
-                  ? "w-12 h-2 bg-[#FF6B35] shadow-lg shadow-[#FF6B35]/50"
-                  : "w-2 h-2 bg-white/60 hover:bg-white hover:scale-125"
-              )}
-              aria-label={`Ir al proyecto ${index + 1}: ${proyecto.titulo}`}
-              aria-current={index === currentSlide ? "true" : "false"}
-              title={proyecto.titulo}
-            />
+            </article>
           ))}
         </div>
-      </div>
-
-      {/* View All Projects Button */}
-      {showAllLink && PROYECTOS.length > limit && (
-        <div className="absolute top-24 right-6 sm:top-20 md:top-16 md:right-8 z-20">
-          <Button variant="secondary" size="md" asChild>
-            <Link href="/proyectos">
-              {ctaLabel}
-              <ArrowRight className="w-4 h-4 ml-2" />
-            </Link>
-          </Button>
-        </div>
-      )}
-
-      {/* Section Header - Optional overlay */}
-      <div className="absolute top-24 left-6 sm:top-20 md:top-16 md:left-8 z-20 max-w-[90%]">
-        <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-2 leading-tight">
-          {title}
-        </h2>
-        <p className="text-white/70 text-sm sm:text-base md:text-lg max-w-md">
-          {subtitle}
-        </p>
       </div>
     </section>
   )

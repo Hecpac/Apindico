@@ -1,24 +1,18 @@
 "use client"
 
 import * as React from "react"
-import { useRef, useEffect, useState } from "react"
 import Link from "next/link"
-import gsap from "gsap"
-import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { useGSAP } from "@gsap/react"
 import { Check } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Container } from "@/components/ui/Container"
 import { Button } from "@/components/ui/Button"
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger)
-}
+import { AnimatedSection } from "@/components/motion/AnimatedSection"
+import { StaggerContainer } from "@/components/motion/StaggerContainer"
 
 interface CTAButton {
   label: string
   href: string
-  variant?: "primary" | "secondary" | "accent" | "cta"
+  variant?: "primary" | "secondary" | "cta" | "outline"
 }
 
 interface CTASectionProps {
@@ -36,155 +30,61 @@ export function CTASection({
   subtitle,
   benefits,
   buttons = [
-    { label: "Cotizar proyecto", href: "/cotizador", variant: "accent" },
-    { label: "Contáctenos", href: "/contacto", variant: "secondary" },
+    { label: "Cotizar proyecto", href: "/cotizador", variant: "cta" },
+    { label: "Contáctenos", href: "/contacto", variant: "outline" },
   ],
   className,
 }: CTASectionProps) {
-  const sectionRef = useRef<HTMLElement>(null)
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(
-    () =>
-      typeof window !== "undefined" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-  )
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
-
-    const handleChange = (e: MediaQueryListEvent) => {
-      setPrefersReducedMotion(e.matches)
-    }
-
-    mediaQuery.addEventListener("change", handleChange)
-    return () => mediaQuery.removeEventListener("change", handleChange)
-  }, [])
-
-  useGSAP(
-    () => {
-      if (prefersReducedMotion) {
-        gsap.set(".cta-content, .cta-benefits, .cta-buttons", { opacity: 1, y: 0 })
-        return
-      }
-
-      const section = sectionRef.current
-      if (!section) return
-
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: "top 80%",
-          toggleActions: "play none none none",
-        },
-      })
-
-      tl.from(".cta-content", {
-        y: 40,
-        opacity: 0,
-        duration: 0.8,
-        ease: "power3.out",
-      })
-        .from(
-          ".cta-benefit",
-          {
-            y: 20,
-            opacity: 0,
-            duration: 0.5,
-            stagger: 0.1,
-            ease: "power3.out",
-          },
-          "-=0.4"
-        )
-        .from(
-          ".cta-buttons",
-          {
-            y: 20,
-            opacity: 0,
-            duration: 0.6,
-            ease: "power3.out",
-          },
-          "-=0.3"
-        )
-    },
-    { scope: sectionRef, dependencies: [prefersReducedMotion] }
-  )
-
   const isGradient = variant === "gradient"
 
   return (
     <section
-      ref={sectionRef}
       className={cn(
         "py-16 md:py-24",
         isGradient
-          ? "bg-gradient-to-br from-azul-oscuro via-azul-principal to-azul-oscuro text-white"
-          : "bg-white text-gris-900",
+          ? "bg-[linear-gradient(130deg,#081c33_0%,#0c2a47_45%,#0f3556_100%)] text-[color:var(--color-text)]"
+          : "bg-[color:var(--color-surface)] text-[color:var(--color-text)]",
         className
       )}
     >
       <Container>
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="cta-content">
-            <h2
-              className={cn(
-                "font-heading text-3xl md:text-4xl lg:text-5xl font-bold mb-4",
-                isGradient ? "text-white" : "text-gris-900"
-              )}
-            >
-              {title}
-            </h2>
-            {subtitle && (
-              <p
-                className={cn(
-                  "text-lg md:text-xl mb-8",
-                  isGradient ? "text-white/90" : "text-gris-600"
-                )}
-              >
-                {subtitle}
-              </p>
-            )}
-          </div>
+        <div className="mx-auto max-w-4xl text-center">
+          <AnimatedSection>
+            <h2 className="mb-4 font-heading text-3xl font-bold md:text-4xl lg:text-5xl">{title}</h2>
+            {subtitle && <p className="mb-8 text-lg text-[color:var(--color-muted)] md:text-xl">{subtitle}</p>}
+          </AnimatedSection>
 
           {benefits && benefits.length > 0 && (
-            <ul className="cta-benefits flex flex-wrap justify-center mb-10">
-              {benefits.map((benefit, index) => (
-                <li
-                  key={index}
-                  className={cn(
-                    "cta-benefit flex items-center gap-2 text-sm md:text-base px-4 py-2",
-                    index > 0 && "border-l border-gris-200/60",
-                    isGradient && index > 0 && "border-white/20",
-                    isGradient ? "text-white/90" : "text-gris-700"
-                  )}
-                >
-                  <Check
-                    className={cn(
-                      "h-5 w-5 flex-shrink-0",
-                      isGradient ? "text-amarillo" : "text-verde-exito"
-                    )}
-                  />
-                  <span>{benefit}</span>
-                </li>
-              ))}
-            </ul>
+            <AnimatedSection delay={0.05}>
+              <ul className="mb-10 flex flex-wrap justify-center gap-3 md:gap-4">
+                {benefits.map((benefit) => (
+                  <li
+                    key={benefit}
+                    className="inline-flex items-center gap-2 rounded-full border border-[color:var(--color-border)] bg-white/5 px-4 py-2 text-sm text-[color:var(--color-muted)] md:text-base"
+                  >
+                    <Check className={cn("h-5 w-5 flex-shrink-0", isGradient ? "text-[color:var(--color-accent)]" : "text-[color:var(--color-success)]")} />
+                    <span>{benefit}</span>
+                  </li>
+                ))}
+              </ul>
+            </AnimatedSection>
           )}
 
-          <div className="cta-buttons flex flex-col sm:flex-row gap-4 justify-center">
+          <StaggerContainer className="cta-buttons flex flex-col justify-center gap-4 sm:flex-row">
             {buttons.map((button, index) => (
               <Button
                 key={index}
                 variant={button.variant || "primary"}
                 size="lg"
                 asChild
-                className={
-                  isGradient && button.variant === "secondary"
-                    ? "border-white text-white hover:bg-white/10 hover:text-white"
-                    : undefined
-                }
+                className={cn(
+                  isGradient && button.variant === "outline" && "border-white/35 text-white hover:bg-white/10"
+                )}
               >
                 <Link href={button.href}>{button.label}</Link>
               </Button>
             ))}
-          </div>
+          </StaggerContainer>
         </div>
       </Container>
     </section>

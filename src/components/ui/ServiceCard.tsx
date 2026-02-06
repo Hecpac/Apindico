@@ -17,6 +17,7 @@ export interface ServiceCardProps {
   includes?: string[]
   showQuoteCta?: boolean
   displayIndex?: number
+  featured?: boolean
   className?: string
 }
 
@@ -31,6 +32,7 @@ const ServiceCard = React.forwardRef<HTMLDivElement, ServiceCardProps>(
       includes,
       showQuoteCta = false,
       displayIndex,
+      featured = false,
       className,
     },
     ref
@@ -50,23 +52,24 @@ const ServiceCard = React.forwardRef<HTMLDivElement, ServiceCardProps>(
         ref={ref}
         className={cn(
           "service-card group relative overflow-hidden rounded-[32px]",
-          "border border-white/10 bg-zinc-900/40 backdrop-blur-3xl p-8",
+          "border border-[color:var(--color-border)] bg-[color:var(--color-surface)]/80 backdrop-blur-2xl p-6 md:p-8",
           "transition-all duration-500 ease-out will-change-transform",
-          "shadow-[0_-25px_50px_-12px_rgba(0,0,0,0.7)] md:shadow-[0_20px_60px_-40px_rgba(0,0,0,0.6)]",
+          "shadow-[var(--shadow-2)]",
           "motion-safe:hover:-translate-y-1",
-          "hover:shadow-[0_20px_40px_-20px_rgba(0,0,0,0.45)]",
+          "hover:shadow-[var(--shadow-3)]",
           "hover:ring-1 hover:ring-[color:var(--color-accent)]/25",
-          "min-h-[320px] h-[450px] md:h-auto flex flex-col",
+          featured ? "min-h-[380px]" : "min-h-[320px]",
+          "h-full flex flex-col",
           className
         )}
       >
         {displayNumber && (
-          <span className="pointer-events-none absolute -right-4 -bottom-4 font-mono text-[120px] font-bold text-white/[0.04]">
+          <span className="pointer-events-none absolute -right-4 -bottom-4 font-mono text-[120px] font-bold text-white/[0.045]">
             {displayNumber}
           </span>
         )}
         {/* Icon */}
-        <div className="relative inline-flex h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-zinc-950/60 text-[color:var(--color-accent)] shadow-[0_0_20px_rgba(234,88,12,0.1)] mb-5 transition-all duration-300 ease-out group-hover:-translate-y-1">
+        <div className="relative mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-bg)]/70 text-[color:var(--color-accent)] shadow-[var(--shadow-1)] transition-all duration-300 ease-out group-hover:-translate-y-1">
           <div className="pointer-events-none absolute inset-0 rounded-2xl bg-[radial-gradient(circle_at_center,rgba(234,88,12,0.22),transparent_70%)] opacity-60" />
           {IconComponent ? (
             <IconComponent
@@ -80,10 +83,10 @@ const ServiceCard = React.forwardRef<HTMLDivElement, ServiceCardProps>(
 
         {/* Title - sin truncamiento */}
         <div className="space-y-2">
-          <h3 className="font-heading font-bold text-xl tracking-tight text-white transition-colors group-hover:text-[color:var(--color-accent)]" lang="es">
+          <h3 className="font-heading text-xl font-bold tracking-tight text-[color:var(--color-text)] transition-colors group-hover:text-[color:var(--color-accent)]" lang="es">
             {nombre}
           </h3>
-          <p className="text-sm leading-relaxed text-zinc-300">
+          <p className="text-sm leading-relaxed text-[color:var(--color-muted)]">
             {descripcion}
           </p>
         </div>
@@ -98,10 +101,10 @@ const ServiceCard = React.forwardRef<HTMLDivElement, ServiceCardProps>(
         )}
 
         <div className="mt-4 space-y-2">
-          <p className="text-xs uppercase tracking-[0.2em] text-zinc-400">
+          <p className="text-xs uppercase tracking-[0.2em] text-[color:var(--color-dim)]">
             Qué incluye
           </p>
-          <ul className="space-y-2 text-sm text-zinc-200">
+          <ul className="space-y-2 text-sm text-[color:var(--color-text)]">
             {resolvedIncludes.map((item) => (
               <li key={item} className="flex items-start gap-2">
                 <span
@@ -117,7 +120,7 @@ const ServiceCard = React.forwardRef<HTMLDivElement, ServiceCardProps>(
         <div className="mt-auto pt-4 flex flex-wrap items-center gap-3">
           <Link
             href={`/servicios/${slug}`}
-            className="inline-flex items-center gap-2 rounded-md border border-[color:var(--color-accent)]/40 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.12em] text-[color:var(--color-accent)]/90 transition-colors hover:border-[color:var(--color-accent)]/70 hover:text-[color:var(--color-accent)]"
+            className="inline-flex items-center gap-2 rounded-md border border-[color:var(--color-accent)]/40 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.12em] text-[color:var(--color-accent)] transition-colors hover:border-[color:var(--color-accent)]/70 hover:bg-[color:var(--color-accent)]/10"
           >
             Saber más
           </Link>

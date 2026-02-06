@@ -5,8 +5,6 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { Menu, X, ChevronDown } from "lucide-react"
-import gsap from "gsap"
-import { useGSAP } from "@gsap/react"
 import { cn } from "@/lib/utils"
 import { SERVICIOS } from "@/lib/constants"
 import { SERVICE_ICON_MAP } from "@/lib/serviceIcons"
@@ -28,36 +26,25 @@ export function Header() {
   const [isScrolled, setIsScrolled] = React.useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false)
   const [isServicesOpen, setIsServicesOpen] = React.useState(false)
-  const headerRef = React.useRef<HTMLElement>(null)
   const servicesRef = React.useRef<HTMLDivElement>(null)
   const mobileMenuRef = React.useRef<HTMLDivElement>(null)
   const closeButtonRef = React.useRef<HTMLButtonElement>(null)
-  const mobileMenuButtonRef = React.useRef<HTMLButtonElement>(null)
   const lastFocusedElementRef = React.useRef<HTMLElement | null>(null)
 
-  // Handle scroll effect
   React.useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 8)
-    }
-
+    const handleScroll = () => setIsScrolled(window.scrollY > 12)
     window.addEventListener("scroll", handleScroll, { passive: true })
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  // Close mobile menu on route change
   React.useEffect(() => {
     setIsMobileMenuOpen(false)
     setIsServicesOpen(false)
   }, [pathname])
 
-  // Close dropdown when clicking outside
   React.useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        servicesRef.current &&
-        !servicesRef.current.contains(event.target as Node)
-      ) {
+      if (servicesRef.current && !servicesRef.current.contains(event.target as Node)) {
         setIsServicesOpen(false)
       }
     }
@@ -66,7 +53,6 @@ export function Header() {
     return () => document.removeEventListener("mousedown", handleClickOutside)
   }, [])
 
-  // Prevent body scroll when mobile menu is open
   React.useEffect(() => {
     if (isMobileMenuOpen) {
       document.body.style.overflow = "hidden"
@@ -79,14 +65,14 @@ export function Header() {
         lastFocusedElementRef.current = null
       }
     }
+
     return () => {
       document.body.style.overflow = ""
     }
   }, [isMobileMenuOpen])
 
-  // Focus trap for mobile menu
   React.useEffect(() => {
-    if (!isMobileMenuOpen) return
+    if (!isMobileMenuOpen || !mobileMenuRef.current) return
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -96,33 +82,25 @@ export function Header() {
       }
 
       if (event.key !== "Tab") return
-      if (!mobileMenuRef.current) return
 
-      const focusableSelectors = [
-        "a[href]",
-        "button:not([disabled])",
-        "input:not([disabled])",
-        "select:not([disabled])",
-        "textarea:not([disabled])",
-        "[tabindex]:not([tabindex='-1'])",
-      ]
       const focusable = Array.from(
-        mobileMenuRef.current.querySelectorAll<HTMLElement>(
-          focusableSelectors.join(",")
-        )
-      ).filter((el) => !el.hasAttribute("disabled") && !el.getAttribute("aria-hidden"))
+        mobileMenuRef.current?.querySelectorAll<HTMLElement>(
+          "a[href], button:not([disabled]), [tabindex]:not([tabindex='-1'])"
+        ) ?? []
+      )
 
-      if (focusable.length === 0) return
+      if (!focusable.length) return
 
       const first = focusable[0]
       const last = focusable[focusable.length - 1]
-      const isShift = event.shiftKey
       const active = document.activeElement as HTMLElement | null
 
-      if (isShift && active === first) {
+      if (event.shiftKey && active === first) {
         event.preventDefault()
         last.focus()
-      } else if (!isShift && active === last) {
+      }
+
+      if (!event.shiftKey && active === last) {
         event.preventDefault()
         first.focus()
       }
@@ -132,174 +110,93 @@ export function Header() {
     return () => document.removeEventListener("keydown", handleKeyDown)
   }, [isMobileMenuOpen])
 
-  useGSAP(() => {
-    if (!headerRef.current) return
-    const tl = gsap.timeline()
-    tl.to(headerRef.current, {
-      opacity: 0.96,
-      duration: 1.2,
-      yoyo: true,
-      repeat: 1,
-      ease: "sine.inOut",
-    })
-  }, [])
-
-  const ctaBaseClasses = cn(
-    "relative overflow-hidden",
-    "bg-gradient-to-r from-orange-500 to-orange-600 text-white",
-    "shadow-[0_0_20px_rgba(234,88,12,0.3)]",
-    "before:absolute before:inset-0 before:rounded-lg before:bg-black/25 before:content-[''] before:z-0",
-    "focus-visible:ring-2 focus-visible:ring-orange-300/70 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
-  )
-
   return (
     <>
-      {/* Skip Link for Accessibility */}
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[60] focus:px-4 focus:py-2 focus:bg-azul-principal focus:text-white focus:rounded-lg focus:shadow-lg focus:outline-none"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-[80] focus:px-4 focus:py-2 focus:rounded-[var(--radius-md)] focus:bg-[color:var(--color-surface-2)] focus:text-[color:var(--color-text)]"
       >
         Saltar al contenido
       </a>
 
-      <header
-        ref={headerRef}
-        className={cn(
-          "site-header fixed top-6 w-full z-50 transition-all duration-500",
-          "bg-transparent",
-          isScrolled ? "pt-6" : "pt-8"
-        )}
-      >
-        <div className="container mx-auto max-w-7xl px-6 md:px-12">
+      <header className="site-header fixed inset-x-0 top-0 z-50 pointer-events-none">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-3">
           <nav
             role="navigation"
             aria-label="Navegación principal"
             className={cn(
-              "flex items-center justify-between transition-all duration-300 rounded-full border border-white/10 backdrop-blur-2xl px-10 py-3",
-              "bg-white/10 shadow-[0_8px_24px_rgba(0,0,0,0.18)]",
+              "pointer-events-auto flex items-center justify-between rounded-full border px-5 md:px-8 transition-all duration-300",
+              "backdrop-blur-2xl",
               isScrolled
-                ? "h-14 md:bg-zinc-950/20 md:shadow-[0_10px_30px_rgba(0,0,0,0.22)]"
-                : "h-14 md:h-20 md:bg-zinc-950/20 md:shadow-[0_14px_40px_rgba(0,0,0,0.25)]"
+                ? "h-14 border-[color:var(--color-border)] bg-[color:var(--color-bg)]/90 shadow-[var(--shadow-2)]"
+                : "h-16 md:h-[72px] border-white/15 bg-[color:var(--color-bg)]/60 shadow-[var(--shadow-1)]"
             )}
           >
-            {/* Logo + Mini Label */}
             <div className="flex items-center gap-3">
-              <Link
-                href="/"
-                className={cn(
-                  "flex items-center gap-2 font-heading font-extrabold leading-none transition-all duration-300",
-                  "text-base md:text-lg"
-                )}
-              >
-                <span className="flex h-6 w-6 items-center justify-center rounded-md bg-azul-principal text-[10px] font-bold text-white ring-1 ring-white/10">
+              <Link href="/" className="flex items-center gap-2 font-heading font-extrabold leading-none text-white">
+                <span className="flex h-6 w-6 items-center justify-center rounded-md bg-[color:var(--color-accent)] text-[10px] font-bold text-white ring-1 ring-white/10">
                   AP
                 </span>
-                <span className={cn(
-                  "text-white",
-                )}>
-                  INDICO
-                </span>
+                <span>INDICO</span>
               </Link>
               {pathname?.startsWith("/cotizador") && (
-                <span
-                  className={cn(
-                    "inline-flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-full border",
-                    isScrolled
-                      ? "text-gris-700 border-azul-principal/15 bg-azul-principal/5"
-                      : "text-white/90 border-white/15 bg-white/10"
-                  )}
-                >
-                  Paso
-                  <span className="font-semibold text-[#FF6B00]">
-                    {currentStep}
-                  </span>
-                  /4
+                <span className="hidden sm:inline-flex items-center gap-1 rounded-full border border-[color:var(--color-border)] bg-white/5 px-2 py-1 text-xs text-[color:var(--color-muted)]">
+                  Paso <span className="font-semibold text-[color:var(--color-accent)]">{currentStep}</span>/4
                 </span>
               )}
             </div>
 
-            {/* Desktop Navigation */}
-            <div className={cn(
-              "hidden md:flex items-center transition-all duration-300",
-              isScrolled ? "gap-4" : "gap-8"
-            )}>
-              {/* Services Dropdown */}
+            <div className={cn("hidden md:flex items-center", isScrolled ? "gap-4" : "gap-8")}>
               <div ref={servicesRef} className="relative">
-                <div
-                  className={cn(
-                    "flex items-center gap-1 font-body font-medium transition-all duration-300",
-                    isScrolled
-                      ? "text-white hover:text-white/80 text-sm"
-                      : "text-white hover:text-white/80",
-                    isServicesOpen && "text-white"
-                  )}
-                >
-                  <Link
-                    href="/servicios"
-                    className="transition-colors duration-300"
-                  >
+                <div className="flex items-center gap-1 font-body font-medium text-white">
+                  <Link href="/servicios" className="transition-colors hover:text-[color:var(--color-accent-2)]">
                     {copy.nav.services}
                   </Link>
                   <button
                     type="button"
-                    onClick={() => setIsServicesOpen(!isServicesOpen)}
+                    onClick={() => setIsServicesOpen((prev) => !prev)}
                     aria-expanded={isServicesOpen}
                     aria-haspopup="true"
                     aria-label="Abrir menú de servicios"
-                    className="flex items-center justify-center rounded-full p-1 hover:bg-white/10 transition-colors"
+                    className="rounded-full p-1 transition-colors hover:bg-white/10"
                   >
-                    <ChevronDown
-                      className={cn(
-                        "h-4 w-4 transition-transform duration-200",
-                        isServicesOpen && "rotate-180"
-                      )}
-                      aria-hidden="true"
-                    />
+                    <ChevronDown className={cn("h-4 w-4 transition-transform", isServicesOpen && "rotate-180")} />
                   </button>
                 </div>
 
                 <AnimatePresence>
                   {isServicesOpen && (
                     <motion.div
-                      initial={{ opacity: 0, y: 10 }}
+                      initial={{ opacity: 0, y: 8 }}
                       animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 10 }}
+                      exit={{ opacity: 0, y: 8 }}
                       transition={{ duration: 0.2 }}
-                      className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-[600px] bg-white rounded-xl shadow-xl border border-azul-principal/10 p-4"
+                      className="absolute left-1/2 top-full z-50 mt-4 w-[640px] -translate-x-1/2 rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-surface)] p-4 shadow-[var(--shadow-3)]"
                     >
                       <div className="grid grid-cols-2 gap-2">
-                        {SERVICIOS.map((servicio) => (
-                          <Link
-                            key={servicio.id}
-                            href={`/servicios/${servicio.slug}`}
-                            className="flex items-start gap-3 p-3 rounded-lg hover:bg-azul-principal/5 transition-colors group"
-                            onClick={() => setIsServicesOpen(false)}
-                          >
-                            <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-azul-principal/10 flex items-center justify-center group-hover:bg-coral-energetico transition-colors">
-                              {(() => {
-                                const IconComponent = SERVICE_ICON_MAP[servicio.icon]
-                                return IconComponent ? (
-                                  <IconComponent
-                                    className="h-5 w-5 text-azul-principal group-hover:text-white transition-colors"
-                                    strokeWidth={1.75}
-                                    aria-hidden="true"
-                                    focusable="false"
-                                  />
-                                ) : null
-                              })()}
-                            </div>
-                            <div>
-                              <span className="font-heading font-semibold text-sm text-azul-principal group-hover:text-coral-energetico transition-colors">
+                        {SERVICIOS.map((servicio) => {
+                          const IconComponent = SERVICE_ICON_MAP[servicio.icon]
+                          return (
+                            <Link
+                              key={servicio.id}
+                              href={`/servicios/${servicio.slug}`}
+                              className="group flex items-start gap-3 rounded-xl p-3 transition-colors hover:bg-white/6"
+                              onClick={() => setIsServicesOpen(false)}
+                            >
+                              <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg border border-[color:var(--color-border)] bg-[color:var(--color-bg)]/70 text-[color:var(--color-accent)] transition-colors group-hover:bg-[color:var(--color-accent)]/15">
+                                {IconComponent ? <IconComponent className="h-5 w-5" strokeWidth={1.75} /> : null}
+                              </div>
+                              <span className="text-sm font-semibold text-[color:var(--color-text)] group-hover:text-[color:var(--color-accent-2)]">
                                 {servicio.nombre}
                               </span>
-                            </div>
-                          </Link>
-                        ))}
+                            </Link>
+                          )
+                        })}
                       </div>
-                      <div className="mt-4 pt-4 border-t border-azul-principal/10">
+                      <div className="mt-4 border-t border-[color:var(--color-border)] pt-4">
                         <Link
                           href="/servicios"
-                          className="text-sm font-medium text-coral-energetico hover:text-coral-oscuro transition-colors"
+                          className="text-sm font-medium text-[color:var(--color-accent)] transition-colors hover:text-[color:var(--color-accent-2)]"
                           onClick={() => setIsServicesOpen(false)}
                         >
                           {copy.home.services.cta} →
@@ -310,18 +207,15 @@ export function Header() {
                 </AnimatePresence>
               </div>
 
-              {/* Other Links */}
               {NAV_LINKS.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
                   className={cn(
-                    "font-body font-medium transition-all duration-300",
+                    "font-body font-medium transition-colors",
                     pathname === link.href
-                      ? "text-white underline underline-offset-8 decoration-white/40"
-                      : isScrolled
-                        ? "text-white hover:text-white/80 text-sm"
-                        : "text-white hover:text-white/80"
+                      ? "text-[color:var(--color-accent)]"
+                      : "text-white hover:text-[color:var(--color-accent-2)]"
                   )}
                 >
                   {link.label}
@@ -329,114 +223,73 @@ export function Header() {
               ))}
             </div>
 
-            {/* Desktop CTA */}
             <div className="hidden md:block">
-              <Button
-                variant="cta"
-                size={isScrolled ? "sm" : "md"}
-                asChild
-                className={cn("!rounded-lg !border-none", ctaBaseClasses)}
-              >
-                <Link href="/cotizador">
-                  <span className="relative z-10">
-                    {isScrolled ? quoteCtaCompact : quoteCta}
-                  </span>
-                </Link>
+              <Button variant="cta" size={isScrolled ? "sm" : "md"} asChild>
+                <Link href="/cotizador">{isScrolled ? quoteCtaCompact : quoteCta}</Link>
               </Button>
             </div>
 
-            {/* Mobile Menu Button */}
             <button
-              ref={mobileMenuButtonRef}
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className={cn(
-                "md:hidden p-2 transition-colors",
-                "text-white"
-              )}
+              onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+              className="md:hidden p-2 text-white"
               aria-label={isMobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
             >
-              {isMobileMenuOpen ? (
-                <X className="h-6 w-6" />
-              ) : (
-                <Menu className="h-6 w-6" />
-              )}
+              {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
           </nav>
         </div>
       </header>
 
-      {/* Mobile Menu Overlay */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <>
-            {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="fixed inset-0 bg-black/50 z-40 md:hidden"
+              className="fixed inset-0 z-40 bg-black/60 md:hidden"
               onClick={() => setIsMobileMenuOpen(false)}
             />
 
-            {/* Drawer */}
             <motion.div
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
-              transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="fixed top-0 right-0 bottom-0 w-[300px] bg-white z-50 md:hidden shadow-xl"
+              transition={{ type: "spring", damping: 26, stiffness: 280 }}
+              className="fixed bottom-0 right-0 top-0 z-50 w-[320px] border-l border-[color:var(--color-border)] bg-[color:var(--color-surface)] shadow-[var(--shadow-3)] md:hidden"
               role="dialog"
               aria-modal="true"
               aria-label="Menú de navegación móvil"
               ref={mobileMenuRef}
             >
-              <div className="flex flex-col h-full">
-                {/* Drawer Header */}
-                <div className="flex items-center justify-between p-4 border-b border-azul-principal/10">
-                  <span className="font-heading font-bold text-lg text-azul-principal">
-                    Menú
-                  </span>
+              <div className="flex h-full flex-col">
+                <div className="flex items-center justify-between border-b border-[color:var(--color-border)] p-4">
+                  <span className="font-heading text-lg font-bold text-[color:var(--color-text)]">Menú</span>
                   <button
                     ref={closeButtonRef}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="p-2 text-gris-600 hover:text-gris-900"
+                    className="rounded-md p-2 text-[color:var(--color-muted)] hover:text-[color:var(--color-text)]"
                     aria-label="Cerrar menú"
                   >
                     <X className="h-5 w-5" />
                   </button>
                 </div>
 
-                {/* Drawer Content */}
-                <nav
-                  role="navigation"
-                  aria-label="Navegación móvil"
-                  className="flex-1 overflow-y-auto p-4"
-                >
-                  {/* Services Accordion */}
+                <nav role="navigation" aria-label="Navegación móvil" className="flex-1 overflow-y-auto p-4">
                   <div className="mb-4">
-                    <div className="flex items-center justify-between w-full py-3 font-body font-medium text-gris-800">
-                      <Link
-                        href="/servicios"
-                        className="hover:text-azul-principal transition-colors"
-                        onClick={() => setIsMobileMenuOpen(false)}
-                      >
+                    <div className="flex items-center justify-between py-3 text-[color:var(--color-text)]">
+                      <Link href="/servicios" onClick={() => setIsMobileMenuOpen(false)}>
                         {copy.nav.services}
                       </Link>
                       <button
                         type="button"
-                        onClick={() => setIsServicesOpen(!isServicesOpen)}
+                        onClick={() => setIsServicesOpen((prev) => !prev)}
                         aria-expanded={isServicesOpen}
                         aria-label="Abrir menú de servicios"
-                        className="p-1 rounded-full hover:text-azul-principal transition-colors"
+                        className="rounded-full p-1"
                       >
-                        <ChevronDown
-                          className={cn(
-                            "h-4 w-4 transition-transform duration-200",
-                            isServicesOpen && "rotate-180"
-                          )}
-                          aria-hidden="true"
-                        />
+                        <ChevronDown className={cn("h-4 w-4 transition-transform", isServicesOpen && "rotate-180")} />
                       </button>
                     </div>
 
@@ -449,44 +302,34 @@ export function Header() {
                           transition={{ duration: 0.2 }}
                           className="overflow-hidden"
                         >
-                          <div className="pl-4 py-2 space-y-1">
-                            {SERVICIOS.map((servicio) => (
-                              <Link
-                                key={servicio.id}
-                                href={`/servicios/${servicio.slug}`}
-                                className="flex items-center gap-3 py-2 text-sm text-gris-600 hover:text-coral-energetico transition-colors"
-                                onClick={() => setIsMobileMenuOpen(false)}
-                              >
-                                {(() => {
-                                  const IconComponent = SERVICE_ICON_MAP[servicio.icon]
-                                  return IconComponent ? (
-                                    <IconComponent
-                                      className="h-4 w-4 text-azul-principal"
-                                      strokeWidth={1.75}
-                                      aria-hidden="true"
-                                      focusable="false"
-                                    />
-                                  ) : null
-                                })()}
-                                {servicio.nombre}
-                              </Link>
-                            ))}
+                          <div className="space-y-1 pb-2 pl-4">
+                            {SERVICIOS.map((servicio) => {
+                              const IconComponent = SERVICE_ICON_MAP[servicio.icon]
+                              return (
+                                <Link
+                                  key={servicio.id}
+                                  href={`/servicios/${servicio.slug}`}
+                                  className="flex items-center gap-3 py-2 text-sm text-[color:var(--color-muted)] hover:text-[color:var(--color-accent)]"
+                                  onClick={() => setIsMobileMenuOpen(false)}
+                                >
+                                  {IconComponent ? <IconComponent className="h-4 w-4" strokeWidth={1.75} /> : null}
+                                  {servicio.nombre}
+                                </Link>
+                              )
+                            })}
                           </div>
                         </motion.div>
                       )}
                     </AnimatePresence>
                   </div>
 
-                  {/* Other Links */}
                   {NAV_LINKS.map((link) => (
                     <Link
                       key={link.href}
                       href={link.href}
                       className={cn(
-                        "block py-3 font-body font-medium transition-colors",
-                        pathname === link.href
-                          ? "text-coral-energetico"
-                          : "text-azul-principal hover:text-coral-energetico"
+                        "block py-3 transition-colors",
+                        pathname === link.href ? "text-[color:var(--color-accent)]" : "text-[color:var(--color-text)] hover:text-[color:var(--color-accent-2)]"
                       )}
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
@@ -495,18 +338,12 @@ export function Header() {
                   ))}
                 </nav>
 
-                {/* Drawer Footer */}
-                <div className="p-4 border-t border-azul-principal/10">
-                  <Link
-                    href="/cotizador"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className={cn(
-                      "w-full inline-flex items-center justify-center px-6 py-3 rounded-lg font-semibold transition-all duration-300",
-                      ctaBaseClasses
-                    )}
-                  >
-                    <span className="relative z-10">{quoteCta}</span>
-                  </Link>
+                <div className="border-t border-[color:var(--color-border)] p-4">
+                  <Button variant="cta" className="w-full" asChild>
+                    <Link href="/cotizador" onClick={() => setIsMobileMenuOpen(false)}>
+                      {quoteCta}
+                    </Link>
+                  </Button>
                 </div>
               </div>
             </motion.div>

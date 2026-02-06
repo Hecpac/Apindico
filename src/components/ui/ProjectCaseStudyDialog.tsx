@@ -38,10 +38,9 @@ export function ProjectCaseStudyDialog({
         />
         <Dialog.Content
           className={cn(
-            "theme-editorial",
             "fixed z-50 w-full max-h-[90vh] overflow-y-auto",
             "bottom-0 left-0 right-0 rounded-t-[var(--radius-5)]",
-            "border border-[color:var(--color-border)] bg-[color:var(--color-surface)]",
+            "border border-[color:var(--color-border)] bg-[color:var(--color-surface)] text-[color:var(--color-text)]",
             "shadow-[var(--shadow-4)]",
             "sm:top-1/2 sm:left-1/2 sm:bottom-auto sm:right-auto sm:max-w-2xl",
             "sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-[var(--radius-5)]"
@@ -139,13 +138,13 @@ export function ProjectCaseStudyDialog({
             </div>
 
             <div className="flex flex-wrap gap-3 border-t border-[color:var(--color-border)] pt-4">
-              <Button variant="editorial" size="md" asChild>
+              <Button variant="cta" size="md" asChild>
                 <Link href={`/proyectos/${project.id}`}>
                   Ver caso completo
                   <ArrowUpRight className="h-4 w-4" />
                 </Link>
               </Button>
-              <Button variant="editorial" size="md" asChild>
+              <Button variant="outline" size="md" asChild>
                 <Link href="/contacto">Solicitar información</Link>
               </Button>
             </div>

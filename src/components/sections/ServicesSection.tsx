@@ -1,11 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { useRef, useEffect, useState } from "react"
 import Link from "next/link"
-import gsap from "gsap"
-import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { useGSAP } from "@gsap/react"
 import { ArrowRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { SERVICIOS } from "@/lib/constants"
@@ -13,10 +9,8 @@ import { Container } from "@/components/ui/Container"
 import { Button } from "@/components/ui/Button"
 import { ChipFilter } from "@/components/ui/ChipFilter"
 import { ServiceCard } from "@/components/ui/ServiceCard"
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger)
-}
+import { AnimatedSection } from "@/components/motion/AnimatedSection"
+import { StaggerContainer } from "@/components/motion/StaggerContainer"
 
 const FILTERS = [
   { id: "all", label: "Todos" },
@@ -32,14 +26,14 @@ const CATEGORY_MAP: Record<string, FilterId> = {
   "inspeccion-cctv": "diagnostico",
   "medicion-caudal": "diagnostico",
   "prueba-hidrostatica": "diagnostico",
-  "hermeticidad": "diagnostico",
+  hermeticidad: "diagnostico",
   "servicios-vactor": "mantenimiento",
   "limpieza-redes": "mantenimiento",
   "reparacion-cipp": "rehabilitacion",
   "diseno-redes": "rehabilitacion",
   "catastro-redes": "catastro",
   "catastro-usuarios": "catastro",
-  "topografia": "diagnostico",
+  topografia: "diagnostico",
 }
 
 interface ServicesSectionProps {
@@ -59,174 +53,103 @@ export function ServicesSection({
   ctaLabel = "Ver todos los servicios",
   className,
 }: ServicesSectionProps) {
-  const sectionRef = useRef<HTMLElement>(null)
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(
-    () =>
-      typeof window !== "undefined" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-  )
-  const [activeFilter, setActiveFilter] = useState<FilterId>("all")
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
-
-    const handleChange = (e: MediaQueryListEvent) => {
-      setPrefersReducedMotion(e.matches)
-    }
-
-    mediaQuery.addEventListener("change", handleChange)
-    return () => mediaQuery.removeEventListener("change", handleChange)
-  }, [])
-
-  useGSAP(
-    () => {
-      if (prefersReducedMotion) {
-        gsap.set(".services-header, .service-tile", { opacity: 1, y: 0 })
-        return
-      }
-
-      const section = sectionRef.current
-      if (!section) return
-
-      const cards = gsap.utils.toArray<HTMLElement>(".service-tile", section)
-
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: "top 80%",
-          toggleActions: "play none none none",
-        },
-      })
-
-      tl.from(".services-header", {
-        y: 40,
-        opacity: 0,
-        duration: 0.8,
-        ease: "expo.out",
-      }).from(
-        cards,
-        {
-          y: 40,
-          opacity: 0,
-          duration: 0.6,
-          stagger: 0.1,
-          ease: "expo.out",
-        },
-        "-=0.2"
-      )
-
-      ScrollTrigger.matchMedia({
-        "(max-width: 767px)": () => {
-          gsap.set(cards, { transformOrigin: "center top" })
-          cards.forEach((card, idx) => {
-            if (idx === 0) return
-            const previous = cards[idx - 1]
-            gsap.to(previous, {
-              scale: 0.95,
-              opacity: 0.5,
-              scrollTrigger: {
-                trigger: card,
-                start: "top 55%",
-                end: "bottom 45%",
-                scrub: true,
-              },
-            })
-          })
-        },
-      })
-    },
-    { scope: sectionRef, dependencies: [prefersReducedMotion] }
-  )
+  const [activeFilter, setActiveFilter] = React.useState<FilterId>("all")
 
   const displayedServices = limit ? SERVICIOS.slice(0, limit) : SERVICIOS
   const filteredServices =
     activeFilter === "all"
       ? displayedServices
-      : displayedServices.filter(
-          (servicio) => CATEGORY_MAP[servicio.id] === activeFilter
-        )
+      : displayedServices.filter((servicio) => CATEGORY_MAP[servicio.id] === activeFilter)
 
   const counts = FILTERS.reduce<Record<FilterId, number>>((acc, filter) => {
     if (filter.id === "all") {
       acc[filter.id] = displayedServices.length
       return acc
     }
-    acc[filter.id] = displayedServices.filter(
-      (servicio) => CATEGORY_MAP[servicio.id] === filter.id
-    ).length
+
+    acc[filter.id] = displayedServices.filter((servicio) => CATEGORY_MAP[servicio.id] === filter.id).length
     return acc
   }, {} as Record<FilterId, number>)
 
   return (
-      <section
-      ref={sectionRef}
+    <section
       id="servicios"
       className={cn(
-        "servicios-section py-20 md:py-24 relative bg-[color:var(--color-bg)] text-[color:var(--color-text)]",
+        "servicios-section relative overflow-hidden bg-[color:var(--color-bg)] py-20 text-[color:var(--color-text)] md:py-24",
         className
       )}
     >
-      {/* Background decoration */}
-      <div className="absolute inset-0 pointer-events-none opacity-30">
+      <div className="pointer-events-none absolute inset-0 opacity-65" aria-hidden="true">
         <div className="absolute inset-0 bg-[color:var(--color-bg)]" />
-        <div className="absolute top-20 left-10 w-72 h-72 bg-[color:var(--color-accent)]/20 rounded-full blur-3xl" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-[color:var(--color-accent)]/20 rounded-full blur-3xl" />
+        <div className="absolute left-8 top-16 h-64 w-64 rounded-full bg-[color:var(--color-accent)]/18 blur-3xl" />
+        <div className="absolute bottom-12 right-10 h-72 w-72 rounded-full bg-[color:var(--color-accent-2)]/16 blur-3xl" />
       </div>
 
       <Container size="xl" className="relative z-10 px-6">
-        {/* Section Header */}
-        <div className="services-header text-center max-w-3xl mx-auto mb-10 md:mb-12">
-          <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
-            {title}
-          </h2>
-          <p className="text-white/80 text-lg md:text-xl leading-relaxed">
-            {subtitle}
-          </p>
-        </div>
-
-        <div className="flex flex-wrap justify-center gap-2 mb-10">
-          {FILTERS.map((filter) => (
-            <ChipFilter
-              key={filter.id}
-              label={filter.label}
-              count={counts[filter.id]}
-              active={activeFilter === filter.id}
-              onClick={() => setActiveFilter(filter.id)}
-            />
-          ))}
-        </div>
-
-        {/* Services Grid */}
-        <div className="flex flex-col gap-8 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-6">
-          {filteredServices.map((servicio, index) => (
-            <div
-              key={servicio.id}
-              className="service-tile sticky top-[100px] mb-12 md:relative md:top-0 md:mb-0"
-              style={{ zIndex: (index + 1) * 10 }}
-            >
-              <ServiceCard
-                icon={servicio.icon}
-                nombre={servicio.nombre}
-                descripcion={servicio.descripcion}
-                slug={servicio.slug}
-                normativa={servicio.normativa}
-                showQuoteCta
-                displayIndex={index + 1}
-              />
-            </div>
-          ))}
-        </div>
-
-        {/* CTA */}
-        {showAllLink && limit && limit < SERVICIOS.length && (
-          <div className="services-cta text-center mt-20">
-            <Button variant="primary" size="lg" asChild>
-              <Link href="/servicios">
-                {ctaLabel}
-                <ArrowRight className="w-5 h-5 ml-2" />
-              </Link>
-            </Button>
+        <AnimatedSection>
+          <div className="services-header mx-auto mb-10 max-w-3xl text-center md:mb-12">
+            <h2 className="mb-5 font-heading text-4xl font-bold text-[color:var(--color-text)] md:text-5xl lg:text-6xl">
+              {title}
+            </h2>
+            <p className="text-lg leading-relaxed text-[color:var(--color-muted)] md:text-xl">{subtitle}</p>
           </div>
+        </AnimatedSection>
+
+        <AnimatedSection delay={0.05}>
+          <div className="mb-10 flex flex-wrap justify-center gap-2">
+            {FILTERS.map((filter) => (
+              <ChipFilter
+                key={filter.id}
+                label={filter.label}
+                count={counts[filter.id]}
+                active={activeFilter === filter.id}
+                onClick={() => setActiveFilter(filter.id)}
+              />
+            ))}
+          </div>
+        </AnimatedSection>
+
+        <StaggerContainer className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4 xl:auto-rows-fr">
+          {filteredServices.map((servicio, index) => {
+            const isHero = index === 0
+            const isTall = index === 1 || index === 2
+
+            return (
+              <div
+                key={servicio.id}
+                className={cn(
+                  "service-tile h-full",
+                  isHero && "md:col-span-2 xl:col-span-2 xl:row-span-2",
+                  isTall && "xl:row-span-2"
+                )}
+              >
+                <ServiceCard
+                  icon={servicio.icon}
+                  nombre={servicio.nombre}
+                  descripcion={servicio.descripcion}
+                  slug={servicio.slug}
+                  normativa={servicio.normativa}
+                  showQuoteCta
+                  displayIndex={index + 1}
+                  featured={isHero}
+                  className="h-full"
+                />
+              </div>
+            )
+          })}
+        </StaggerContainer>
+
+        {showAllLink && limit && limit < SERVICIOS.length && (
+          <AnimatedSection delay={0.05}>
+            <div className="services-cta mt-16 text-center">
+              <Button variant="outline" size="lg" asChild>
+                <Link href="/servicios">
+                  {ctaLabel}
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
+              </Button>
+            </div>
+          </AnimatedSection>
         )}
       </Container>
     </section>

@@ -20,6 +20,7 @@ export default function Home() {
       <ServicesSection
         title={copy.home.services.title}
         subtitle={copy.home.services.subtitle}
+        limit={6}
         ctaLabel={copy.home.services.cta}
       />
       <CTASection
@@ -33,7 +34,7 @@ export default function Home() {
         ]}
         buttons={[
           { label: "Solicitar cotización", href: "/cotizador", variant: "cta" },
-          { label: "Ver servicios", href: "/servicios", variant: "primary" },
+          { label: "Ver servicios", href: "/servicios", variant: "outline" },
         ]}
       />
       <ProjectsSection
@@ -53,7 +54,7 @@ export default function Home() {
         ]}
         buttons={[
           { label: copy.home.finalCta.primaryCta, href: "/cotizador", variant: "cta" },
-          { label: copy.home.finalCta.secondaryCta, href: "/contacto", variant: "secondary" },
+          { label: copy.home.finalCta.secondaryCta, href: "/contacto", variant: "outline" },
         ]}
       />
     </>
