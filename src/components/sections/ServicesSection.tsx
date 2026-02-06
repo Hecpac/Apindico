@@ -3,7 +3,6 @@
 import * as React from "react"
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
-import { motion, useReducedMotion, useScroll, useTransform, type MotionValue } from "framer-motion"
 import { cn } from "@/lib/utils"
 import { SERVICIOS } from "@/lib/constants"
 import { Container } from "@/components/ui/Container"
@@ -41,51 +40,16 @@ const CATEGORY_MAP: Record<string, FilterId> = {
 interface MobileStackCardProps {
   service: ServiceItem
   index: number
-  total: number
-  progress: MotionValue<number>
-  reduceMotion: boolean
 }
 
-function MobileStackCard({ service, index, total, progress, reduceMotion }: MobileStackCardProps) {
-  const start = Math.max(0, index * 0.1 - 0.12)
-  const settle = Math.min(1, start + 0.24)
-  const finish = Math.min(1, settle + 0.26)
-
-  const y = useTransform(progress, [start, settle, finish], [76, 0, -14])
-  const scale = useTransform(progress, [start, settle, finish], [0.9, 1, 0.975])
-  const opacity = useTransform(progress, [start, settle], [0.15, 1])
-  const rotate = useTransform(progress, [start, settle], [1.8, 0])
-
-  const topOffset = 132 + index * 28
+function MobileStackCard({ service, index }: MobileStackCardProps) {
+  const topOffset = 100 + index * 24
   const isHero = index === 0
 
-  const cardClass = "h-full !bg-[color:var(--color-surface)] !backdrop-blur-none"
-
-  if (reduceMotion) {
-    return (
-      <div
-        className={cn("service-tile h-full", index === 0 ? "mt-0" : "mt-6")}
-        style={{ position: "sticky", top: `${topOffset}px`, zIndex: index + 1 }}
-      >
-        <ServiceCard
-          icon={service.icon}
-          nombre={service.nombre}
-          descripcion={service.descripcion}
-          slug={service.slug}
-          normativa={service.normativa}
-          showQuoteCta
-          displayIndex={index + 1}
-          featured={isHero}
-          className={cardClass}
-        />
-      </div>
-    )
-  }
-
   return (
-    <motion.div
-      className={cn("service-tile h-full will-change-transform", index === 0 ? "mt-0" : "mt-6")}
-      style={{ position: "sticky", top: `${topOffset}px`, zIndex: index + 1, y, scale, opacity, rotate }}
+    <div
+      className={cn("service-tile h-full", index === 0 ? "mt-0" : "mt-6")}
+      style={{ position: "sticky", top: `${topOffset}px`, zIndex: index + 1 }}
     >
       <ServiceCard
         icon={service.icon}
@@ -96,9 +60,9 @@ function MobileStackCard({ service, index, total, progress, reduceMotion }: Mobi
         showQuoteCta
         displayIndex={index + 1}
         featured={isHero}
-        className={cardClass}
+        className="h-full !bg-[color:var(--color-surface)] !backdrop-blur-none"
       />
-    </motion.div>
+    </div>
   )
 }
 
@@ -122,12 +86,7 @@ export function ServicesSection({
   className,
 }: ServicesSectionProps) {
   const [activeFilter, setActiveFilter] = React.useState<FilterId>("all")
-  const reduceMotion = useReducedMotion()
   const mobileStackRef = React.useRef<HTMLDivElement>(null)
-  const { scrollYProgress } = useScroll({
-    target: mobileStackRef,
-    offset: ["start 85%", "end 25%"],
-  })
 
   const displayedServices = limit ? SERVICIOS.slice(0, limit) : SERVICIOS
   const filteredServices =
@@ -186,18 +145,13 @@ export function ServicesSection({
         {stackOnMobile && (
           <div className="md:hidden">
             <div ref={mobileStackRef} className="relative pb-10">
-              {filteredServices.map((servicio, index) => {
-                return (
+              {filteredServices.map((servicio, index) => (
                   <MobileStackCard
                     key={`mobile-${servicio.id}`}
                     service={servicio}
                     index={index}
-                    total={filteredServices.length}
-                    progress={scrollYProgress}
-                    reduceMotion={Boolean(reduceMotion)}
                   />
-                )
-              })}
+              ))}
             </div>
           </div>
         )}
